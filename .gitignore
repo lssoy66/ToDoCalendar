@@ -120,4 +120,13 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# class
+*.class
+
+# Eclipse Core
+.classpath
+
+# JDT-spectic (Eclipse Java Development Tools)
+.project
+
 # End of https://www.toptal.com/developers/gitignore/api/java,eclipse,windows
