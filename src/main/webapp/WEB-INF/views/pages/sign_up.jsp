@@ -46,6 +46,10 @@
                     <div class="panel-body">
                         <form role="form">
                             <fieldset>
+                            아이디
+                            	<div class="form-group">
+                                    <input class="form-control" placeholder="ID를 입력해주세요" name="id" type="text" autofocus>
+                                </div>
                             	이름
                             	<div class="form-group">
                                     <input class="form-control" placeholder="이름을 입력해주세요" name="name" type="text" autofocus>
@@ -63,19 +67,10 @@
                                         <input name="remember" type="checkbox" value="Remember Me">회원가입과 동시에 개인정보취급방침및 이용약관에 동의하게 됩니다.
                                     </label>
                                 </div>
-                                <div style="text-align: right;">
-                                	<label>
-                                		<a href="#">비밀번호를 잊어버리셨나요?</a>
-                                	</label>
-                                </div>
                                 <!-- Change this to a button or input when using this as a form -->
                                 <a href="index.html" class="btn btn-lg btn-success btn-block">회원가입</a>
                             </fieldset>
                         </form>
-                        
-                        <div style="text-align: center; padding-top: 20px">
-                        	To Do Calendar 계정이 없으신가요? <a href="../pages/sign_up">회원가입</a>
-                        </div>
                     </div>
                 </div>
             </div>

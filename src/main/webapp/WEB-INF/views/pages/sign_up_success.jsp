@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="kr">
 
@@ -43,32 +44,15 @@
                     <div class="panel-body">
                         <form role="form">
                             <fieldset>
-                            	이메일
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="이메일을 입력해주세요." name="email" type="email" autofocus>
-                                </div>
-                                	비밀번호
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="비밀번호를 입력해주세요." name="password" type="password" value="">
-                                </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">기억하기
-                                    </label>
-                                </div>
-                                <div style="text-align: right;">
-                                	<label>
-                                		<a href="#">비밀번호를 잊어버리셨나요?</a>
-                                	</label>
+                            	<div class="form-group">
+                            		<label>
+                            			회원가입을 축하드립니다 ${member.name }님
+                            		</label>
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <a href="../../controller" class="btn btn-lg btn-success btn-block">로그인</a>
+                                <a href="../controller" class="btn btn-lg btn-success btn-block">메인 페이지로 돌아가기</a>
                             </fieldset>
                         </form>
-                        
-                        <div style="text-align: center; padding-top: 20px">
-                        	To Do Calendar 계정이 없으신가요? <a href="../pages/sign_up">회원가입</a>
-                        </div>
                     </div>
                 </div>
             </div>
