@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.todocalendar.mapper.TestMapper">
+
+	<select id="testSelectMEMBER" resultType="com.todocalendar.domain.TestVO">
+		SELECT MEMBER_NO		/* 회원번호 */
+		     , ID 				/* 아이디 */
+		     , PASSWORD		    /* 패스워드 */
+		     , NAME			    /* 이름 */
+		     , EMAIL			/* 이메일 */
+		     , JOIN_DATE		/* 가입일시 */
+		     , MEMBERSHIP		/* 멤버십 */
+		     , DELAY_AUTO		/* 자동미루기 Y/N */
+		  FROM MEMBER           /* 회원 테이블 */
+		 WHERE 1=1
+		--   AND DELAY_AUTO = 'Y'
+		   AND ID = #{id}
+		   AND PASSWORD = #{password}
+	</select>
+
+</mapper>
