@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
@@ -18,7 +17,7 @@
 		select * from member where id = #{id} and password = #{password}
 	</select>
   
-  <select id="selectMemberList" resultType="com.todocalendar.domain.MemberVO">
+  <select id="selectMemberList" resultType="com.todocalendar.model.MemberVO">
 		SELECT MEMBER_NO		/* 회원번호 */
 		     , ID 				/* 아이디 */
 		     , PASSWORD		    /* 패스워드 */

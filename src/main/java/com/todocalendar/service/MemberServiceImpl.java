@@ -1,6 +1,8 @@
 
 package com.todocalendar.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +37,8 @@ public class MemberServiceImpl implements MemberService {
 		log.info("loginCheck........." + member);
 		return memberMapper.loginCheck(member);
 	}
-  
-  @Override
+	
+	@Override
 	public List<MemberVO> selectMemberList(MemberVO member) {
 		log.info("Service :: selectMemberList...................");
 		return memberMapper.selectMemberList(member);
