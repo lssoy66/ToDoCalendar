@@ -7,22 +7,21 @@
 
 	<insert id="insertPalette">
 		INSERT INTO PALETTE (
-					          COLOR_CODE      /* 컬러코드(PK) */
-					        , COLOR_NAME      /* 컬러이름 */
-					        , HEX_CODE        /* 헥스코드 */
-					        , MEMBERSHIP      /* 멤버쉽 */
-					        )
-					 VALUES (
-					          (
-								SELECT NVL(MAX(COLOR_CODE), 0) + 1
-					              FROM PALETTE
-					          )
-					        , #{colorName}
-					        , #{hexCode}
-					        , #{membership}
-					     )
+		          COLOR_CODE      /* 컬러코드(PK) */
+		        , COLOR_NAME      /* 컬러이름 */
+		        , HEX_CODE        /* 헥스코드 */
+		        , MEMBERSHIP      /* 멤버쉽 */
+		        )
+		 VALUES (
+		          (
+					 SELECT NVL(MAX(COLOR_CODE), 0) + 1
+		               FROM PALETTE
+		          )
+		        , #{color_name}
+		        , #{hex_code}
+		        , #{membership}
+		 )
 	</insert>
-
 
 	<select id="selectPaletteList" resultType="com.todocalendar.model.PaletteVO">
 		SELECT COLOR_CODE		/* 컬러코드(PK) */

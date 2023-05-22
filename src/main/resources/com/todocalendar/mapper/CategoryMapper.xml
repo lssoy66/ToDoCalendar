@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.todocalendar.mapper.CategoryMapper">
+
+	<insert id="insertCategory">
+		INSERT INTO CATEGORY (
+		         MEMBER_NO        /* 회원번호(FK) */
+		       , CATEGORY_NO      /* 카테고리번호(PK) */
+		       , CATEGORY_NM      /* 카테고리이름 */
+		       , COLOR_CODE       /* 컬러코드(FK) */
+		       )
+		VALUES
+		       (
+		         #{member_no}
+		       , (
+		            SELECT NVL(MAX(CATEGORY_NO), 0) + 1
+		              FROM CATEGORY
+		             WHERE MEMBER_NO = #{member_no}
+		         )
+		       , #{category_nm}
+		       , #{color_code}
+	    )
+	</insert>
+
+	<select id="selectCategoryList" resultType="com.todocalendar.model.CategoryVO">
+		SELECT MEMBER_NO        /* 회원번호(FK) */
+		     , CATEGORY_NO      /* 카테고리번호(PK) */
+		     , CATEGORY_NM      /* 카테고리이름 */
+		     , COLOR_CODE       /* 컬러코드(FK) */
+		  FROM CATEGORY         /* 카테고리 테이블 */
+		 WHERE MEMBER_NO = #{member_no}
+	</select>
+
+</mapper>
