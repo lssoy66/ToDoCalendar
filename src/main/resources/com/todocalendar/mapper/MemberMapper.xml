@@ -2,21 +2,41 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
+
 <mapper namespace="com.todocalendar.mapper.MemberMapper">
 
 	<insert id="insertMember">
-		insert into member(member_no, id, password, name, email, join_date, membership) values (member_no_seq.nextval, #{id}, #{password}, #{name}, #{email}, SYSDATE, #{membership})
+		INSERT INTO MEMBER (
+					         MEMBER_NO      /* 회원번호(PK) */
+					       , ID 			/* 아이디 */
+					       , PASSWORD		/* 패스워드 */
+					       , NAME			/* 이름 */
+					       , EMAIL			/* 이메일 */
+					       , JOIN_DATE		/* 가입일시 */
+					       , MEMBERSHIP		/* 멤버십 */
+				  	 	   )
+				  	values (
+				  			 (
+					            SELECT NVL(MAX(MEMBER_NO), 0) + 1
+					              FROM MEMBER
+					         )
+				  		   , #{id}
+				  		   , #{password}
+				  		   , #{name}
+				  		   , #{email}
+				  		   , SYSDATE
+				  		   , #{membership}
+				  		   )
 	</insert>
-	
+
 	<select id="readById" resultType="com.todocalendar.model.MemberVO">
 		select * from member where id = #{id}
 	</select>
-	
+
 	<select id="loginCheck" resultType="com.todocalendar.model.MemberVO">
 		select * from member where id = #{id} and password = #{password}
 	</select>
-  
+
   <select id="selectMemberList" resultType="com.todocalendar.model.MemberVO">
 		SELECT MEMBER_NO		/* 회원번호 */
 		     , ID 				/* 아이디 */
@@ -27,8 +47,7 @@
 		     , MEMBERSHIP		/* 멤버십 */
 		     , DELAY_AUTO		/* 자동미루기 Y/N */
 		  FROM MEMBER           /* 회원 테이블 */
-		 WHERE 1=1
-		   AND MEMBER_NO = #{member_no}
+		 WHERE MEMBER_NO = #{member_no}
 	</select>
 
 </mapper>

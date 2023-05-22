@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.todocalendar.mapper.PaletteMapper">
+
+	<insert id="insertPalette">
+		INSERT INTO PALETTE (
+					          COLOR_CODE      /* 컬러코드(PK) */
+					        , COLOR_NAME      /* 컬러이름 */
+					        , HEX_CODE        /* 헥스코드 */
+					        , MEMBERSHIP      /* 멤버쉽 */
+					        )
+					 VALUES (
+					          (
+								SELECT NVL(MAX(COLOR_CODE), 0) + 1
+					              FROM PALETTE
+					          )
+					        , #{colorName}
+					        , #{hexCode}
+					        , #{membership}
+					     )
+	</insert>
+
+
+	<select id="selectPaletteList" resultType="com.todocalendar.model.PaletteVO">
+		SELECT COLOR_CODE		/* 컬러코드(PK) */
+		     , COLOR_NAME		/* 컬러이름 */
+		     , HEX_CODE    	    /* 헥스코드 */
+		     , MEMBERSHIP	    /* 멤버쉽 */
+		  FROM PALETTE          /* 팔레트 테이블 */
+		 --WHERE MEMBERSHIP = '1'
+	</select>
+
+</mapper>
