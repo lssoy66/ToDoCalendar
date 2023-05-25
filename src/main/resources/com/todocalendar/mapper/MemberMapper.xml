@@ -10,11 +10,16 @@
 	</insert>
 	
 	<select id="readById" resultType="com.todocalendar.model.MemberVO">
-		select * from member where id = #{id}
+		SELECT *
+		  FROM MEMBER
+		WHERE ID = #{id}
 	</select>
 	
 	<select id="loginCheck" resultType="com.todocalendar.model.MemberVO">
-		select * from member where id = #{id} and password = #{password}
+		SELECT *
+		  FROM MEMBER
+		WHERE ID = #{id}
+		  AND PASSWORD = #{password}
 	</select>
   
   <select id="selectMemberList" resultType="com.todocalendar.model.MemberVO">
@@ -27,7 +32,6 @@
 		     , MEMBERSHIP		/* 멤버십 */
 		     , DELAY_AUTO		/* 자동미루기 Y/N */
 		  FROM MEMBER           /* 회원 테이블 */
-		 WHERE 1=1
 		   AND MEMBER_NO = #{member_no}
 	</select>
 
