@@ -6,13 +6,35 @@
 <mapper namespace="com.todocalendar.mapper.MemberMapper">
 
 	<insert id="insertMember">
-		insert into member(member_no, id, password, name, email, join_date, membership) values (member_no_seq.nextval, #{id}, #{password}, #{name}, #{email}, SYSDATE, #{membership})
+		INSERT INTO MEMBER(
+					MEMBER_NO
+					, ID
+					, PASSWORD
+					, NAME
+					, EMAIL
+					, JOIN_DATE
+					, MEMBERSHIP
+					, DELAY_AUTO
+					)
+		VALUES (
+					(
+						SELECT NVL(MAX(MEMBER_NO), 0) + 1
+						FROM MEMBER
+					)
+					, #{id}
+					, #{password}
+					, #{name}
+					, #{email}
+					, SYSDATE
+					, 1
+					, 'N'
+				)
 	</insert>
 	
 	<select id="readById" resultType="com.todocalendar.model.MemberVO">
 		SELECT *
 		  FROM MEMBER
-		WHERE ID = #{id}
+		 WHERE ID = #{id}
 	</select>
 	
 	<select id="loginCheck" resultType="com.todocalendar.model.MemberVO">

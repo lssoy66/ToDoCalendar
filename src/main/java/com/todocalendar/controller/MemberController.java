@@ -8,8 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.todocalendar.model.MemberVO;
 import com.todocalendar.service.MemberService;
@@ -50,24 +53,33 @@ public class MemberController {
 	//로그아웃
 	@RequestMapping("/logout")
 	public String logout(HttpServletRequest request) {
-		log.info("logout.........");
 		HttpSession session = request.getSession();
 		session.invalidate();
-		return "/login";
+		log.info("로그아웃");
+		return "/pages/login";
 	}
 	
-	//회원가입
+	//회원가입 페이지 이동
 	@GetMapping("/sign_up")
 	public void signUpPage() {
 		log.info("sign up.........");
 	}
 	
+	//회원가입
+	@PostMapping("/signUpMember")
+	public String signUp(MemberVO member) {
+		memberService.insertMember(member);
+		log.info("회원가입 성공 id : " + member.getId());
+		return "redirect:/pages/sign_up_success/" + member.getId();
+	}
+	
 	//회원가입 성공 후 성공 페이지 이동
-	@RequestMapping(value = "sign_up_success/{id}")
-	public String signUpSuccess(String id, Model model) {
+	@RequestMapping("/sign_up_success/{id}")
+	public String signUpSuccess(@PathVariable String id, Model model) {
 		MemberVO member = memberService.readById(id);
+		log.info("회원 정보 : " + member);
 		model.addAttribute("member", member);
-		return "/sign_up_success";
+		return "/pages/sign_up_success";
 	}
 	
 }
