@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.todocalendar.mapper.ParticipateMapper">
+
+	<insert id="insertParticipate">
+		INSERT INTO PARTICIPATE (
+		        SCHEDULE_NO     /* 일정번호(FK) */
+		      , MEMBER_NO       /* 회원번호(FK) */
+		      , PRTCP_DATE      /* 참여일 */
+		     )
+		VALUES
+		     (
+		        #{schedule_no}
+		      , #{member_no}
+		      , #{prtcp_date}
+		     )
+	</insert>
+
+	<select id="selectParticipateList" resultType="com.todocalendar.model.ParticipateVO">
+		SELECT SCHEDULE_NO     /* 일정번호(FK) */
+		     , MEMBER_NO       /* 회원번호(FK) */
+		     , PRTCP_DATE      /* 참여일 */
+		  FROM PARTICIPATE	   /* 참여회원 테이블 */
+		 WHERE SCHEDULE_NO = #{schedule_no}
+		   AND MEMBER_NO   = #{member_no}
+	</select>
+
+</mapper>

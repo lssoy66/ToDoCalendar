@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.todocalendar.mapper.RepeatMapper">
+
+	<insert id="insertRepeat">
+		<!-- INSERT INTO PARTICIPATE (
+		        SCHEDULE_NO     /* 일정번호(FK) */
+		      , MEMBER_NO       /* 회원번호(FK) */
+		      , PRTCP_DATE      /* 참여일 */
+		     )
+		VALUES
+		     (
+		        #{schedule_no}
+		      , #{member_no}
+		      , #{prtcp_date}
+		     ) -->
+		INSERT INTO REPEAT (
+		        SCHEDULE_NO         /* 일정번호(FK) */
+		      , SCHEDULE_DETAIL_NO  /* 일정상세번호(PK) */
+		      , START_DATE          /* 시작날짜 */
+		      , END_DATE            /* 종료날짜 */
+		      , RE_DIVISION         /* 반복구분 */
+		      , RE_DATE             /* 반복날 */
+		     )
+		VALUES
+		     (
+		        #{schedule_no}
+		      , (
+		            SELECT NVL(MAX(SCHEDULE_DETAIL_NO), 0) + 1
+		              FROM REPEAT
+		             WHERE SCHEDULE_NO = #{schedule_no}
+		        )
+		      , #{start_date}
+		      , #{end_date}
+		      , #{re_division}
+		      , #{re_date}
+		     )
+	</insert>
+
+	<select id="selectRepeatList" resultType="com.todocalendar.model.RepeatVO">
+		SELECT SCHEDULE_NO         /* 일정번호(FK) */
+		     , SCHEDULE_DETAIL_NO  /* 일정상세번호(PK) */
+		     , START_DATE          /* 시작날짜 */
+		     , END_DATE            /* 종료날짜 */
+		     , RE_DIVISION         /* 반복구분 */
+		     , RE_DATE             /* 반복날 */
+		  FROM REPEAT			   /* 반복 테이블 */
+		 WHERE SCHEDULE_NO = #{schedule_no}
+	</select>
+
+</mapper>
