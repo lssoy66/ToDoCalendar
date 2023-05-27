@@ -16,7 +16,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.todocalendar.domain.TestVO;
 import com.todocalendar.mapper.TestMapper;
 import com.todocalendar.model.MemberVO;
+import com.todocalendar.model.ScheduleVO;
 import com.todocalendar.service.MemberService;
+import com.todocalendar.service.ScheduleService;
 import com.todocalendar.service.TestMapperService;
 
 import lombok.Setter;
@@ -33,17 +35,32 @@ public class MemberMapperTest {
 	@Setter(onMethod_ = @Autowired)
 	private MemberService memberService;
 
+	@Setter(onMethod_ = @Autowired)
+	private ScheduleService scheduleService;
+
+	/*
 	@Test
 	public void testMemberSelect() {
 		MemberVO member = new MemberVO();
-
-//		member.setMemberNo(1);		// 카멜 표기법 사용 시(파라미터는 정상 인식함)
 		member.setMember_no(1);
-
 		List<MemberVO> memberList = memberService.selectMemberList(member);
 
 		if(memberList != null) {
 			log.info("..................................................jUnit Test :: Member Select Success!!");
+		}
+
+	}
+	*/
+
+	@Test
+	public void testScheduleSelect() {
+		ScheduleVO schedule = new ScheduleVO();
+		schedule.setMember_no(1);
+		schedule.setCategory_no(1);
+		List<ScheduleVO> scheduleList = scheduleService.selectScheduleList(schedule);
+
+		if(scheduleList != null) {
+			log.info("..................................................jUnit Test :: Schedule Select Success!!");
 		}
 
 	}
