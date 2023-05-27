@@ -10,6 +10,7 @@ import com.todocalendar.mapper.MemberMapper;
 import com.todocalendar.model.MemberVO;
 
 import lombok.AllArgsConstructor;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
 @Log4j
@@ -18,7 +19,8 @@ import lombok.extern.log4j.Log4j;
 public class MemberServiceImpl implements MemberService {
 	
 	@Autowired
-	private MemberMapper memberMapper;
+//	@Setter(onMethod = @Autowired)
+	MemberMapper memberMapper;
 	
 	@Override
 	public void insertMember(MemberVO member) {

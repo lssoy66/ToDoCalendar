@@ -41,28 +41,30 @@
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
                     <div class="panel-body">
-                        <form role="form">
+                        <form role="form" name="loginForm" action="../pages/loginCheck" method="post">
                             <fieldset>
-                            	이메일
+                            	ID
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="이메일을 입력해주세요." name="email" type="email" autofocus>
+                                    <input class="form-control" placeholder="ID를 입력해주세요." name="id" type="text" autofocus>
                                 </div>
                                 	비밀번호
                                 <div class="form-group">
                                     <input class="form-control" placeholder="비밀번호를 입력해주세요." name="password" type="password" value="">
                                 </div>
+                                <!--  
                                 <div class="checkbox">
                                     <label>
                                         <input name="remember" type="checkbox" value="Remember Me">기억하기
                                     </label>
                                 </div>
+                                -->
                                 <div style="text-align: right;">
                                 	<label>
                                 		<a href="#">비밀번호를 잊어버리셨나요?</a>
                                 	</label>
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <a href="../../controller" class="btn btn-lg btn-success btn-block">로그인</a>
+                                <input type="submit" value="로그인" class="btn btn-lg btn-success btn-block">
                             </fieldset>
                         </form>
                         

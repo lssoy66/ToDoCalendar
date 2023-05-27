@@ -6,35 +6,42 @@
 <mapper namespace="com.todocalendar.mapper.MemberMapper">
 
 	<insert id="insertMember">
-		INSERT INTO MEMBER (
-		         MEMBER_NO      /* 회원번호(PK) */
-		       , ID 			/* 아이디 */
-		       , PASSWORD		/* 패스워드 */
-		       , NAME			/* 이름 */
-		       , EMAIL			/* 이메일 */
-		       , JOIN_DATE		/* 가입일시 */
-		       , MEMBERSHIP		/* 멤버십 */
-	  	 	   )
-	  	VALUES (
-	  			 (
-		            SELECT NVL(MAX(MEMBER_NO), 0) + 1
-		              FROM MEMBER
-		         )
-	  		   , #{id}
-	  		   , #{password}
-	  		   , #{name}
-	  		   , #{email}
-	  		   , SYSDATE
-	  		   , #{membership}
-		)
+		INSERT INTO MEMBER(
+					MEMBER_NO
+					, ID
+					, PASSWORD
+					, NAME
+					, EMAIL
+					, JOIN_DATE
+					, MEMBERSHIP
+					, DELAY_AUTO
+					)
+		VALUES (
+					(
+						SELECT NVL(MAX(MEMBER_NO), 0) + 1
+						FROM MEMBER
+					)
+					, #{id}
+					, #{password}
+					, #{name}
+					, #{email}
+					, SYSDATE
+					, 1
+					, 'N'
+				)
 	</insert>
 
 	<select id="readById" resultType="com.todocalendar.model.MemberVO">
-		select * from member where id = #{id}
+		SELECT *
+		  FROM MEMBER
+		 WHERE ID = #{id}
 	</select>
 
 	<select id="loginCheck" resultType="com.todocalendar.model.MemberVO">
-		select * from member where id = #{id} and password = #{password}
+		SELECT *
+		  FROM MEMBER
+		WHERE ID = #{id}
+		  AND PASSWORD = #{password}
 	</select>
 
 	<select id="selectMemberList" resultType="com.todocalendar.model.MemberVO">
