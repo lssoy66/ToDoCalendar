@@ -41,6 +41,24 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
+	public void updateMember(MemberVO member) {
+		log.info("updateMember........." + member);
+		memberMapper.updateMember(member);
+	}
+	
+	@Override
+	public void withdrawMember(String id) {
+		log.info("withdrawMember........." + id);
+		memberMapper.withdrawMember(id);
+	}
+	
+	@Override
+	public MemberVO memberCheck(MemberVO member) {
+		log.info("MemberCheck........." + member);
+		return memberMapper.memberCheck(member);
+	}
+	
+	@Override
 	public List<MemberVO> selectMemberList(MemberVO member) {
 		log.info("Service :: selectMemberList...................");
 		return memberMapper.selectMemberList(member);

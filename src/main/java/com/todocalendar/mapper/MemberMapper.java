@@ -6,9 +6,14 @@ import com.todocalendar.model.MemberVO;
 
 public interface MemberMapper {
 	
-	public void insertMember(MemberVO member); //회원가입
-	public MemberVO readById(String id); //회원정보 가져오기
-	public MemberVO loginCheck(MemberVO member); //로그인
+	public void insertMember(MemberVO member); 		//회원가입
+	public MemberVO readById(String id); 			//id로 회원정보 가져오기
+	public MemberVO loginCheck(MemberVO member); 	//로그인
+	
+	public void updateMember(MemberVO member); 		//회원정보 수정
+	public void withdrawMember(String id); 			//회원 탈퇴
+	public MemberVO memberCheck(MemberVO member);	//회원정보 확인
+	
 	public List<MemberVO> selectMemberList(MemberVO member);
 	
 }

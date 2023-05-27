@@ -82,4 +82,9 @@ public class MemberController {
 		return "/pages/sign_up_success";
 	}
 	
+	//마이페이지
+	@RequestMapping("/mypage")
+	public void mypage() {
+		log.info("mypage.........");
+	}
 }

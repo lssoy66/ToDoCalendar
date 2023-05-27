@@ -262,7 +262,7 @@
 				</a>
 					<ul class="dropdown-menu dropdown-user">
 						<li><a href="#"><i class="fa fa-user fa-fw"></i> 프로필</a></li>
-						<li><a href="#"><i class="fa fa-gear fa-fw"></i> 설정</a></li>
+						<li><a href="pages/mypage"><i class="fa fa-gear fa-fw"></i> 설정</a></li>
 						<li class="divider"></li>
 						<li><a href="pages/logout"><i class="fa fa-sign-out fa-fw"></i>
 								로그아웃</a></li>
