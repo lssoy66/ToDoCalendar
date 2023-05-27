@@ -44,7 +44,7 @@
                         <h3 class="panel-title">Please Sign Up</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form">
+                        <form role="form" name="signUpForm" action="signUpMember" method="post">
                             <fieldset>
                             아이디
                             	<div class="form-group">
@@ -68,7 +68,7 @@
                                     </label>
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <a href="index.html" class="btn btn-lg btn-success btn-block">회원가입</a>
+                                <input type="submit" value="회원가입" class="btn btn-lg btn-success btn-block">
                             </fieldset>
                         </form>
                     </div>
