@@ -59,6 +59,12 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
+	public void changeDelayAuto(String id, String delay_auto) {
+		log.info("changeDelayAuto........." + id + ", " + delay_auto);
+		memberMapper.changeDelayAuto(id, delay_auto);
+	}
+	
+	@Override
 	public List<MemberVO> selectMemberList(MemberVO member) {
 		log.info("Service :: selectMemberList...................");
 		return memberMapper.selectMemberList(member);

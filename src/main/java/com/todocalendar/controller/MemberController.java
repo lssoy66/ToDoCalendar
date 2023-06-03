@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +14,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.todocalendar.mapper.MemberMapper;
 import com.todocalendar.model.MemberVO;
 import com.todocalendar.service.MemberService;
 
@@ -87,4 +91,19 @@ public class MemberController {
 	public void mypage() {
 		log.info("mypage.........");
 	}
+	
+	//자동미루기 on/off 전환 Ajax
+	@PostMapping("/changeDelayAuto")
+	@ResponseBody
+	public ResponseEntity<MemberVO> changeDelayAuto(String delay_auto, HttpSession session) {
+		log.info("delay_auto : " + delay_auto);
+		
+		MemberVO member = (MemberVO)session.getAttribute("member");
+		String id = member.getId();
+		log.info("member id : " + id);
+		memberService.changeDelayAuto(id, delay_auto);
+		
+		return new ResponseEntity<>(memberService.readById(id), HttpStatus.OK);
+	}
+	
 }

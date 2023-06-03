@@ -47,7 +47,7 @@
 	<update id="updateMember">
 		UPDATE MEMBER
 		   SET PASSWORD = #{password}
-		   	   , DELAY_AUTO = #{dealy_auto}
+		   	   , DELAY_AUTO = #{delay_auto}
 		 WHERE ID = #{id}
 	</update>
 	
@@ -63,6 +63,12 @@
 		 WHERE ID = #{id}
 		   AND PASSWORD = #{password}
 	</select>
+	
+	<update id="changeDelayAuto">
+		UPDATE MEMBER
+		   SET DELAY_AUTO = #{delay_auto}
+		 WHERE ID = #{id}
+	</update>
   
   <select id="selectMemberList" resultType="com.todocalendar.model.MemberVO">
 		SELECT MEMBER_NO		/* 회원번호 */

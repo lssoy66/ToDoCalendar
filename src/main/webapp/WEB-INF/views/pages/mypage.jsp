@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="kr">
 
@@ -10,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <title>To Do Calendar</title>
 
@@ -71,7 +73,7 @@
                                 </div>
 					                                    자동 미루기
                                 <div class="form-group">
-	                                <input checked data-toggle="toggle" name="delay_auto" type="checkbox">
+	                                <input data-toggle="toggle" name="delayAuto" id="delayAutoToggle" type="checkbox">
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
                                 <input type="submit" value="회원정보수정" class="btn btn-lg btn-success btn-block">
@@ -83,7 +85,79 @@
         </div>
     </div>
 
-    <!-- jQuery -->
+	<!--  
+	<script type="text/javascript">
+	$(document).ready(function() {
+		var data = '<c:out value="${member.delay_auto}" />';
+		if(data == 'Y') {
+			$("#delayAutoToggle").bootstrapToggle('on')
+		} else {
+			$("#delayAutoToggle").bootstrapToggle('off')				
+		}
+	});
+	</script>
+	-->
+
+	<!-- 자동미루기 on/off Ajax -->
+	<script type="text/javascript">
+	var delayAutoVal = '<c:out value="${member.delay_auto}" />';
+	console.log(delayAutoVal);
+	
+	$(document).on("click", "#delayAutoToggle", function() {
+		//on일때
+		var data = $("#delayAutoToggle").is(':checked');
+			console.log(data);
+			var delayAuto;
+			if(data == true ) {
+				$("#delayAutoToggle").change(function(e) {
+					delayAuto = 'N';
+					//Ajax로 전송
+					$.ajax({
+						url : './changeDelayAuto',
+						data : {
+							delay_auto : delayAuto
+						},
+						type : 'POST',
+						dataType : 'json',
+						success : function(result) {
+							console.log("result : " + result);
+							showResult(result);
+						}
+					}); //End Ajax
+				});
+			}
+	});
+	</script>
+	
+	<script type="text/javascript">
+	$(document).on("click", "#delayAutoToggle", function() {
+		//off일때
+		var data = $("#delayAutoToggle").is(':checked');
+			console.log(data);
+			var delayAuto;
+			if(data == false ) {
+				$("#delayAutoToggle").change(function(e) {
+					delayAuto = 'Y';
+					//Ajax로 전송
+					$.ajax({
+						url : './changeDelayAuto',
+						data : {
+							delay_auto : delayAuto
+						},
+						type : 'POST',
+						dataType : 'json',
+						success : function(result) {
+							console.log("result : " + result);
+							showResult(result);
+						}
+					}); //End Ajax
+				});
+			}
+	});
+	
+	</script>
+ 	
+	<!-- jQuery -->
     <script src="../resources/vendor/jquery/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
@@ -97,7 +171,7 @@
     
     <!-- Bootstrap Toggle -->
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-
+    
 </body>
 
 </html>
