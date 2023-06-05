@@ -92,10 +92,23 @@ public class MemberController {
 		log.info("mypage.........");
 	}
 	
-	//자동미루기 on/off 전환 Ajax
-	@PostMapping("/changeDelayAuto")
+	//자동미루기 on Ajax
+	@PostMapping("/DelayAutoOn")
 	@ResponseBody
-	public ResponseEntity<MemberVO> changeDelayAuto(String delay_auto, HttpSession session) {
+	public ResponseEntity<MemberVO> onDelayAuto(String delay_auto, HttpSession session) {
+		log.info("delay_auto : " + delay_auto);
+		
+		MemberVO member = (MemberVO)session.getAttribute("member");
+		String id = member.getId();
+		log.info("member id : " + id);
+		memberService.changeDelayAuto(id, delay_auto);
+		
+		return new ResponseEntity<>(memberService.readById(id), HttpStatus.OK);
+	}
+	
+	@PostMapping("/DelayAutoOff")
+	@ResponseBody
+	public ResponseEntity<MemberVO> offDelayAuto(String delay_auto, HttpSession session) {
 		log.info("delay_auto : " + delay_auto);
 		
 		MemberVO member = (MemberVO)session.getAttribute("member");

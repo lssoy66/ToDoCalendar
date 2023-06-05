@@ -72,10 +72,18 @@
                                     <input class="form-control" placeholder="${member.membership }" name="membership" type="text" readonly="readonly">
                                 </div>
 					                                    자동 미루기
-                                <div class="form-group">
-	                                <input data-toggle="toggle" name="delayAuto" id="delayAutoToggle" type="checkbox">
-                                </div>
-                                <!-- Change this to a button or input when using this as a form -->
+								<div class="form-group" id="changeToggleArea">
+									<c:choose>
+										<c:when test="${member.delay_auto eq 'Y' }">
+											<input data-toggle="toggle" name="delayAutoY" id="delayAutoY" type="checkbox" checked="checked">
+										</c:when>
+										<c:otherwise>
+											<input data-toggle="toggle" name="delayAutoN" id="delayAutoN" type="checkbox">
+										</c:otherwise>
+									</c:choose>
+								</div>
+								<!-- Change this to a button or input when using this as a form -->
+                                
                                 <input type="submit" value="회원정보수정" class="btn btn-lg btn-success btn-block">
                             </fieldset>
                         </form>
@@ -85,78 +93,70 @@
         </div>
     </div>
 
-	<!--  
+	<!-- 자동미루기 on Ajax -->
 	<script type="text/javascript">
-	$(document).ready(function() {
-		var data = '<c:out value="${member.delay_auto}" />';
-		if(data == 'Y') {
-			$("#delayAutoToggle").bootstrapToggle('on')
-		} else {
-			$("#delayAutoToggle").bootstrapToggle('off')				
-		}
-	});
-	</script>
-	-->
-
-	<!-- 자동미루기 on/off Ajax -->
-	<script type="text/javascript">
-	var delayAutoVal = '<c:out value="${member.delay_auto}" />';
-	console.log(delayAutoVal);
-	
-	$(document).on("click", "#delayAutoToggle", function() {
-		//on일때
-		var data = $("#delayAutoToggle").is(':checked');
-			console.log(data);
-			var delayAuto;
-			if(data == true ) {
-				$("#delayAutoToggle").change(function(e) {
-					delayAuto = 'N';
-					//Ajax로 전송
-					$.ajax({
-						url : './changeDelayAuto',
-						data : {
-							delay_auto : delayAuto
-						},
-						type : 'POST',
-						dataType : 'json',
-						success : function(result) {
-							console.log("result : " + result);
-							showResult(result);
-						}
-					}); //End Ajax
-				});
+	//$(document).ready(function() {
+		$(document).on("change", "input[name='delayAutoY']", function(){
+			
+		//$("#delayAutoY").change(function() {
+			
+			function changeToggle(result) {
+				var str = "<input data-toggle='toggle' id='delayAutoN' type='checkbox'>";
+				
+				$("#delayAutoY").removeAttr("checked");
+				$("#delayAutoY").attr("id", "delayAutoN");
 			}
-	});
+			
+			//Ajax로 전송
+			$.ajax({
+				url : './DelayAutoOn',
+				data : {
+					delay_auto : 'N'
+				},
+				type : 'POST',
+				dataType : 'json',
+				success : function(result) {
+					alert(result.message);
+					changeToggle(result);
+				}
+			}); //End Ajax
+		//});
+		})
+	//});
 	</script>
 	
+	<!-- 자동미루기 off Ajax -->
 	<script type="text/javascript">
-	$(document).on("click", "#delayAutoToggle", function() {
-		//off일때
-		var data = $("#delayAutoToggle").is(':checked');
-			console.log(data);
-			var delayAuto;
-			if(data == false ) {
-				$("#delayAutoToggle").change(function(e) {
-					delayAuto = 'Y';
-					//Ajax로 전송
-					$.ajax({
-						url : './changeDelayAuto',
-						data : {
-							delay_auto : delayAuto
-						},
-						type : 'POST',
-						dataType : 'json',
-						success : function(result) {
-							console.log("result : " + result);
-							showResult(result);
-						}
-					}); //End Ajax
-				});
+	//$(document).ready(function() {
+	$(document).on("change", "input[name='delayAutoN']", function(){
+		
+	//$("#delayAutoY").change(function() {
+			
+			function changeToggle(result) {
+				var str = "<input data-toggle='toggle' id='delayAutoY' type='checkbox' checked='checked'>";
+				
+				$("#delayAutoN").attr("id", "delayAutoY");
+				$("#delayAutoY").attr("checked", "checked");
 			}
-	});
-	
+			
+			//Ajax로 전송
+			$.ajax({
+				url : './DelayAutoOff',
+				data : {
+					delay_auto : 'Y'
+				},
+				type : 'POST',
+				dataType : 'json',
+				success : function(result) {
+					alert(result.message);
+					changeToggle(result);
+				}
+			}); //End Ajax
+			//});
+			})
+		//});
 	</script>
- 	
+	
 	<!-- jQuery -->
     <script src="../resources/vendor/jquery/jquery.min.js"></script>
 
