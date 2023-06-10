@@ -43,8 +43,34 @@
 		WHERE ID = #{id}
 		  AND PASSWORD = #{password}
 	</select>
-
-	<select id="selectMemberList" resultType="com.todocalendar.model.MemberVO">
+	
+	<update id="updateMember">
+		UPDATE MEMBER
+		   SET PASSWORD = #{password}
+		   	   , DELAY_AUTO = #{delay_auto}
+		 WHERE ID = #{id}
+	</update>
+	
+	<delete id="withdrawMember">
+		DELETE 
+		  FROM MEMBER
+		 WHERE ID = #{id}
+	</delete>
+	
+	<select id="memberCheck" resultType="com.todocalendar.model.MemberVO">
+		SELECT *
+		  FROM MEMBER
+		 WHERE ID = #{id}
+		   AND PASSWORD = #{password}
+	</select>
+	
+	<update id="changeDelayAuto">
+		UPDATE MEMBER
+		   SET DELAY_AUTO = #{delay_auto}
+		 WHERE ID = #{id}
+	</update>
+  
+  <select id="selectMemberList" resultType="com.todocalendar.model.MemberVO">
 		SELECT MEMBER_NO		/* 회원번호 */
 		     , ID 				/* 아이디 */
 		     , PASSWORD		    /* 패스워드 */

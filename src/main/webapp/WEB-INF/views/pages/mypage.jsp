@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="kr">
 
@@ -10,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <title>To Do Calendar</title>
 
@@ -31,6 +33,9 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
+    <!-- Bootstrap Toggle -->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
 </head>
 
@@ -41,34 +46,45 @@
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">회원가입</h3>
+                        <h3 class="panel-title">회원정보</h3>
                     </div>
                     <div class="panel-body">
                         <form role="form" name="signUpForm" action="signUpMember" method="post">
                             <fieldset>
                             	아이디
                             	<div class="form-group">
-                                    <input class="form-control" placeholder="ID를 입력해주세요" name="id" type="text" autofocus>
+                                    <input class="form-control" placeholder="${member.id }" name="id" type="text" readonly="readonly">
                                 </div>
                             	이름
                             	<div class="form-group">
-                                    <input class="form-control" placeholder="이름을 입력해주세요" name="name" type="text" autofocus>
+                                    <input class="form-control" placeholder="${member.name }" name="name" type="text" readonly="readonly">
                                 </div>
                                 	이메일
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="이메일을 입력해주세요." name="email" type="email" autofocus>
+                                    <input class="form-control" placeholder="${member.email }" name="email" type="email" readonly="readonly">
                                 </div>
                                 	비밀번호
                                 <div class="form-group">
                                     <input class="form-control" placeholder="비밀번호를 입력해주세요." name="password" type="password" value="">
                                 </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">회원가입과 동시에 개인정보취급방침및 이용약관에 동의하게 됩니다.
-                                    </label>
+                                	멤버쉽
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="${member.membership }" name="membership" type="text" readonly="readonly">
                                 </div>
-                                <!-- Change this to a button or input when using this as a form -->
-                                <input type="submit" value="회원가입" class="btn btn-lg btn-success btn-block">
+					                                    자동 미루기
+								<div class="form-group" id="changeToggleArea">
+									<c:choose>
+										<c:when test="${member.delay_auto eq 'Y' }">
+											<input data-toggle="toggle" id="delayAutoY" type="checkbox" checked="checked">
+										</c:when>
+										<c:otherwise>
+											<input data-toggle="toggle" id="delayAutoN" type="checkbox">
+										</c:otherwise>
+									</c:choose>
+								</div>
+								<!-- Change this to a button or input when using this as a form -->
+                                
+                                <input type="submit" value="회원정보수정" class="btn btn-lg btn-success btn-block">
                             </fieldset>
                         </form>
                     </div>
@@ -76,8 +92,50 @@
             </div>
         </div>
     </div>
+    
+    <!-- 자동미루기 -->
+    <script type="text/javascript">
+    $(document).ready(function() {
+    	$(document).on("change", "#delayAutoY", function(){
+			$("#delayAutoY").removeAttr("checked");
+			$("#delayAutoY").attr("id", "delayAutoN");
+			
+			//Ajax로 전송
+			$.ajax({
+				url : './DelayAutoOn',
+				data : {
+					delay_auto : 'N'
+				},
+				type : 'POST',
+				dataType : 'json',
+				success : function(result) {
+					alert(result.message);
+				}
+			}); //End Ajax
+		});
+    	
+    	$(document).on("change", "#delayAutoN", function(){
+			$("#delayAutoN").attr("checked", "checked");
+			$("#delayAutoN").attr("id", "delayAutoY");
+			
+			//Ajax로 전송
+			$.ajax({
+				url : './DelayAutoOff',
+				data : {
+					delay_auto : 'Y'
+				},
+				type : 'POST',
+				dataType : 'json',
+				success : function(result) {
+					alert(result.message);
+				}
+			}); //End Ajax
+		});
+    });
+    
+    </script>
 
-    <!-- jQuery -->
+	<!-- jQuery -->
     <script src="../resources/vendor/jquery/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
@@ -88,7 +146,10 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="../resources/dist/js/sb-admin-2.js"></script>
-
+    
+    <!-- Bootstrap Toggle -->
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    
 </body>
 
 </html>
