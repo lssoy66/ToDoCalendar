@@ -75,10 +75,10 @@
 								<div class="form-group" id="changeToggleArea">
 									<c:choose>
 										<c:when test="${member.delay_auto eq 'Y' }">
-											<input data-toggle="toggle" name="delayAutoY" id="delayAutoY" type="checkbox" checked="checked">
+											<input data-toggle="toggle" id="delayAutoY" type="checkbox" checked="checked">
 										</c:when>
 										<c:otherwise>
-											<input data-toggle="toggle" name="delayAutoN" id="delayAutoN" type="checkbox">
+											<input data-toggle="toggle" id="delayAutoN" type="checkbox">
 										</c:otherwise>
 									</c:choose>
 								</div>
@@ -92,20 +92,13 @@
             </div>
         </div>
     </div>
-
-	<!-- 자동미루기 on Ajax -->
-	<script type="text/javascript">
-	//$(document).ready(function() {
-		$(document).on("change", "input[name='delayAutoY']", function(){
-			
-		//$("#delayAutoY").change(function() {
-			
-			function changeToggle(result) {
-				var str = "<input data-toggle='toggle' id='delayAutoN' type='checkbox'>";
-				
-				$("#delayAutoY").removeAttr("checked");
-				$("#delayAutoY").attr("id", "delayAutoN");
-			}
+    
+    <!-- 자동미루기 -->
+    <script type="text/javascript">
+    $(document).ready(function() {
+    	$(document).on("change", "#delayAutoY", function(){
+			$("#delayAutoY").removeAttr("checked");
+			$("#delayAutoY").attr("id", "delayAutoN");
 			
 			//Ajax로 전송
 			$.ajax({
@@ -117,27 +110,13 @@
 				dataType : 'json',
 				success : function(result) {
 					alert(result.message);
-					changeToggle(result);
 				}
 			}); //End Ajax
-		//});
-		})
-	//});
-	</script>
-	
-	<!-- 자동미루기 off Ajax -->
-	<script type="text/javascript">
-	//$(document).ready(function() {
-	$(document).on("change", "input[name='delayAutoN']", function(){
-		
-	//$("#delayAutoY").change(function() {
-			
-			function changeToggle(result) {
-				var str = "<input data-toggle='toggle' id='delayAutoY' type='checkbox' checked='checked'>";
-				
-				$("#delayAutoN").attr("id", "delayAutoY");
-				$("#delayAutoY").attr("checked", "checked");
-			}
+		});
+    	
+    	$(document).on("change", "#delayAutoN", function(){
+			$("#delayAutoN").attr("checked", "checked");
+			$("#delayAutoN").attr("id", "delayAutoY");
 			
 			//Ajax로 전송
 			$.ajax({
@@ -149,14 +128,13 @@
 				dataType : 'json',
 				success : function(result) {
 					alert(result.message);
-					changeToggle(result);
 				}
 			}); //End Ajax
-			//});
-			})
-		//});
-	</script>
-	
+		});
+    });
+    
+    </script>
+
 	<!-- jQuery -->
     <script src="../resources/vendor/jquery/jquery.min.js"></script>
 
