@@ -114,21 +114,64 @@ public class MemberController {
 		return new ResponseEntity<>(memberService.readById(id), HttpStatus.OK);
 	}
 	
-	//회원정보 수정
-	@PostMapping("/updateMember")
-	public String updateMember(Model model, HttpServletRequest request) {
-		
-		request.setAttribute("msg", "회원정보가 수정되었습니다.");
-		request.setAttribute("url", "./mypage");
-		
-		return "";
+	//비밀번호 변경 1 페이지 진입
+	@RequestMapping(value = "/password1", method = RequestMethod.GET)
+	public String updatePassword1() {
+		log.info("password check 1.........");
+		return "/pages/password1";
 	}
 	
-	//비밀번호 변경
-	@RequestMapping(value = "/updatePW", method = RequestMethod.GET)
-	public String updatePassword() {
-		log.info("update password.........");
-		return "/pages/update_pw";
+	//비밀번호 변경 2 기존 비밀번호 입력
+	@PostMapping("/password2")
+	public String updatePassword2(MemberVO member) {
+		log.info("password check 2........." + member);
+		//id에 해당하는 password가 일치하면 memberInfo에 담긴다.
+		MemberVO memberInfo = memberService.memberCheck(member);
+		log.info(memberInfo);
+		if(memberInfo != null) {
+			return "pages/password3";
+		}
+		return "redirect:/pages/password6";
 	}
+	
+	//비밀번호 변경 3 비밀번호가 일치하지 않을때의 alert 페이지로 이동
+	@PostMapping("/password3")
+	public String updatePassword3() {
+		log.info("password check 3.........");
+		return "redirect:/pages/password6";
+	}
+	
+	//비밀번호 변경 4 비밀번호가 일치할때의 alert 페이지로 이동
+	@PostMapping("/password4")
+	public String updatePassword4(MemberVO member) {
+		log.info("password check 4.........");
+		
+		memberService.updatePassword(member);
+		
+		return "redirect:/pages/password5";
+	}
+	
+	//비밀번호 변경 5 
+	@RequestMapping(value = "/password5", method = RequestMethod.GET, produces = "application/text; charset = UTF-8")
+	public String updatePassword5(HttpServletRequest request) throws Exception {
+		log.info("password check 5.........");
+		
+		request.setAttribute("msg", "비밀번호가 변경되었습니다.");
+		request.setAttribute("url", "./mypage");
+		
+		return "alert";
+	}
+	
+	//비밀번호 변경 6 3에서 비밀번호가 일치하지 않을시 alert페이지에서 alert를 띄운 후 다시 비밀번호 입력 페이지로 이동
+	@RequestMapping(value = "/password6", method = RequestMethod.GET, produces = "application/text; charset = UTF-8")
+	public String updatePassword6(HttpServletRequest request) throws Exception {
+		log.info("password check 6.........");
+		
+		request.setAttribute("msg", "비밀번호가 일치하지 않습니다.");
+		request.setAttribute("url", "./password1");
+		
+		return "alert";
+	}
+	
 	
 }

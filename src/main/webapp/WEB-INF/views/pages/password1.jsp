@@ -88,13 +88,14 @@
                         <h3 class="panel-title">비밀번호 변경</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form" name="signUpForm" action="signUpMember" method="post">
+                        <form role="form" name="pwCheckForm" action="./password2" method="post">
                             <fieldset>
                             	비밀번호 확인
                             	<div class="form-group">
                             		<p>
-                            			<input class="form-control" name="password" type="password">
-                            			<button type="button" class="btn btn-primary">확인</button>
+                            			<input name="id" type="hidden" value="${member.id }">
+                            			<input class="form-control" name="password" type="password" placeholder="비밀번호 입력">
+                            			<input type="submit" value="확인" class="btn btn-primary">
                             		</p>
                                 </div>
                             </fieldset>
