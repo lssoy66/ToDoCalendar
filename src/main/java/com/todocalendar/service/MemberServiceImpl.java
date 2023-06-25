@@ -41,9 +41,9 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public void updateMember(MemberVO member) {
+	public void updatePassword(MemberVO member) {
 		log.info("updateMember........." + member);
-		memberMapper.updateMember(member);
+		memberMapper.updatePassword(member);
 	}
 	
 	@Override
