@@ -49,5 +49,31 @@
 		 WHERE MEMBER_NO   = #{member_no}
 		   AND CATEGORY_NO = #{category_no}
 	</select>
+	
+	<select id="selectScheduleListAll" resultType="com.todocalendar.model.ScheduleVO">
+		SELECT SCHEDULE_NO      /* 일정번호(PK) */
+		     , MEMBER_NO        /* 회원번호(FK) */
+		     , CATEGORY_NO      /* 카테고리번호(FK) */
+		     , CONTENT          /* 내용 */
+		     , PLAN_DATE        /* 날짜 */
+		     , DDAY             /* 디데이 */
+		     , CASE DDAY WHEN '1' THEN '디데이'
+		                 WHEN '2' THEN '기념일'
+		                 ELSE '해당없음'
+		        END AS DDAY_NM	/* 디데이구분명 */
+		     , CASE DDAY WHEN '0' THEN -1
+		                 ELSE TO_DATE( TO_CHAR( SYSDATE, 'YYYYMMDD' ) ) - PLAN_DATE
+		        END AS DDAY_CNT	/* 디데이일수 */
+		     , COMPLETE         /* 완료Y/N */
+		  FROM SCHEDULE         /* 일정 테이블 */
+		 WHERE MEMBER_NO   = #{member_no}
+	</select>
+	
+	<update id="changeComplete">
+		UPDATE SCHEDULE
+		   SET COMPLETE = #{complete}
+		 WHERE MEMBER_NO = #{member_no}
+		   AND SCHEDULE_NO = #{schedule_no}
+	</update>
 
 </mapper>

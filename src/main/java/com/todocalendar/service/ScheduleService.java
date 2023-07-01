@@ -2,6 +2,8 @@ package com.todocalendar.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.todocalendar.model.CategoryVO;
 import com.todocalendar.model.PaletteVO;
 import com.todocalendar.model.RepeatVO;
@@ -19,4 +21,7 @@ public interface ScheduleService {
 	 */
 	public List<ScheduleVO> selectScheduleList(ScheduleVO schedule);
 
+	public List<ScheduleVO> selectScheduleListAll(int member_no);
+	
+	public void changeComplete(@Param("member_no") int member_no, @Param("complete") String complete, @Param("schedule_no") int schedule_no); //체크박스 on/off
 }
