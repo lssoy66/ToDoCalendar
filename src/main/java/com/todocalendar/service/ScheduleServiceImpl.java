@@ -30,6 +30,11 @@ public class ScheduleServiceImpl implements ScheduleService {
 		log.info("Service :: selectScheduleList...................");
 		return scheduleMapper.selectScheduleList(schedule);
 	}
+
+	@Override
+	public List<ScheduleVO> selectScheduleListByMonth(ScheduleVO schedule) {
+		log.info("Service :: selectScheduleListByMonth...................");
+		return scheduleMapper.selectScheduleListByMonth(schedule);
 	
 	@Override
 	public List<ScheduleVO> selectScheduleListAll(int member_no) {

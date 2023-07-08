@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // });
 
 /*
-    달력 렌더링 할 때 필요한 정보 목록 
+    달력 렌더링 할 때 필요한 정보 목록
 
     현재 월(초기값 : 현재 시간)
     금월 마지막일 날짜와 요일
@@ -25,11 +25,11 @@ function calendarInit() {
     var utc = date.getTime() + (date.getTimezoneOffset() * 60 * 1000); // uct 표준시 도출
     var kstGap = 9 * 60 * 60 * 1000; // 한국 kst 기준시간 더하기
     var today = new Date(utc + kstGap); // 한국 시간으로 date 객체 만들기(오늘)
-  
+
     var thisMonth = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     // 달력에서 표기하는 날짜 객체
-  
-    
+
+
     var currentYear = thisMonth.getFullYear(); // 달력에서 표기하는 연
     var currentMonth = thisMonth.getMonth(); // 달력에서 표기하는 월
     var currentDate = thisMonth.getDate(); // 달력에서 표기하는 일
@@ -63,12 +63,15 @@ function calendarInit() {
         var year_month = document.querySelector(".year-month");
         year_month.innerHTML = (currentYear + '.' + (currentMonth + 1));
 
+		var month = document.querySelector("#month");
+		month.innerHTML = currentMonth + 1;
+
         // $('.year-month').text(currentYear + '.' + (currentMonth + 1));
 
         // 렌더링 html 요소 생성
         calendar = document.querySelector('.dates')
         calendar.innerHTML = '';
-        
+
         // 지난달
         for (var i = prevDate - prevDay + 1; i <= prevDate; i++) {
             calendar.innerHTML = calendar.innerHTML + '<div class="day move-prev disable">' + i + '</div>'
@@ -88,6 +91,7 @@ function calendarInit() {
             var currentMonthDate = document.querySelectorAll('.dates .current');
             currentMonthDate[todayDate -1].classList.add('today');
         }
+
     }
 
     // 이전달로 이동
@@ -108,11 +112,12 @@ function calendarInit() {
     var go_next = document.querySelector(".go-next");
     go_next.onclick = function() {
         thisMonth = new Date(currentYear, currentMonth + 1, 1);
-        renderCalender(thisMonth); 
+        renderCalender(thisMonth);
     };
 
     // $('.go-next').on('click', function() {
     //     thisMonth = new Date(currentYear, currentMonth + 1, 1);
-    //     renderCalender(thisMonth); 
+    //     renderCalender(thisMonth);
     // });
+
 }
