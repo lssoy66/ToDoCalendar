@@ -35,13 +35,14 @@ public class ScheduleServiceImpl implements ScheduleService {
 	public List<ScheduleVO> selectScheduleListByMonth(ScheduleVO schedule) {
 		log.info("Service :: selectScheduleListByMonth...................");
 		return scheduleMapper.selectScheduleListByMonth(schedule);
-	
+	}
+
 	@Override
 	public List<ScheduleVO> selectScheduleListAll(int member_no) {
 		log.info("Service :: selectScheduleListAll..................");
 		return scheduleMapper.selectScheduleListAll(member_no);
 	}
-	
+
 	@Override
 	public void changeComplete(int member_no, String complete, int schedule_no) {
 		log.info("Service :: changeComplete...............");
