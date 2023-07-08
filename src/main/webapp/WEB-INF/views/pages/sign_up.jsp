@@ -41,12 +41,12 @@
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Please Sign Up</h3>
+                        <h3 class="panel-title">회원가입</h3>
                     </div>
                     <div class="panel-body">
                         <form role="form" name="signUpForm" action="signUpMember" method="post">
                             <fieldset>
-                            아이디
+                            	아이디
                             	<div class="form-group">
                                     <input class="form-control" placeholder="ID를 입력해주세요" name="id" type="text" autofocus>
                                 </div>
@@ -54,11 +54,11 @@
                             	<div class="form-group">
                                     <input class="form-control" placeholder="이름을 입력해주세요" name="name" type="text" autofocus>
                                 </div>
-                                이메일
+                                	이메일
                                 <div class="form-group">
                                     <input class="form-control" placeholder="이메일을 입력해주세요." name="email" type="email" autofocus>
                                 </div>
-                                비밀번호
+                                	비밀번호
                                 <div class="form-group">
                                     <input class="form-control" placeholder="비밀번호를 입력해주세요." name="password" type="password" value="">
                                 </div>

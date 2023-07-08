@@ -41,6 +41,30 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
+	public void updatePassword(MemberVO member) {
+		log.info("updateMember........." + member);
+		memberMapper.updatePassword(member);
+	}
+	
+	@Override
+	public void withdrawMember(String id) {
+		log.info("withdrawMember........." + id);
+		memberMapper.withdrawMember(id);
+	}
+	
+	@Override
+	public MemberVO memberCheck(MemberVO member) {
+		log.info("MemberCheck........." + member);
+		return memberMapper.memberCheck(member);
+	}
+	
+	@Override
+	public void changeDelayAuto(String id, String delay_auto) {
+		log.info("changeDelayAuto........." + id + ", " + delay_auto);
+		memberMapper.changeDelayAuto(id, delay_auto);
+	}
+	
+	@Override
 	public List<MemberVO> selectMemberList(MemberVO member) {
 		log.info("Service :: selectMemberList...................");
 		return memberMapper.selectMemberList(member);

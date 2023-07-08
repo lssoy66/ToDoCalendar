@@ -4,31 +4,43 @@
 <!DOCTYPE html>
 <html lang="kr">
 	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="description" content="">
-		<meta name="author" content="">
 
-		<title>To Do Calendar</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-		<!-- Bootstrap Core CSS -->
-		<link href="resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <title>To Do Calendar</title>
 
-		<!-- MetisMenu CSS -->
-		<link href="resources/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+  <!-- Bootstrap Core CSS -->
+  <link href="resources/vendor/bootstrap/css/bootstrap.min.css"
+    rel="stylesheet">
 
-		<!-- Custom CSS -->
-		<link href="resources/dist/css/sb-admin-2.css" rel="stylesheet">
+  <!-- MetisMenu CSS -->
+  <link href="resources/vendor/metisMenu/metisMenu.min.css"
+    rel="stylesheet">
 
-		<!-- Morris Charts CSS -->
-		<link href="resources/vendor/morrisjs/morris.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href="resources/dist/css/sb-admin-2.css" rel="stylesheet">
 
-		<!-- Custom Fonts -->
-		<link href="resources/vendor/font-awesome/css/font-awesome.min.css"	rel="stylesheet" type="text/css">
+  <!-- Morris Charts CSS -->
+  <link href="resources/vendor/morrisjs/morris.css" rel="stylesheet">
 
-		<!-- Calendar CSS -->
-		<link href="resources/css/calendar-style.css" rel="stylesheet">
+  <!-- Custom Fonts -->
+  <link href="resources/vendor/font-awesome/css/font-awesome.min.css"
+    rel="stylesheet" type="text/css">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+      <![endif]-->
+
+  <!-- Calendar CSS -->
+  <link href="resources/css/calendar-style.css" rel="stylesheet">
 	</head>
 
 	<body>
@@ -192,15 +204,143 @@
 
 		<!-- Calendar JavaScript -->
 		<script src="resources/js/calendar.js"></script>
+    
+			<ul class="nav navbar-top-links navbar-right">
+				
+				<!-- /.dropdown -->
+				<c:if test="${member != null }">
+				<li class="dropdown"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i> ${member.name }님
+						<i class="fa fa-caret-down"></i>
+				</a>
+					<ul class="dropdown-menu dropdown-user">
+						<li><a href="pages/mypage"><i class="fa fa-user fa-fw"></i> 프로필</a></li>
+						<li><a href="#"><i class="fa fa-gear fa-fw"></i> 설정</a></li>
+						<li class="divider"></li>
+						<li><a href="pages/logout"><i class="fa fa-sign-out fa-fw"></i>
+								로그아웃</a></li>
+					</ul> <!-- /.dropdown-user -->
+				</li>
+				</c:if>
+				<c:if test="${member == null }">
+					회원 정보 없음
+				</c:if>
+				<!-- /.dropdown -->
+			</ul>
+			<!-- /.navbar-top-links -->
 
-		<script type="text/javascript">
+			<div class="navbar-default sidebar" role="navigation">
+				<div class="sidebar-nav navbar-collapse">
+					<ul class="nav" id="side-menu">
+						<li class="sidebar-search">
+							<div class="input-group custom-search-form">
+                                <legend style="border-bottom: none;"><a style="text-decoration: none; font-weight: bold;">D-day</a></legend>
+                                <ul class="nav">
+                                    <li style="border-bottom: none;">
+                                        <a>· 정보처리기사 접수 D-1</a>
+                                        <a>· 프로젝트 마감 D-23</a>
+                                    </li>
+                                </ul>
+                            </div>
+						</li>
+						<li class="sidebar-search">
+                            <div class="input-group custom-search-form" \>
+                                <legend style="border-bottom: none;"><a style="text-decoration: none; font-weight: bold;">Today Check List</a></legend>
+                            </div>
+                            
+                            <c:forEach var="category" items="${categoryList }" varStatus="status">
+                            <!--여기부터-->
+                            <a href="#" style="text-decoration: none;"><i class="fa fa-folder fa-fw"></i> ${category.category_nm }<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                            	
+	                            <c:forEach var="schedule" items="${scheduleList }" varStatus="status">
+	                            	<c:if test="${category.category_no == schedule.category_no }">
+		                            	<li style="border-bottom: none;">
+		                                   	<c:choose>
+		                                   		<c:when test="${schedule.complete eq 'Y' }">
+		                                   			<a><input type="checkbox" id="completeY${status.count }" value="${schedule.schedule_no }" checked="checked"> ${schedule.content }</a>
+		                                   		</c:when>
+		                                   		<c:otherwise>
+		                                   			<a><input type="checkbox" value="${schedule.schedule_no }" id="completeN${status.count }"> ${schedule.content }</a>
+		                                   		</c:otherwise>
+		                                   	</c:choose>
+		                               	</li>
+	                               	</c:if>
+	                            </c:forEach>
+                            </ul>
+                            <!--여기까지가 한 카테고리-->
+                            </c:forEach>
+                        </li>
+				</div>
+				<!-- /.sidebar-collapse -->
+			</div>
+			<!-- /.navbar-static-side -->
+		</nav>
 
-		/* 전역변수 */
-
-		$(document).ready(function () {
-			//debugger;
-
-			/*
+		<div id="page-wrapper">
+			<div class="row">
+				<!--  
+				<div class="col-lg-12">
+					<h1 class="page-header">Dashboard</h1>
+				</div>
+				-->
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+			<div class="row" style="padding-top: 50px;">
+				<div class="col-lg-12">
+					<!-- 캘린더 -->
+					<div class="visit-div" style="padding-top: 20px;">
+	</div>
+	<!-- /#wrapper -->
+	
+	<!-- Today Check List 체크박스 on/off -->
+	<script type="text/javascript">
+	<c:forEach var="schedule" items="${scheduleList}" varStatus="status">
+	$(document).ready(function() {
+		$(document).on("change", "#completeY${status.count}", function() {
+			$("#completeY${status.count}").removeAttr("checked");
+			$("#completeY${status.count}").attr("id", "completeN${status.count}");
+			var value = $("#completeN${status.count}").val();
+			console.log(value);
+			//Ajax로 전송
+			$.ajax({
+				url : './ChangeComplete',
+				data : {
+					complete : 'N',
+					schedule_no : value
+				},
+				type : 'POST',
+				dataType : 'json',
+				success : function(result) {
+					console.log("success Y to N ");
+				}
+			}); //End Ajax
+		});
+		
+		$(document).on("change", "#completeN${status.count}", function() {
+			$("#completeN${status.count}").attr("checked", "checked");
+			$("#completeN${status.count}").attr("id", "completeY${status.count}");
+			var value = $("#completeY${status.count}").val();
+			console.log(value);
+			//Ajax로 전송
+			$.ajax({
+				url : './ChangeComplete',
+				data : {
+					complete : 'Y',
+					schedule_no : value
+				},
+				type : 'POST',
+				dataType : 'json',
+				success : function(result) {
+					console.log("success N to Y ");
+				}
+			}); //End Ajax
+		});
+	});
+	</c:forEach>
+    
+    /*
 			$("#regBtn").on("click", function(){
 				self.location = "/board/register";
 			});
@@ -219,8 +359,8 @@
 
 			$("#myModal").modal("show");
 		}
-
-		</script>
+    
+	</script>
 	</body>
 
 </html>

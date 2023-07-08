@@ -26,9 +26,9 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public List<CategoryVO> selectCategoryList(CategoryVO category) {
+	public List<CategoryVO> selectCategoryList(int member_no) {
 		log.info("Service :: selectCategoryList...................");
-		return categoryMapper.selectCategoryList(category);
+		return categoryMapper.selectCategoryList(member_no);
 	}
 
 }
