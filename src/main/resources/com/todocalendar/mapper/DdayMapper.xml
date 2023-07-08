@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.todocalendar.mapper.DdayMapper">
+	
+	<resultMap type="com.todocalendar.model.ScheduleVO" id="scheduleMap">
+		<id property="schedule_no" column="schedule_no" />
+		<id property="member_no" column="member_no" />
+		<id property="category_no" column="category_no" />
+		<id property="content" column="content" />
+		<id property="plan_date" column="plan_date" />
+		<id property="dday" column="dday" />
+		<id property="dday_nm" column="dday_nm" />
+		<id property="dday_cnt" column="dday_cnt" />
+		<id property="complete" column="complete" />
+	</resultMap>
+	
+	<resultMap type="com.todocalendar.model.RepeatVO" id="repeatMap">
+		<id property="schedule_no" column="schedule_no" />
+		<id property="schedule_detail_no" column="schedule_detail_no" />
+		<id property="start_date" column="start_date" />
+		<id property="end_date" column="end_date" />
+		<id property="re_devision" column="re_devision" />
+		<id property="re_date" column="re_date" />
+	</resultMap>
+	
+	<resultMap type="com.todocalendar.model.DdayVO" id="DdayVO">
+		<collection property="schedule" resultMap="scheduleMap" />
+		<collection property="repeat" resultMap="repeatMap" />
+	</resultMap>
+	
+	<select id="selectDdayList" resultMap="DdayVO">
+		SELECT *
+		  FROM SCHEDULE, REPEAT
+		 WHERE SCHEDULE.SCHEDULE_NO = REPEAT.SCHEDULE_NO(+)
+		   AND SCHEDULE.MEMBER_NO = #{member_no}
+	</select>
+
+</mapper>
