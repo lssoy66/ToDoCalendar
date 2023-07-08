@@ -63,9 +63,6 @@ function calendarInit() {
         var year_month = document.querySelector(".year-month");
         year_month.innerHTML = (currentYear + '.' + (currentMonth + 1));
 
-		var month = document.querySelector("#month");
-		month.innerHTML = currentMonth + 1;
-
         // $('.year-month').text(currentYear + '.' + (currentMonth + 1));
 
         // 렌더링 html 요소 생성
@@ -91,7 +88,6 @@ function calendarInit() {
             var currentMonthDate = document.querySelectorAll('.dates .current');
             currentMonthDate[todayDate -1].classList.add('today');
         }
-
     }
 
     // 이전달로 이동
@@ -119,5 +115,4 @@ function calendarInit() {
     //     thisMonth = new Date(currentYear, currentMonth + 1, 1);
     //     renderCalender(thisMonth);
     // });
-
 }
