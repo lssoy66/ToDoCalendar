@@ -19,4 +19,9 @@ public interface ScheduleService {
 	 */
 	public List<ScheduleVO> selectScheduleList(ScheduleVO schedule);
 
+	/**
+	 * 스케줄(일정) 목록 - 해당하는 달의 목록 가져오기
+	 */
+	public List<ScheduleVO> selectScheduleListByMonth(ScheduleVO schedule);
+
 }
