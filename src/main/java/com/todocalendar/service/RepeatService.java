@@ -17,5 +17,7 @@ public interface RepeatService {
 	 * 반복설정 목록
 	 */
 	public List<RepeatVO> selectRepeatList(RepeatVO repeat);
+	
+	public List<RepeatVO> selectDdayList(int member_no);
 
 }

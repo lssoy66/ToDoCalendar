@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.todocalendar.model.CategoryVO;
 import com.todocalendar.model.MemberVO;
+import com.todocalendar.model.RepeatVO;
 import com.todocalendar.model.ScheduleVO;
 import com.todocalendar.service.CategoryServiceImpl;
 import com.todocalendar.service.MemberServiceImpl;
+import com.todocalendar.service.RepeatServiceImpl;
 import com.todocalendar.service.ScheduleService;
 import com.todocalendar.service.ScheduleServiceImpl;
 
@@ -42,6 +44,9 @@ public class HomeController {
 	@Autowired
 	ScheduleServiceImpl scheduleService;
 	
+	@Autowired
+	RepeatServiceImpl repeatService;
+	
 	@GetMapping("/home")
 	public void mainPage(Model model, HttpServletRequest request, HttpSession session) {
 		log.info("main page.........");
@@ -53,6 +58,10 @@ public class HomeController {
 		
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("scheduleList", scheduleList);
+		
+		List<RepeatVO> ddayList = repeatService.selectDdayList(member.getMember_no());
+		
+		model.addAttribute("ddayList", ddayList);
 	}
 	
 	//Complete Ajax

@@ -50,5 +50,13 @@
 		  FROM REPEAT			   /* 반복 테이블 */
 		 WHERE SCHEDULE_NO = #{schedule_no}
 	</select>
+	
+	<select id="selectDdayList" resultType="com.todocalendar.model.RepeatVO">
+		SELECT REPEAT.*
+		  FROM SCHEDULE, REPEAT
+		 WHERE SCHEDULE.SCHEDULE_NO = REPEAT.SCHEDULE_NO
+		   AND SCHEDULE.MEMBER_NO = #{member_no}
+		   AND SCHEDULE.DDAY = 1
+	</select>
 
 </mapper>

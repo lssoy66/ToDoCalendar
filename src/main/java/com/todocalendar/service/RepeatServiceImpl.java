@@ -30,6 +30,12 @@ public class RepeatServiceImpl implements RepeatService {
 		log.info("Service :: selectRepeatList...................");
 		return repeatMapper.selectRepeatList(repeat);
 	}
+	
+	@Override
+	public List<RepeatVO> selectDdayList(int member_no) {
+		log.info("Service :: selectDdayList.....................");
+		return repeatMapper.selectDdayList(member_no);
+	}
 
 
 }
