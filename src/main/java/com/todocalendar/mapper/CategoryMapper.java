@@ -14,6 +14,6 @@ public interface CategoryMapper {
 	/**
 	 * 카테고리 목록
 	 */
-	public List<CategoryVO> selectCategoryList(CategoryVO category);
-
+	public List<CategoryVO> selectCategoryList(int member_no);
+	
 }
