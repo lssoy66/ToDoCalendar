@@ -64,7 +64,7 @@
 			<!-- /.navbar-header -->
 
 			<ul class="nav navbar-top-links navbar-right">
-				
+
 				<!-- /.dropdown -->
 				<c:if test="${member != null }">
 				<li class="dropdown"><a class="dropdown-toggle"
@@ -129,12 +129,12 @@
                             <div class="input-group custom-search-form" \>
                                 <legend style="border-bottom: none;"><a style="text-decoration: none; font-weight: bold;">Today Check List</a></legend>
                             </div>
-                            
+
                             <c:forEach var="category" items="${categoryList }" varStatus="status">
                             <!--여기부터-->
                             <a href="#" style="text-decoration: none;"><i class="fa fa-folder fa-fw"></i> ${category.category_nm }<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                            	
+
 	                            <c:forEach var="schedule" items="${scheduleList }" varStatus="status">
 	                            	<c:if test="${category.category_no == schedule.category_no }">
 		                            	<li style="border-bottom: none;">
@@ -161,7 +161,7 @@
 
 		<div id="page-wrapper">
 			<div class="row">
-				<!--  
+				<!--
 				<div class="col-lg-12">
 					<h1 class="page-header">Dashboard</h1>
 				</div>
@@ -202,7 +202,7 @@
 
 	</div>
 	<!-- /#wrapper -->
-	
+
 	<!-- Today Check List 체크박스 on/off -->
 	<script type="text/javascript">
 	<c:forEach var="schedule" items="${scheduleList}" varStatus="status">
@@ -226,7 +226,7 @@
 				}
 			}); //End Ajax
 		});
-		
+
 		$(document).on("change", "#completeN${status.count}", function() {
 			$("#completeN${status.count}").attr("checked", "checked");
 			$("#completeN${status.count}").attr("id", "completeY${status.count}");
@@ -269,12 +269,12 @@
 
 	<!-- Calendar JavaScript -->
 	<script src="resources/js/calendar.js"></script>
-	
+
 	<script type="text/javascript">
 	$(document).ready(function () {
 		//debugger;
 	});
-		
+
 	</script>
 </body>
 

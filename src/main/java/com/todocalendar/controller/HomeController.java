@@ -33,28 +33,28 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @AllArgsConstructor
 public class HomeController {
-	
+
 	@Autowired
 	MemberServiceImpl memberService;
-	
+
 	@Autowired
 	CategoryServiceImpl categoryService;
-	
+
 	@Autowired
 	ScheduleServiceImpl scheduleService;
-	
+
 	@Autowired
 	DdayServiceImpl ddayService;
-	
+
 	@GetMapping("/home")
 	public void mainPage(Model model, HttpServletRequest request, HttpSession session) {
 		log.info("main page.........");
-		
+
 		MemberVO member = (MemberVO)session.getAttribute("member");
-		
+
 		List<CategoryVO> categoryList = categoryService.selectCategoryList(member.getMember_no());
 		List<ScheduleVO> scheduleList = scheduleService.selectScheduleListAll(member.getMember_no());
-		
+
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("scheduleList", scheduleList);
 		
@@ -64,22 +64,22 @@ public class HomeController {
 		
 		model.addAttribute("ddayList", ddayList);
 	}
-	
+
 	//Complete Ajax
 	@PostMapping("/ChangeComplete")
 	@ResponseBody
 	public ResponseEntity<List<ScheduleVO>> changeComplete(String complete, int schedule_no, HttpSession session) {
 		log.info("ChangeComplete.........");
-		
+
 		log.info("complete : " + complete);
-		
+
 		MemberVO member = (MemberVO)session.getAttribute("member");
 		int member_no = member.getMember_no();
 		log.info("member_no : " + member_no + ", schedule_no : " + schedule_no);
-		
+
 		scheduleService.changeComplete(member_no, complete, schedule_no);
-		
+
 		return new ResponseEntity<>(scheduleService.selectScheduleListAll(member_no), HttpStatus.OK);
 	}
-	
+
 }

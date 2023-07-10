@@ -56,8 +56,11 @@ public class MemberMapperTest {
 	public void testScheduleSelect() {
 		ScheduleVO schedule = new ScheduleVO();
 		schedule.setMember_no(1);
-		schedule.setCategory_no(1);
-		List<ScheduleVO> scheduleList = scheduleService.selectScheduleList(schedule);
+		//schedule.setCategory_no(1);
+		//List<ScheduleVO> scheduleList = scheduleService.selectScheduleList(schedule);
+
+		schedule.setMonth("6");
+		List<ScheduleVO> scheduleList = scheduleService.selectScheduleListByMonth(schedule);
 
 		if(scheduleList != null) {
 			log.info("..................................................jUnit Test :: Schedule Select Success!!");
