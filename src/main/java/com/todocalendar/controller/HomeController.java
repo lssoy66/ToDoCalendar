@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.todocalendar.model.CategoryVO;
+import com.todocalendar.model.DdayVO;
 import com.todocalendar.model.MemberVO;
 import com.todocalendar.model.ScheduleVO;
 import com.todocalendar.service.CategoryServiceImpl;
+import com.todocalendar.service.DdayServiceImpl;
 import com.todocalendar.service.MemberServiceImpl;
-import com.todocalendar.service.ScheduleService;
 import com.todocalendar.service.ScheduleServiceImpl;
 
 import lombok.AllArgsConstructor;
@@ -42,6 +43,9 @@ public class HomeController {
 	@Autowired
 	ScheduleServiceImpl scheduleService;
 
+	@Autowired
+	DdayServiceImpl ddayService;
+
 	@GetMapping("/home")
 	public void mainPage(Model model, HttpServletRequest request, HttpSession session) {
 		log.info("main page.........");
@@ -53,6 +57,12 @@ public class HomeController {
 
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("scheduleList", scheduleList);
+		
+		
+		List<DdayVO> ddayList = ddayService.selectDdayList(member.getMember_no());
+		log.info("member_no : " + member.getMember_no() + ", ddayList : " + ddayList);
+		
+		model.addAttribute("ddayList", ddayList);
 	}
 
 	//Complete Ajax

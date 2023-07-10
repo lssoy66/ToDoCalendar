@@ -31,5 +31,4 @@ public class RepeatServiceImpl implements RepeatService {
 		return repeatMapper.selectRepeatList(repeat);
 	}
 
-
 }

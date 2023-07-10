@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -94,8 +95,32 @@
                                 <legend style="border-bottom: none;"><a style="text-decoration: none; font-weight: bold;">D-day</a></legend>
                                 <ul class="nav">
                                     <li style="border-bottom: none;">
-                                        <a>· 정보처리기사 접수 D-1</a>
-                                        <a>· 프로젝트 마감 D-23</a>
+	                                    <c:forEach var="dday" items="${ddayList }" varStatus="status">
+	                                    <!-- DDAY 컬럼의 값이 1(D-day)인 것만 보여준다. -->
+	                                    	<c:if test="${dday.schedule.dday == 1 }">
+	                                    	<!-- 
+	                                    	formatDate는 날짜 및 시간 값을 지정한 형식으로 변경해준다. 
+	                                    	parseDate는 String타입으로 표시된 날짜 및 시간 값을 Date타입으로 파싱해준다.
+	                                    	 -->
+	                                    	 	<jsp:useBean id="now" class="java.util.Date" />
+		                                    	<fmt:formatDate var="now_FD" value="${now }" pattern="yyyy-MM-dd"/>
+	                                    		<fmt:formatDate var="planDate_FD"  value="${dday.schedule.plan_date }" pattern="yyyy-MM-dd"/>
+		                                    	
+		                                    	<fmt:parseDate var="now_PD" value="${now_FD }" pattern="yyyy-MM-dd" />
+		                                    	<fmt:parseDate var="planDate_PD" value="${planDate_FD }" pattern="yyyy-MM-dd" />
+		                                    	
+		                                    	<fmt:parseNumber var="now_PN" value="${now_PD.time/(1000*60*60*24) }" integerOnly="true" />
+		                                    	<fmt:parseNumber var="planDate_PN" value="${planDate_PD.time/(1000*60*60*24) }" integerOnly="true" />
+		                                		
+		                                		<!-- 
+		                                		지정 날짜에서 현재 날짜의 일 수 차이를 구하고 그 값이 (-)가 아닐 때에만 D-day와 내용을 보여준다.
+		                                		-->
+		                                		<c:set var="d_day" value="${planDate_PN-now_PN }" />
+		                                		<c:if test="${d_day > 0 }">
+		                                			<a>· ${dday.schedule.content } D-${d_day }</a>
+		                                		</c:if>
+	                                    	</c:if>
+	                                	</c:forEach>
                                     </li>
                                 </ul>
                             </div>

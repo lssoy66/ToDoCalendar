@@ -50,5 +50,5 @@
 		  FROM REPEAT			   /* 반복 테이블 */
 		 WHERE SCHEDULE_NO = #{schedule_no}
 	</select>
-
+	
 </mapper>
