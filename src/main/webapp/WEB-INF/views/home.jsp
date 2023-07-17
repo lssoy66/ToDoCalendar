@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:useBean id="now" class="java.util.Date" />
 <fmt:formatDate var="now_FD" value="${now }" pattern="yyyy-MM-dd"/>
+
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -154,6 +155,7 @@
                             </ul>
                             <!--여기까지가 한 카테고리-->
                             </c:forEach>
+                            <a style="text-align: right">달성도 ${count.y_count }</a>
                         </li>
 				</div>
 				<!-- /.sidebar-collapse -->

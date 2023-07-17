@@ -48,5 +48,11 @@ public class ScheduleServiceImpl implements ScheduleService {
 		log.info("Service :: changeComplete...............");
 		scheduleMapper.changeComplete(member_no, complete, schedule_no);
 	}
+	
+	@Override
+	public int selectScheduleListByCount(int member_no) {
+		log.info("Service :: selectScheduleListByCount..................");
+		return scheduleMapper.selectScheduleListByCount(member_no);
+	}
 
 }
