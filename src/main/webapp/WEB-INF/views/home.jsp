@@ -2,6 +2,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<jsp:useBean id="now" class="java.util.Date" />
+<fmt:formatDate var="now_FD" value="${now }" pattern="yyyy-MM-dd"/>
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -102,8 +104,6 @@
 	                                    	formatDate는 날짜 및 시간 값을 지정한 형식으로 변경해준다. 
 	                                    	parseDate는 String타입으로 표시된 날짜 및 시간 값을 Date타입으로 파싱해준다.
 	                                    	 -->
-	                                    	 	<jsp:useBean id="now" class="java.util.Date" />
-		                                    	<fmt:formatDate var="now_FD" value="${now }" pattern="yyyy-MM-dd"/>
 	                                    		<fmt:formatDate var="planDate_FD"  value="${dday.schedule.plan_date }" pattern="yyyy-MM-dd"/>
 		                                    	
 		                                    	<fmt:parseDate var="now_PD" value="${now_FD }" pattern="yyyy-MM-dd" />
@@ -134,19 +134,21 @@
                             <!--여기부터-->
                             <a href="#" style="text-decoration: none;"><i class="fa fa-folder fa-fw"></i> ${category.category_nm }<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-
 	                            <c:forEach var="schedule" items="${scheduleList }" varStatus="status">
+	                            <fmt:formatDate var="planDate_FD"  value="${schedule.plan_date }" pattern="yyyy-MM-dd"/>
 	                            	<c:if test="${category.category_no == schedule.category_no }">
-		                            	<li style="border-bottom: none;">
-		                                   	<c:choose>
-		                                   		<c:when test="${schedule.complete eq 'Y' }">
-		                                   			<a><input type="checkbox" id="completeY${status.count }" value="${schedule.schedule_no }" checked="checked"> ${schedule.content }</a>
-		                                   		</c:when>
-		                                   		<c:otherwise>
-		                                   			<a><input type="checkbox" value="${schedule.schedule_no }" id="completeN${status.count }"> ${schedule.content }</a>
-		                                   		</c:otherwise>
-		                                   	</c:choose>
-		                               	</li>
+		                            		<li style="border-bottom: none;">
+			                            		<c:if test="${now_FD == planDate_FD }">
+			                            			<c:choose>
+			                            				<c:when test="${schedule.complete eq 'Y' }">
+			                            					<a><input type="checkbox" id="completeY${status.count }" value="${schedule.schedule_no }" checked="checked"> ${schedule.content }</a>
+			                            				</c:when>
+					                                   	<c:otherwise>
+					                                   		<a><input type="checkbox" value="${schedule.schedule_no }" id="completeN${status.count }"> ${schedule.content }</a>
+					                                   	</c:otherwise>
+					                                </c:choose>
+			                            		</c:if>
+				                            </li>
 	                               	</c:if>
 	                            </c:forEach>
                             </ul>
