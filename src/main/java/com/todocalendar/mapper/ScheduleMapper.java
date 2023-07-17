@@ -26,5 +26,10 @@ public interface ScheduleMapper {
 	 * 스케줄(일정) 목록 - 해당하는 달의 목록 가져오기
 	 */
 	public List<ScheduleVO> selectScheduleListByMonth(ScheduleVO schedule);
+	
+	/**
+	 * 개수 카운트를 위한 오늘 날짜 스케줄(일정) 목록
+	 */
+	public int selectScheduleListByCount(int member_no);
 
 }

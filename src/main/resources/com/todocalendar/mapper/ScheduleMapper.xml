@@ -101,5 +101,23 @@
 		 WHERE MEMBER_NO = #{member_no}
 		   AND SCHEDULE_NO = #{schedule_no}
 	</update>
+	
+	<select id="selectScheduleListByCount" resultType="int">
+		SELECT (SELECT COUNT(b.COMPLETE)
+          FROM SCHEDULE b
+         WHERE b.COMPLETE = 'Y'
+           AND TO_CHAR(b.PLAN_DATE) = TO_CHAR(SYSDATE)) AS "Y_COUNT"
+         ,(SELECT COUNT(c.COMPLETE)
+             FROM SCHEDULE c
+            WHERE c.COMPLETE = 'N'
+              AND TO_CHAR(c.PLAN_DATE) = TO_CHAR(SYSDATE)) AS "N_COUNT"
+        , (SELECT COUNT(*)
+             FROM SCHEDULE d
+            WHERE d.MEMBER_NO = #{member_no}
+              AND TO_CHAR(d.PLAN_DATE) = TO_CHAR(SYSDATE)) AS "ALL_COUNT"
+  		FROM SCHEDULE a
+ 	   WHERE a.MEMBER_NO = #{member_no}
+         AND ROWNUM = 1
+	</select>
 
 </mapper>

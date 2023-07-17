@@ -63,6 +63,12 @@ public class HomeController {
 		log.info("member_no : " + member.getMember_no() + ", ddayList : " + ddayList);
 		
 		model.addAttribute("ddayList", ddayList);
+		
+		int scheduleCount = scheduleService.selectScheduleListByCount(member.getMember_no());
+		log.info("count : " + scheduleCount);
+		model.addAttribute("scheduleCount", scheduleCount);
+		
+		
 	}
 
 	//Complete Ajax
