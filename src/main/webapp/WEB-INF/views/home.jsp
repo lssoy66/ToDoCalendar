@@ -67,6 +67,7 @@
 
 				<!-- /.dropdown -->
 				<c:if test="${member != null }">
+				<div id="member_no" style="display:none">${member.member_no }</div>
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i> ${member.name }님
 						<i class="fa fa-caret-down"></i>
@@ -98,21 +99,21 @@
 	                                    <c:forEach var="dday" items="${ddayList }" varStatus="status">
 	                                    <!-- DDAY 컬럼의 값이 1(D-day)인 것만 보여준다. -->
 	                                    	<c:if test="${dday.schedule.dday == 1 }">
-	                                    	<!-- 
-	                                    	formatDate는 날짜 및 시간 값을 지정한 형식으로 변경해준다. 
+	                                    	<!--
+	                                    	formatDate는 날짜 및 시간 값을 지정한 형식으로 변경해준다.
 	                                    	parseDate는 String타입으로 표시된 날짜 및 시간 값을 Date타입으로 파싱해준다.
 	                                    	 -->
 	                                    	 	<jsp:useBean id="now" class="java.util.Date" />
 		                                    	<fmt:formatDate var="now_FD" value="${now }" pattern="yyyy-MM-dd"/>
 	                                    		<fmt:formatDate var="planDate_FD"  value="${dday.schedule.plan_date }" pattern="yyyy-MM-dd"/>
-		                                    	
+
 		                                    	<fmt:parseDate var="now_PD" value="${now_FD }" pattern="yyyy-MM-dd" />
 		                                    	<fmt:parseDate var="planDate_PD" value="${planDate_FD }" pattern="yyyy-MM-dd" />
-		                                    	
+
 		                                    	<fmt:parseNumber var="now_PN" value="${now_PD.time/(1000*60*60*24) }" integerOnly="true" />
 		                                    	<fmt:parseNumber var="planDate_PN" value="${planDate_PD.time/(1000*60*60*24) }" integerOnly="true" />
-		                                		
-		                                		<!-- 
+
+		                                		<!--
 		                                		지정 날짜에서 현재 날짜의 일 수 차이를 구하고 그 값이 (-)가 아닐 때에만 D-day와 내용을 보여준다.
 		                                		-->
 		                                		<c:set var="d_day" value="${planDate_PN-now_PN }" />
@@ -178,6 +179,7 @@
 							<div class="cal_nav">
 								<a href="javascript:;" class="nav-btn go-prev">prev</a>
 								<div class="year-month"></div>
+								<div class="month" id="month" style="display:none"></div>
 								<a href="javascript:;" class="nav-btn go-next">next</a>
 							</div>
 							<div class="cal_wrap">
@@ -272,9 +274,43 @@
 
 	<script type="text/javascript">
 	$(document).ready(function () {
-		//debugger;
+
+		//getScheduleByMonth();
+
 	});
 
+	function getScheduleByMonth() {
+		var month = document.getElementById("month").innerHTML;
+		var member_no = document.getElementById("member_no").innerHTML;
+		var data = JSON.stringify({'month': month, 'member_no':member_no});
+
+		$.ajax({
+			url : '/pages/scheduleListByMonth',
+			type : 'POST',
+			//processData : false,
+			contentType : "application/json; charset=utf-8",		// 전송할 데이터 타입(JSON)
+			dataType : 'json',		// 받을 데이터 타입
+			data: data,
+
+			success : function(result){
+				//alert("success");
+				if(result != "") {
+					for(var i = 0; i < result.length; i++) {
+						var day = result[i].day;
+						var dateId = "#date" + day;
+						$(dateId).append("<br>" + result[i].content + "");
+					}
+				}
+
+			}
+		});
+	}
+
+	function dateClick(date) {
+		var dateId = "#" + date.id;
+		alert(dateId);
+		// modal
+	}
 	</script>
 </body>
 
