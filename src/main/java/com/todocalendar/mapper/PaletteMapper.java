@@ -16,5 +16,10 @@ public interface PaletteMapper {
 	 * 팔레트 목록
 	 */
 	public List<PaletteVO> selectPaletteList(PaletteVO palette);
+	
+	/**
+	 * 전체 팔레트 목록
+	 */
+	public List<PaletteVO> selectPaletteListAll();
 
 }

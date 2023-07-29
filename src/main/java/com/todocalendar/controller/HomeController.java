@@ -20,10 +20,12 @@ import com.todocalendar.model.CategoryVO;
 import com.todocalendar.model.CountVO;
 import com.todocalendar.model.DdayVO;
 import com.todocalendar.model.MemberVO;
+import com.todocalendar.model.PaletteVO;
 import com.todocalendar.model.ScheduleVO;
 import com.todocalendar.service.CategoryServiceImpl;
 import com.todocalendar.service.DdayServiceImpl;
 import com.todocalendar.service.MemberServiceImpl;
+import com.todocalendar.service.PaletteService;
 import com.todocalendar.service.ScheduleServiceImpl;
 
 import lombok.AllArgsConstructor;
@@ -48,6 +50,9 @@ public class HomeController {
 
 	@Autowired
 	DdayServiceImpl ddayService;
+	
+	@Autowired
+	PaletteService paletteService;
 
 	@GetMapping("/home")
 	public void mainPage(Model model, HttpServletRequest request, HttpSession session) {
@@ -61,7 +66,6 @@ public class HomeController {
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("scheduleList", scheduleList);
 		
-		
 		List<DdayVO> ddayList = ddayService.selectDdayList(member.getMember_no());
 		log.info("member_no : " + member.getMember_no() + ", ddayList : " + ddayList);
 		
@@ -72,6 +76,9 @@ public class HomeController {
 		model.addAttribute("y_count", scheduleCount.getY_count());
 		model.addAttribute("n_count", scheduleCount.getN_count());
 		model.addAttribute("all_count", scheduleCount.getAll_count());
+		
+		List<PaletteVO> paletteList = paletteService.selectPaletteListAll();
+		model.addAttribute("paletteList", paletteList);
 		
 	}
 

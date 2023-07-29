@@ -134,7 +134,15 @@
 
                             <c:forEach var="category" items="${categoryList }" varStatus="status">
                             <!--여기부터-->
-                            <a href="#" style="text-decoration: none;"><i class="fa fa-folder fa-fw"></i> ${category.category_nm }<span class="fa arrow"></span></a>
+                            <c:forEach var="palette" items="${paletteList }" varStatus="status">
+	                            <c:if test="${category.color_code eq palette.color_code }">
+	                            	<a href="#" style="text-decoration: none; color: ${palette.hex_code};">
+		                            	<i class="fa fa-folder fa-fw"></i> ${category.category_nm }
+		                            	<span class="fa arrow"></span>
+	                            	</a>
+	                            </c:if>
+                            </c:forEach>
+                            
                             <ul class="nav nav-second-level">
 	                            <c:forEach var="schedule" items="${scheduleList }" varStatus="status">
 	                            <fmt:formatDate var="planDate_FD"  value="${schedule.plan_date }" pattern="yyyy-MM-dd"/>

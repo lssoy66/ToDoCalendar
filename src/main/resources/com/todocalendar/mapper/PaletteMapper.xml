@@ -31,5 +31,13 @@
 		  FROM PALETTE          /* 팔레트 테이블 */
 		 --WHERE MEMBERSHIP = '1'
 	</select>
+	
+	<select id="selectPaletteListAll" resultType="com.todocalendar.model.PaletteVO">
+		SELECT COLOR_CODE		/* 컬러코드(PK) */
+		     , COLOR_NAME		/* 컬러이름 */
+		     , HEX_CODE    	    /* 헥스코드 */
+		     , MEMBERSHIP	    /* 멤버쉽 */
+		  FROM PALETTE          /* 팔레트 테이블 */
+	</select>
 
 </mapper>
