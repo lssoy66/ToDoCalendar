@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.todocalendar.model.CategoryVO;
+import com.todocalendar.model.CountVO;
 import com.todocalendar.model.DdayVO;
 import com.todocalendar.model.MemberVO;
 import com.todocalendar.model.ScheduleVO;
@@ -64,10 +65,11 @@ public class HomeController {
 		
 		model.addAttribute("ddayList", ddayList);
 		
-		int scheduleCount = scheduleService.selectScheduleListByCount(member.getMember_no());
+		CountVO scheduleCount = scheduleService.selectScheduleListByCount(member.getMember_no());
 		log.info("count : " + scheduleCount);
-		model.addAttribute("scheduleCount", scheduleCount);
-		
+		model.addAttribute("y_count", scheduleCount.getY_count());
+		model.addAttribute("n_count", scheduleCount.getN_count());
+		model.addAttribute("all_count", scheduleCount.getAll_count());
 		
 	}
 

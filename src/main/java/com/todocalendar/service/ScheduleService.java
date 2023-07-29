@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.todocalendar.model.CategoryVO;
+import com.todocalendar.model.CountVO;
 import com.todocalendar.model.PaletteVO;
 import com.todocalendar.model.RepeatVO;
 import com.todocalendar.model.ScheduleVO;
@@ -33,6 +34,6 @@ public interface ScheduleService {
 	/**
 	 * 개수 카운트를 위한 오늘 날짜 스케줄(일정) 목록
 	 */
-	public int selectScheduleListByCount(int member_no);
+	public CountVO selectScheduleListByCount(int member_no);
 
 }
