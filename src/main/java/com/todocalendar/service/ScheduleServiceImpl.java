@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.todocalendar.mapper.ScheduleMapper;
+import com.todocalendar.model.CountVO;
 import com.todocalendar.model.ScheduleVO;
 
 import lombok.AllArgsConstructor;
@@ -50,7 +51,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 	}
 	
 	@Override
-	public int selectScheduleListByCount(int member_no) {
+	public CountVO selectScheduleListByCount(int member_no) {
 		log.info("Service :: selectScheduleListByCount..................");
 		return scheduleMapper.selectScheduleListByCount(member_no);
 	}

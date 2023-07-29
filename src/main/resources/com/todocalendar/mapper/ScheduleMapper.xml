@@ -102,7 +102,7 @@
 		   AND SCHEDULE_NO = #{schedule_no}
 	</update>
 	
-	<select id="selectScheduleListByCount" resultType="int">
+	<select id="selectScheduleListByCount" resultType="com.todocalendar.model.CountVO">
 		SELECT (SELECT COUNT(b.COMPLETE)
           FROM SCHEDULE b
          WHERE b.COMPLETE = 'Y'

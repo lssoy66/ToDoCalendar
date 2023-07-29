@@ -156,7 +156,10 @@
                             </ul>
                             <!--여기까지가 한 카테고리-->
                             </c:forEach>
-                            <a style="text-align: right">달성도 ${count.y_count }</a>
+                            
+                            <a style="text-align: right">
+                            	달성도<span id="y_count"> ${y_count }</span> / ${all_count }
+                            </a> 
                         </li>
 				</div>
 				<!-- /.sidebar-collapse -->
@@ -289,7 +292,7 @@
 		var data = JSON.stringify({'month': month, 'member_no':member_no});
 
 		$.ajax({
-			url : '/pages/scheduleListByMonth',
+			url : './pages/scheduleListByMonth',
 			type : 'POST',
 			//processData : false,
 			contentType : "application/json; charset=utf-8",		// 전송할 데이터 타입(JSON)
