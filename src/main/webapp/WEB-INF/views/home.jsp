@@ -221,6 +221,7 @@
 			$("#completeY${status.count}").attr("id", "completeN${status.count}");
 			var value = $("#completeN${status.count}").val();
 			console.log(value);
+			
 			//Ajax로 전송
 			$.ajax({
 				url : './ChangeComplete',
@@ -232,6 +233,8 @@
 				dataType : 'json',
 				success : function(result) {
 					console.log("success Y to N ");
+					console.log(result.scheduleCount.y_count);
+					$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");
 				}
 			}); //End Ajax
 		});
@@ -252,6 +255,8 @@
 				dataType : 'json',
 				success : function(result) {
 					console.log("success N to Y ");
+					console.log(result.scheduleCount.y_count);	
+					$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");
 				}
 			}); //End Ajax
 		});

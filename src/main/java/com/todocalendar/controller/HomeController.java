@@ -1,6 +1,8 @@
 package com.todocalendar.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -76,7 +78,8 @@ public class HomeController {
 	//Complete Ajax
 	@PostMapping("/ChangeComplete")
 	@ResponseBody
-	public ResponseEntity<List<ScheduleVO>> changeComplete(String complete, int schedule_no, HttpSession session) {
+	//public ResponseEntity<List<ScheduleVO>> changeComplete(Model model, String complete, int schedule_no, HttpSession session) {
+	public ResponseEntity<Map<String, Object>> changeComplete(Model model, String complete, int schedule_no, HttpSession session) {
 		log.info("ChangeComplete.........");
 
 		log.info("complete : " + complete);
@@ -86,8 +89,12 @@ public class HomeController {
 		log.info("member_no : " + member_no + ", schedule_no : " + schedule_no);
 
 		scheduleService.changeComplete(member_no, complete, schedule_no);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("scheduleAll", scheduleService.selectScheduleListAll(member_no));
+		result.put("scheduleCount", scheduleService.selectScheduleListByCount(member_no));
 
-		return new ResponseEntity<>(scheduleService.selectScheduleListAll(member_no), HttpStatus.OK);
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 }
