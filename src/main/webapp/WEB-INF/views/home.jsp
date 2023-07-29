@@ -156,10 +156,10 @@
                             </ul>
                             <!--여기까지가 한 카테고리-->
                             </c:forEach>
-                            
+
                             <a style="text-align: right">
                             	달성도<span id="y_count"> ${y_count }</span> / ${all_count }
-                            </a> 
+                            </a>
                         </li>
 				</div>
 				<!-- /.sidebar-collapse -->
@@ -208,6 +208,41 @@
 
 		</div>
 		<!-- /#page-wrapper -->
+
+		<!-- 날짜 클릭 Modal -->
+		<div class="modal fade" id="todoListModal" tabindex="-1" role="dialog" aria-labelledby="todoListModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close"	data-dismiss="modal" aria-hidden="true">&times;</button>
+		                <h4 class="modal-title" id="modalTitle">To-Do List</h4>
+					</div>
+					<div class="modal-body" id="modalDate">Modal Date</div>
+					<div class="modal-body" id="modalTodoList">Modal To-Do List</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" onclick="addNewScheduleClick()">새로운 일정 추가</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- ./modal-dialog -->
+		</div><!-- /.modal -->
+
+		<!-- 새로운 일정 추가 Modal -->
+		<div class="modal fade" id="addNewScheduleModal" tabindex="-1" role="dialog" aria-labelledby="addNewScheduleLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close"	data-dismiss="modal" aria-hidden="true">&times;</button>
+		                <h4 class="modal-title" id="modalTitle">새로운 일정 추가하기</h4>
+					</div>
+					<div class="modal-body" id="modalDate">Modal Body</div>
+					<div class="modal-footer">
+						<!-- <button type="button" class="btn btn-primary" onclick="addNewDateClick()">새로운 일정 추가</button> -->
+						<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- ./modal-dialog -->
+		</div><!-- /.modal -->
 
 	</div>
 	<!-- /#wrapper -->
@@ -286,6 +321,8 @@
 
 	});
 
+	var scheduleList = [];
+
 	function getScheduleByMonth() {
 		var month = document.getElementById("month").innerHTML;
 		var member_no = document.getElementById("member_no").innerHTML;
@@ -305,7 +342,11 @@
 					for(var i = 0; i < result.length; i++) {
 						var day = result[i].day;
 						var dateId = "#date" + day;
-						$(dateId).append("<br>" + result[i].content + "");
+						var dateContentId = dateId + "Content";
+
+						$(dateContentId).append("<br>" + result[i].content + "");
+						//scheduleList.push({"day":result[i].day, "content":result[i].content});
+						scheduleList.push(result[i]);
 					}
 				}
 
@@ -313,11 +354,38 @@
 		});
 	}
 
+	// 날짜 클릭 시 Modal 호출
 	function dateClick(date) {
-		var dateId = "#" + date.id;
-		alert(dateId);
 		// modal
+		var dateId  = date.getAttribute('id');
+		var dateDayId = dateId + "Day";
+		var dateContentId = dateId + "Content";
+
+		var dateDay = document.getElementById(dateDayId).innerHTML;
+		var dateContent = document.getElementById(dateContentId).innerHTML;
+		var content = "";
+
+		for(var i = 0; i < scheduleList.length; i++) {
+			if(scheduleList[i].day == dateDay) {
+				content += scheduleList[i].content;
+			}
+		}
+
+		// TODO :: content들에 대한 줄바꿈처리
+
+		// modal 본문 내용
+		$("#modalDate").text(dateDay);
+		$("#modalTodoList").text(content);
+
+		$("#todoListModal").modal("show");
 	}
+
+	// 새로운 일정 추가 Modal
+	function addNewScheduleClick() {
+		//alert("addNewScheduleClick");
+		$("#addNewScheduleModal").modal("show");
+	}
+
 	</script>
 </body>
 

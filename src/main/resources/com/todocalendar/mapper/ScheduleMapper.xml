@@ -52,7 +52,6 @@
 		   </if>
 	</select>
 
-	<!-- 추가 -->
 	<select id="selectScheduleListByMonth" parameterType="String" resultType="com.todocalendar.model.ScheduleVO">
 		SELECT SCHEDULE_NO      /* 일정번호(PK) */
 		     , MEMBER_NO        /* 회원번호(FK) */
@@ -69,13 +68,14 @@
 		        END AS DDAY_CNT	/* 디데이일수 */
 		     , COMPLETE         /* 완료Y/N */
 		     , TO_CHAR(PLAN_DATE, 'FMdd') AS DAY
+		     , TO_CHAR(PLAN_DATE, 'FMmm') AS MONTH
 		  FROM SCHEDULE         /* 일정 테이블 */
 		 WHERE MEMBER_NO   = #{member_no}
 		   <if test="month != null and month neq ''">
 				AND TO_CHAR(PLAN_DATE, 'FMMM') = #{month}
 		   </if>
 	</select>
-	
+
 	<select id="selectScheduleListAll" resultType="com.todocalendar.model.ScheduleVO">
 		SELECT SCHEDULE_NO      /* 일정번호(PK) */
 		     , MEMBER_NO        /* 회원번호(FK) */
@@ -94,14 +94,14 @@
 		  FROM SCHEDULE         /* 일정 테이블 */
 		 WHERE MEMBER_NO   = #{member_no}
 	</select>
-	
+
 	<update id="changeComplete">
 		UPDATE SCHEDULE
 		   SET COMPLETE = #{complete}
 		 WHERE MEMBER_NO = #{member_no}
 		   AND SCHEDULE_NO = #{schedule_no}
 	</update>
-	
+
 	<select id="selectScheduleListByCount" resultType="com.todocalendar.model.CountVO">
 		SELECT (SELECT COUNT(b.COMPLETE)
           FROM SCHEDULE b
