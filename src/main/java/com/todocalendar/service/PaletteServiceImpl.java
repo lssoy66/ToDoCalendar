@@ -24,5 +24,11 @@ public class PaletteServiceImpl implements PaletteService {
 		log.info("Service :: selectPaletteList...................");
 		return paletteMapper.selectPaletteList(palette);
 	}
+	
+	@Override
+	public List<PaletteVO> selectPaletteListAll() {
+		log.info("Service :: selectPaletteList...................");
+		return paletteMapper.selectPaletteListAll();
+	}
 
 }
