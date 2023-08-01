@@ -344,7 +344,18 @@
 						var dateId = "#date" + day;
 						var dateContentId = dateId + "Content";
 
-						$(dateContentId).append("<br>" + result[i].content + "");
+						//$(dateId).append("<br>");
+						var complete = result[i].complete;
+
+						$(dateContentId).append("<br>");
+						if(complete == "Y") {
+							$(dateContentId).append("<input type='checkbox' id='" + dateContentId + "Complete" + "' value='' checked='checked' disabled>&nbsp");
+						}
+						else {
+							$(dateContentId).append("<input type='checkbox' id='" + dateContentId + "Complete" + "' value='' disabled>&nbsp");
+						}
+
+						$(dateContentId).append(result[i].content);
 						//scheduleList.push({"day":result[i].day, "content":result[i].content});
 						scheduleList.push(result[i]);
 					}
@@ -365,17 +376,30 @@
 		var dateContent = document.getElementById(dateContentId).innerHTML;
 		var content = "";
 
+		$("#modalTodoList").text("");
 		for(var i = 0; i < scheduleList.length; i++) {
 			if(scheduleList[i].day == dateDay) {
-				content += scheduleList[i].content;
+				//content += scheduleList[i].content;
+				//content += '\n';
+				var complete = scheduleList[i].complete;
+				if(complete == "Y") {
+					$("#modalTodoList").append("<input type='checkbox' id='" + dateContentId + "Complete" + "' value='' checked='checked' >&nbsp");
+				}
+				else {
+					$("#modalTodoList").append("<input type='checkbox' id='" + dateContentId + "Complete" + "' value='' >&nbsp");
+				}
+				$("#modalTodoList").append(scheduleList[i].content);
+				$("#modalTodoList").append("<br>");
 			}
 		}
+
+		debugger;
 
 		// TODO :: content들에 대한 줄바꿈처리
 
 		// modal 본문 내용
 		$("#modalDate").text(dateDay);
-		$("#modalTodoList").text(content);
+		//$("#modalTodoList").text(content);
 
 		$("#todoListModal").modal("show");
 	}
