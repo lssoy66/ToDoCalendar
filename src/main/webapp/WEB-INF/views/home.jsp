@@ -321,8 +321,9 @@
 
 	});
 
-	var scheduleList = [];
+	var scheduleList = [];		// 이번달 스케줄 리스트(JSON)
 
+	// 이번달 스케줄 리스트 가져오기
 	function getScheduleByMonth() {
 		var month = document.getElementById("month").innerHTML;
 		var member_no = document.getElementById("member_no").innerHTML;
@@ -331,32 +332,28 @@
 		$.ajax({
 			url : './pages/scheduleListByMonth',
 			type : 'POST',
-			//processData : false,
 			contentType : "application/json; charset=utf-8",		// 전송할 데이터 타입(JSON)
-			dataType : 'json',		// 받을 데이터 타입
+			dataType : 'json',										// 받을 데이터 타입(JSON)
 			data: data,
 
 			success : function(result){
-				//alert("success");
 				if(result != "") {
 					for(var i = 0; i < result.length; i++) {
 						var day = result[i].day;
 						var dateId = "#date" + day;
 						var dateContentId = dateId + "Content";
 
-						//$(dateId).append("<br>");
 						var complete = result[i].complete;
 
 						$(dateContentId).append("<br>");
 						if(complete == "Y") {
-							$(dateContentId).append("<input type='checkbox' id='" + dateContentId + "Complete" + "' value='' checked='checked' disabled>&nbsp");
+							$(dateContentId).append("<input type='checkbox' id='" + dateContentId + "Complete" + "' value='' checked='checked' >&nbsp");
 						}
 						else {
-							$(dateContentId).append("<input type='checkbox' id='" + dateContentId + "Complete" + "' value='' disabled>&nbsp");
+							$(dateContentId).append("<input type='checkbox' id='" + dateContentId + "Complete" + "' value='' >&nbsp");
 						}
 
 						$(dateContentId).append(result[i].content);
-						//scheduleList.push({"day":result[i].day, "content":result[i].content});
 						scheduleList.push(result[i]);
 					}
 				}
@@ -394,8 +391,6 @@
 		}
 
 		debugger;
-
-		// TODO :: content들에 대한 줄바꿈처리
 
 		// modal 본문 내용
 		$("#modalDate").text(dateDay);
