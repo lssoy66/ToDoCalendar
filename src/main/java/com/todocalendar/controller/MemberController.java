@@ -76,6 +76,23 @@ public class MemberController {
 	public void signUpPage() {
 		log.info("sign up.........");
 	}
+	
+	//Id 중복 확인
+	@PostMapping("/ConfirmId")
+	@ResponseBody
+	public ResponseEntity<Boolean> confirmId(String id) {
+		log.info("ConfirmId.........");
+		log.info("id : " + id);
+		boolean result = true;
+		
+		if (memberService.selectId(id) != null) { //반환 값이 null이 아니면
+			result = false;
+		} else {
+			result = true;
+		}
+		
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
 
 	//회원가입
 	@PostMapping("/signUpMember")

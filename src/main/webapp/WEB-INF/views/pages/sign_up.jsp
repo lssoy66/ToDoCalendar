@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <title>To Do Calendar</title>
 
@@ -48,7 +49,11 @@
                             <fieldset>
                             	아이디
                             	<div class="form-group">
-                                    <input class="form-control" placeholder="ID를 입력해주세요" name="id" type="text" autofocus>
+                                    <input class="form-control" placeholder="ID를 입력해주세요" name="id" id="id" type="text" autofocus>
+                                    <div style="display: block; text-align: right;">
+                                    	<span style="text-align: left;" id="result"></span>
+                                    	<input type="button" value="중복확인" class="btn btn-primary" id="comfirm" onclick="confirmId()">
+                                    </div>
                                 </div>
                             	이름
                             	<div class="form-group">
@@ -88,6 +93,25 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="../resources/dist/js/sb-admin-2.js"></script>
+    
+    <script type="text/javascript">
+    function confirmId() {
+    	var id = $("#id").val();
+    	
+    	//Ajax로 전송
+    	$.ajax({
+    		url : './ConfirmId',
+    		data : {
+    			id : id
+    		},
+    		type : 'POST',
+    		dataType : 'json',
+    		success : function(result) {
+    			alert(result);
+    		}
+    	}); //End Ajax
+    }
+    </script>
 
 </body>
 
