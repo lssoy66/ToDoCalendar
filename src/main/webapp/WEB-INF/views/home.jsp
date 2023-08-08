@@ -235,12 +235,25 @@
 						<button type="button" class="close"	data-dismiss="modal" aria-hidden="true">&times;</button>
 		                <h4 class="modal-title" id="modalTitle">새로운 일정 추가하기</h4>
 					</div>
-					<div class="modal-body" id="modalDate">Modal Body</div>
-					<div class="modal-footer">
-						<!-- <button type="button" class="btn btn-primary" onclick="addNewDateClick()">새로운 일정 추가</button> -->
-						<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-					</div>
+					<form role="form" action="./pages/addSchedule" method="post">
+						<div class="modal-body" id="addNewSchedultForm">
+					            <div class="modal-body">
+					                <input type="text" class="form-control" id="content" name="content" placeholder="새로운 할 일을 적어주세요." ><hr>
+					                <div id="category_area">
+					                	<input type="button" class="btn btn-default" id="category_btn" name="category_btn" value="+카테고리">
+					                </div>
+					            </div>
+	<!-- 				            <div class="find_password">
+					                <a href="/forgot-password">아이디 또는 비밀번호를 잊으셨나요?</a>
+					            </div>
+	 -->
+						</div>
+						<div class="modal-footer">
+			                <input type="submit" class="btn btn-primary" id="btn-login" value="저장">
+			            </div>
+		            </form>
 				</div><!-- /.modal-content -->
+
 			</div><!-- ./modal-dialog -->
 		</div><!-- /.modal -->
 
