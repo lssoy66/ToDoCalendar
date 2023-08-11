@@ -95,6 +95,7 @@
 				<div class="sidebar-nav navbar-collapse">
 					<ul class="nav" id="side-menu">
 						<li class="sidebar-search">
+							
 							<div class="input-group custom-search-form">
                                 <legend style="border-bottom: none;"><a style="text-decoration: none; font-weight: bold;">D-day</a></legend>
                                 <ul class="nav">
@@ -126,6 +127,43 @@
                                     </li>
                                 </ul>
                             </div>
+                            
+						</li>
+						<li class="sidebar-search">
+							
+							<div class="input-group custom-search-form">
+                                <legend style="border-bottom: none;"><a style="text-decoration: none; font-weight: bold;">기념일</a></legend>
+                                <ul class="nav">
+                                    <li style="border-bottom: none;">
+                                    	<c:forEach var="anniversary" items="${ddayList }" varStatus="status">
+	                                    <!-- DDAY 컬럼의 값이 2(D-day)인 것만 보여준다. -->
+	                                    	<c:if test="${anniversary.schedule.dday == 2 }">
+	                                    	<!--
+	                                    	formatDate는 날짜 및 시간 값을 지정한 형식으로 변경해준다.
+	                                    	parseDate는 String타입으로 표시된 날짜 및 시간 값을 Date타입으로 파싱해준다.
+	                                    	 -->
+	                                    		<fmt:formatDate var="planDate_FD"  value="${anniversary.schedule.plan_date }" pattern="yyyy-MM-dd"/>
+
+		                                    	<fmt:parseDate var="now_PD" value="${now_FD }" pattern="yyyy-MM-dd" />
+		                                    	<fmt:parseDate var="planDate_PD" value="${planDate_FD }" pattern="yyyy-MM-dd" />
+
+		                                    	<fmt:parseNumber var="now_PN" value="${now_PD.time/(1000*60*60*24) }" integerOnly="true" />
+		                                    	<fmt:parseNumber var="planDate_PN" value="${planDate_PD.time/(1000*60*60*24) }" integerOnly="true" />
+
+		                                		<!--
+		                                		현재 날짜에서 지정 날짜 까지의 일 수 차이를 구하고 그 값이 (-)가 아닐 때에만 D-Day(기념일)와 내용을 보여준다.
+		                                		(기념일이란 과거의 날짜로부터 현재 날짜까지 얼마나 지나왔는지)
+		                                		-->
+		                                		<c:set var="anni" value="${now_PN-planDate_PN }" />
+		                                		<c:if test="${anni > 0 }">
+		                                			<a>· ${anniversary.schedule.content } D+${anni }</a>
+		                                		</c:if>
+	                                    	</c:if>
+	                                	</c:forEach>
+                                    </li>
+                                </ul>
+                            </div>
+                            
 						</li>
 						<li class="sidebar-search">
                             <div class="input-group custom-search-form" \>

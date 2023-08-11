@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <title>To Do Calendar</title>
 
@@ -48,25 +49,36 @@
                             <fieldset>
                             	아이디
                             	<div class="form-group">
-                                    <input class="form-control" placeholder="ID를 입력해주세요" name="id" type="text" autofocus>
+                                    <input class="form-control" placeholder="ID를 입력해주세요" name="id" id="id" type="text" autofocus>
+                                    <label id="label1"></label>
+                                    <div style="display: block; text-align: right;">
+                                    	<span style="text-align: left;" id="result"></span>
+                                    	<!--  
+                                    	<input type="button" value="중복확인" class="btn btn-primary" id="comfirm" onclick="confirmId()">
+                                    	-->
+                                    </div>
                                 </div>
                             	이름
                             	<div class="form-group">
-                                    <input class="form-control" placeholder="이름을 입력해주세요" name="name" type="text" autofocus>
+                                    <input class="form-control" placeholder="이름을 입력해주세요" name="name" id="name" type="text" autofocus>
                                 </div>
                                 	이메일
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="이메일을 입력해주세요." name="email" type="email" autofocus>
+                                    <input class="form-control" placeholder="이메일을 입력해주세요." name="email" id="email" type="email" autofocus>
                                 </div>
                                 	비밀번호
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="비밀번호를 입력해주세요." name="password" type="password" value="">
+                                    <input class="form-control" placeholder="비밀번호를 입력해주세요." name="password" id="password" type="password" value="">
                                 </div>
                                 <div class="checkbox">
                                     <label>
                                         <input name="remember" type="checkbox" value="Remember Me">회원가입과 동시에 개인정보취급방침및 이용약관에 동의하게 됩니다.
                                     </label>
                                 </div>
+                                <!--  
+                                <input id="hiddenValue" name="hiddenValue" type="hidden" value="">
+                                -->
+                                
                                 <!-- Change this to a button or input when using this as a form -->
                                 <input type="submit" value="회원가입" class="btn btn-lg btn-success btn-block">
                             </fieldset>
@@ -88,6 +100,76 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="../resources/dist/js/sb-admin-2.js"></script>
+    
+    <script type="text/javascript">
+    $(document).ready(function() {
+    	$("#id").on("focusout", function() {
+    		
+    		var id = $("#id").val();
+    		
+    		if(id == '' || id.length == 0) {
+    			$("#label1").css("color", "red").text("공백은 ID로 사용할 수 없습니다.");
+    			return false;
+    		}
+    		
+        	//Ajax로 전송
+        	$.ajax({
+        		url : './ConfirmId',
+        		data : {
+        			id : id
+        		},
+        		type : 'POST',
+        		dataType : 'json',
+        		success : function(result) {
+        			if (result == true) {
+        				$("#label1").css("color", "black").text("사용 가능한 ID 입니다.");
+        			} else{
+        				$("#label1").css("color", "red").text("사용 불가능한 ID 입니다.");
+        				$("#id").val('');
+        			}
+        		}
+        	}); //End Ajax
+    		
+    	});
+    })
+    </script>
+    
+    <!--  
+    <script type="text/javascript">
+    function confirmId() {
+    	
+    	var id = $("#id").val();
+    	
+    	//Ajax로 전송
+    	$.ajax({
+    		url : './ConfirmId',
+    		data : {
+    			id : id
+    		},
+    		type : 'POST',
+    		dataType : 'json',
+    		success : function(result) {
+    			if (result == true) {
+    				var value = "true";
+    				$("#label1").css("color", "black").text("사용 가능한 ID 입니다.");
+    				$("#comfirm").attr("value", "check");
+    				$("#comfirm").attr("disabled", "disabled");
+    				$("#name").removeAttr("disabled");
+    				$("#email").removeAttr("disabled");
+    				$("#password").removeAttr("disabled");
+    			} else {
+    				var value = "false";
+    				$("#label1").css("color", "red").text("이미 사용 중인 ID 입니다.");
+    				
+    				$("#id").val('');
+    				//중복된 ID일 경우 id가 hiddenValue인 input 태그의 value 값을 "false"로 설정한 뒤 submit 되면 데이터를 넘긴다.
+    				$("#hiddenValue").val(value); 
+    			}
+    		}
+    	}); //End Ajax
+    }
+    </script>
+    -->
 
 </body>
 

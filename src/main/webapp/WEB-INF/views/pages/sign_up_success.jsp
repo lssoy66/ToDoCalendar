@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <title>To Do Calendar</title>
 
@@ -50,7 +51,7 @@
                             		</label>
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <a href="../controller" class="btn btn-lg btn-success btn-block">메인 페이지로 돌아가기</a>
+                                <a href="../../home" class="btn btn-lg btn-success btn-block">메인 페이지로 돌아가기</a>
                             </fieldset>
                         </form>
                     </div>

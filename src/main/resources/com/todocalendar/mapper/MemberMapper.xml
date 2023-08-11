@@ -81,5 +81,11 @@
 		  FROM MEMBER           /* 회원 테이블 */
 		 WHERE MEMBER_NO = #{member_no}
 	</select>
+	
+	<select id="selectId" resultType="boolean">
+		SELECT COUNT(*)
+		  FROM MEMBER
+		 WHERE ID = #{id}
+	</select>
 
 </mapper>
