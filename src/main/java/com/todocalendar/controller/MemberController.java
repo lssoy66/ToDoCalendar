@@ -85,10 +85,15 @@ public class MemberController {
 		log.info("id : " + id);
 		boolean result = true;
 		
-		if (memberService.selectId(id) != null) { //반환 값이 null이 아니면
+		if(id.trim().isEmpty()) {
+			log.info("id : " + id);
 			result = false;
 		} else {
-			result = true;
+			if (memberService.selectId(id)) {
+				result = false;
+			} else {
+				result = true;
+			}
 		}
 		
 		return new ResponseEntity<>(result, HttpStatus.OK);
@@ -96,7 +101,19 @@ public class MemberController {
 
 	//회원가입
 	@PostMapping("/signUpMember")
-	public String signUp(MemberVO member) {
+	public String signUp(MemberVO member, HttpServletRequest request) {
+		
+//		if(hiddenValue.equals("false")) {
+//			request.setAttribute("msg", "잘못된 정보를 입력했습니다.");
+//			request.setAttribute("url", "./sign_up");
+//			
+//			return "alert";
+//		} else {
+//			memberService.insertMember(member);
+//			log.info("회원가입 성공 id : " + member.getId());
+//			return "redirect:/pages/sign_up_success/" + member.getId();
+//		}
+		
 		memberService.insertMember(member);
 		log.info("회원가입 성공 id : " + member.getId());
 		return "redirect:/pages/sign_up_success/" + member.getId();

@@ -20,6 +20,6 @@ public interface MemberMapper {
 	
 	public List<MemberVO> selectMemberList(MemberVO member);
 	
-	public String selectId(String id); //중복 Id 검색
+	public boolean selectId(String id); //중복 Id 검색
 	
 }
