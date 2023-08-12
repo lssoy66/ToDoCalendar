@@ -53,26 +53,31 @@
 	</select>
 
 	<select id="selectScheduleListByMonth" parameterType="String" resultType="com.todocalendar.model.ScheduleVO">
-		SELECT SCHEDULE_NO      /* 일정번호(PK) */
-		     , MEMBER_NO        /* 회원번호(FK) */
-		     , CATEGORY_NO      /* 카테고리번호(FK) */
-		     , CONTENT          /* 내용 */
-		     , PLAN_DATE        /* 날짜 */
-		     , DDAY             /* 디데이 */
-		     , CASE DDAY WHEN '1' THEN '디데이'
-		                 WHEN '2' THEN '기념일'
-		                 ELSE '해당없음'
+		SELECT /* ScheduleMapper.selectScheduleListByMonth */
+		       S.SCHEDULE_NO      /* 일정번호(PK) */
+		     , S.MEMBER_NO        /* 회원번호(FK) */
+		     , S.CATEGORY_NO      /* 카테고리번호(FK) */
+		     , C.CATEGORY_NM	  /* 카테고리이름 */
+		     , S.CONTENT          /* 내용 */
+		     , S.PLAN_DATE        /* 날짜 */
+		     , S.DDAY             /* 디데이 */
+		     , CASE S.DDAY WHEN '1' THEN '디데이'
+		                   WHEN '2' THEN '기념일'
+		                   ELSE '해당없음'
 		        END AS DDAY_NM	/* 디데이구분명 */
-		     , CASE DDAY WHEN '0' THEN -1
-		                 ELSE TO_DATE( TO_CHAR( SYSDATE, 'YYYYMMDD' ) ) - PLAN_DATE
+		     , CASE S.DDAY WHEN '0' THEN -1
+		                   ELSE TO_DATE( TO_CHAR( SYSDATE, 'YYYYMMDD' ) ) - S.PLAN_DATE
 		        END AS DDAY_CNT	/* 디데이일수 */
-		     , COMPLETE         /* 완료Y/N */
-		     , TO_CHAR(PLAN_DATE, 'FMdd') AS DAY
-		     , TO_CHAR(PLAN_DATE, 'FMmm') AS MONTH
-		  FROM SCHEDULE         /* 일정 테이블 */
-		 WHERE MEMBER_NO   = #{member_no}
+		     , S.COMPLETE         /* 완료Y/N */
+		     , TO_CHAR(S.PLAN_DATE, 'FMdd') AS DAY
+		     , TO_CHAR(S.PLAN_DATE, 'FMmm') AS MONTH
+		  FROM SCHEDULE S        /* 일정 테이블 */
+		     , CATEGORY C
+		 WHERE S.MEMBER_NO = C.MEMBER_NO
+		   AND S.CATEGORY_NO = C.CATEGORY_NO
+		   AND S.MEMBER_NO   = #{member_no}
 		   <if test="month != null and month neq ''">
-				AND TO_CHAR(PLAN_DATE, 'FMMM') = #{month}
+				AND TO_CHAR(S.PLAN_DATE, 'FMMM') = #{month}
 		   </if>
 	</select>
 

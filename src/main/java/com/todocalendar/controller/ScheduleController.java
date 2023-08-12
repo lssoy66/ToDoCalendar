@@ -41,7 +41,6 @@ public class ScheduleController {
 	@PostMapping("/scheduleListByMonth")
 	@ResponseBody
 	public List<ScheduleVO> selectScheduleList(@RequestBody ScheduleVO schedule) {
-		log.info("Service :: selectMemberListTest!!!...................");
 		log.info("parameter month :: " + schedule.getMonth());
 //		ScheduleVO schedule = new ScheduleVO();
 //		schedule.setMonth(month);

@@ -334,7 +334,29 @@
 
 	});
 
-	var scheduleList = [];		// 이번달 스케줄 리스트(JSON)
+	var scheduleList = [];			// 이번달 스케줄 리스트(JSON)
+	var dateScheduleList = [];		// 해당 날짜의 일정 목록(JSON)
+	/*
+		{
+			category_no:1
+		  , category_nm:"공부"
+		  , complete:"N"
+		  , content:"♥락페스티벌 당일♥"
+		  , day:"5"
+		  , dday:"1"
+		  , dday_cnt:"7"
+		  , dday_nm:"디데이"
+		  , member_no:1
+		  , month:"8"
+		  , plan_date:"2023-08-05"
+		  , schedule_no:13
+		},
+		{
+			...
+		}
+		,
+		...
+	*/
 
 	// 이번달 스케줄 리스트 가져오기
 	function getScheduleByMonth() {
@@ -375,22 +397,24 @@
 		});
 	}
 
-	// 날짜 클릭 시 Modal 호출
+	// 날짜 클릭 시 Modal(todoListModal) 호출
 	function dateClick(date) {
-		// modal
-		var dateId  = date.getAttribute('id');
-		var dateDayId = dateId + "Day";
-		var dateContentId = dateId + "Content";
+		var dateId  = date.getAttribute('id');							// 클릭한 날짜의 ID, ex. date12
 
-		var dateDay = document.getElementById(dateDayId).innerHTML;
-		var dateContent = document.getElementById(dateContentId).innerHTML;
-		var content = "";
+		var dateDayId = dateId + "Day";									// 클릭한 날짜의 Day ID, ex. date12Day
+		var dateDay = document.getElementById(dateDayId).innerHTML;		// 클릭한 날짜의 Day, ex. 12
+
+		var dateContentId = dateId + "Content";							// 클릭한 날짜의 Content ID, ex.date12Content
+
+		dateScheduleList = [];											// 해당 날짜의 일정 목록 초기화
 
 		$("#modalTodoList").text("");
+
+		// 클릭한 날짜의 일정 가져오기
 		for(var i = 0; i < scheduleList.length; i++) {
 			if(scheduleList[i].day == dateDay) {
-				//content += scheduleList[i].content;
-				//content += '\n';
+
+				// 일정 달성여부 표시(checkBox)
 				var complete = scheduleList[i].complete;
 				if(complete == "Y") {
 					$("#modalTodoList").append("<input type='checkbox' id='" + dateContentId + "Complete" + "' value='' checked='checked' >&nbsp");
@@ -398,21 +422,23 @@
 				else {
 					$("#modalTodoList").append("<input type='checkbox' id='" + dateContentId + "Complete" + "' value='' >&nbsp");
 				}
+
+				// 일정 내용
 				$("#modalTodoList").append(scheduleList[i].content);
 				$("#modalTodoList").append("<br>");
+
+				// 클릭한 날짜의 일정 목록 추가
+				dateScheduleList.push(scheduleList[i]);
 			}
 		}
 
-		debugger;
-
-		// modal 본문 내용
-		$("#modalDate").text(dateDay);
-		//$("#modalTodoList").text(content);
+		// 클릭한 날짜 표시
+		$("#modalDate").text(dateScheduleList[0].plan_date);
 
 		$("#todoListModal").modal("show");
 	}
 
-	// 새로운 일정 추가 Modal
+	// 새로운 일정 추가 Modal(addNewScheduleModal) 호출
 	function addNewScheduleClick() {
 		//alert("addNewScheduleClick");
 		$("#addNewScheduleModal").modal("show");
