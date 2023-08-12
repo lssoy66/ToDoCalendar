@@ -65,6 +65,11 @@
                                 	이메일
                                 <div class="form-group">
                                     <input class="form-control" placeholder="이메일을 입력해주세요." name="email" id="email" type="email" autofocus>
+                                    <div style="display: block; text-align: right;">
+                                    	<input type="button" value="인증하기" class="btn btn-primary" id="emailAuth">
+                                    </div>
+                                    <input class="form-control" placeholder="인증 코드 6자리를 입력해주세요." maxlength="6" disabled="disabled" name="authCode" id="authCode" type="text" autofocus>
+                                	<span id="emailAuthWarn"></span>
                                 </div>
                                 	비밀번호
                                 <div class="form-group">
@@ -103,6 +108,9 @@
     
     <script type="text/javascript">
     $(document).ready(function() {
+    	
+    	//ID 중복 확인
+    	//id를 입력할 수 있는 input text 영역을 벗어나면 동작한다.
     	$("#id").on("focusout", function() {
     		
     		var id = $("#id").val();
@@ -129,9 +137,48 @@
         			}
         		}
         	}); //End Ajax
-    		
     	});
     })
+    
+    
+    //이메일 인증
+    	$("#emailAuth").click(function() {
+    		const email = $("#email").val(); //사용자가 입력한 이메일 값 얻어오기
+    		const checkInput = $("#authCode"); //인증 코드 입력하는 곳
+    		
+    		//Ajax로 전송
+        	$.ajax({
+        		url : './EmailAuth',
+        		data : {
+        			email : email
+        		},
+        		type : 'POST',
+        		dataType : 'json',
+        		success : function(result) {
+        			console.log("result : " + result);
+        			checkInput.attr("disabled", false);
+        			code = result;
+        			alert("인증 코드가 입력하신 이메일로 전송 되었습니다.");
+        		}
+        	}); //End Ajax
+    	});
+    
+    	//인증 코드 비교
+    	$("#authCode").on("focusout", function() {
+    		const inputCode = $("#authCode").val();
+    		
+    		console.log("입력코드 : " + inputCode);
+    		console.log("인증코드 : " + code);
+    		if(Number(inputCode) === code){
+        		$("#emailAuthWarn").html('인증번호가 일치합니다.');
+        		$("#emailAuthWarn").css('color','green');
+    			$('#emailAuth').attr('disabled',true);
+    			$('#email').attr('readonly',true);
+    		}else{
+        		$("#emailAuthWarn").html('인증번호가 불일치 합니다. 다시 확인해주세요!');
+        		$("#emailAuthWarn").css('color','red');
+    		}
+    	});
     </script>
     
     <!--  
