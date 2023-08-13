@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:useBean id="now" class="java.util.Date" />
 <fmt:formatDate var="now_FD" value="${now }" pattern="yyyy-MM-dd"/>
+<fmt:formatDate var="now_FD_ym" value="${now }" pattern="yyyy-MM-"/>
 
 <!DOCTYPE html>
 <html lang="kr">
@@ -218,7 +219,27 @@
 		                <h4 class="modal-title" id="modalTitle">To-Do List</h4>
 					</div>
 					<div class="modal-body" id="modalDate">Modal Date</div>
-					<div class="modal-body" id="modalTodoList">Modal To-Do List</div>
+					<div class="modal-body" id="modalTodoList">
+						<div class="col-lg-12">
+
+							<!-- <div class="modal-body" id="modalDate">Modal Date</div> -->
+							<div class="panel panel-default">
+								<!-- <div class="panel-heading">
+									Collapsible Accordion Panel Group
+								</div> -->
+
+								<!-- .panel-heading -->
+								<div class="panel-body">
+									<div class="panel-group" id="modalTodoList">
+										<!-- 카테고리 및 일정 -->
+									</div>
+								</div>
+								<!-- .panel-body -->
+
+							</div>
+							<!-- /.panel -->
+						</div>
+					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-primary" onclick="addNewScheduleClick()">새로운 일정 추가</button>
 						<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
@@ -325,37 +346,45 @@
 	<script src="resources/dist/js/sb-admin-2.js"></script>
 
 	<!-- Calendar JavaScript -->
+
 	<script src="resources/js/calendar.js"></script>
 
 	<script type="text/javascript">
-	$(document).ready(function () {
-
-		//getScheduleByMonth();
-
-	});
 
 	var scheduleList = [];			// 이번달 스케줄 리스트(JSON)
 	var dateScheduleList = [];		// 해당 날짜의 일정 목록(JSON)
 	/*
-		{
-			category_no:1
-		  , category_nm:"공부"
-		  , complete:"N"
-		  , content:"♥락페스티벌 당일♥"
-		  , day:"5"
-		  , dday:"1"
-		  , dday_cnt:"7"
-		  , dday_nm:"디데이"
-		  , member_no:1
-		  , month:"8"
-		  , plan_date:"2023-08-05"
-		  , schedule_no:13
-		},
-		{
-			...
-		}
-		,
-		...
+		[
+			{
+				category_no:1
+			  , category_nm:"공부"
+			  , complete:"N"
+			  , content:"♥락페스티벌 당일♥"
+			  , day:"5"
+			  , dday:"1"
+			  , dday_cnt:"7"
+			  , dday_nm:"디데이"
+			  , member_no:1
+			  , month:"8"
+			  , plan_date:"2023-08-05"
+			  , schedule_no:13
+			},
+			{
+				...
+			}
+		]
+	*/
+
+	var categoryList = [];			// 사용자 카테고리 리스트(JSON)
+	<c:forEach var="item" items="${categoryList }" varStatus="status">
+		var data = { "category_no":${item.category_no}, "category_nm":"${item.category_nm}", "color_code":${item.color_code} };
+		categoryList.push(data);
+	</c:forEach>
+	/*
+		[
+			{category_no: 1, category_nm: '공부', color_code: 1},
+			{category_no: 2, category_nm: '취미', color_code: 2}
+		]
 	*/
 
 	// 이번달 스케줄 리스트 가져오기
@@ -406,34 +435,120 @@
 
 		var dateContentId = dateId + "Content";							// 클릭한 날짜의 Content ID, ex.date12Content
 
-		dateScheduleList = [];											// 해당 날짜의 일정 목록 초기화
-
-		$("#modalTodoList").text("");
-
-		// 클릭한 날짜의 일정 가져오기
+		// 클릭한 날짜의 일정 목록 가져오기
+		dateScheduleList = [];
 		for(var i = 0; i < scheduleList.length; i++) {
 			if(scheduleList[i].day == dateDay) {
-
-				// 일정 달성여부 표시(checkBox)
-				var complete = scheduleList[i].complete;
-				if(complete == "Y") {
-					$("#modalTodoList").append("<input type='checkbox' id='" + dateContentId + "Complete" + "' value='' checked='checked' >&nbsp");
-				}
-				else {
-					$("#modalTodoList").append("<input type='checkbox' id='" + dateContentId + "Complete" + "' value='' >&nbsp");
-				}
-
-				// 일정 내용
-				$("#modalTodoList").append(scheduleList[i].content);
-				$("#modalTodoList").append("<br>");
-
-				// 클릭한 날짜의 일정 목록 추가
 				dateScheduleList.push(scheduleList[i]);
 			}
 		}
 
+		var str = "";				// Modal에 채울 카테고리 + 일정 리스트
+		var notEmptyCateList = [];	// 일정이 존재하는 카테고리
+
+		for(var i = 0; i < categoryList.length; i++) {
+
+			/*
+			// 1. 카테고리 이름(category_nm) 표시(폴더)
+			str += '<a href="#" style="text-decoration: none;"><i class="fa fa-folder fa-fw"></i> '
+			str += categoryList[i].category_nm;
+			str += '<span class="fa arrow"></span></a>';
+			str += '<ul class="nav nav-second-level">';
+
+			// 2. 폴더 아래 해당 카테고리의 일정들 표시
+			var category_no = categoryList[i].category_no;
+			for(var k = 0; k < dateScheduleList.length; k++) {
+				var dateSchedule = dateScheduleList[k];
+				if(dateSchedule.category_no == category_no) {		// 일치하는 카테고리의 일정들만 표시
+
+					str += '<li style="border-bottom: none;">';
+
+					// 일정 달성여부 표시(checkBox) + 일정 내용 표시
+					var complete = dateSchedule.complete;
+					var completeId = "date" + dateSchedule.day + "ContentComplete";
+					if(complete == "Y") {
+						str += "<a><input type='checkbox' id='" + completeId + "' value='' checked='checked' > " + dateSchedule.content + "</a>";
+					}
+					else {
+						str += "<a><input type='checkbox' id='" + completeId + "' value='' > " + dateSchedule.content + "</a>";
+					}
+
+					str += '</li>';
+
+				}
+
+			}
+			str += '</ul>';
+			*/
+
+			// 1. 카테고리 이름(category_nm) 표시(폴더)
+			str += '<div class="panel panel-default">';
+			str += '<a data-toggle="collapse" data-parent="#modalTodoList" href="#collapseOne' + i + '" aria-expanded="true" class="">';		// 각 카테고리의 일정 그룹 아이디 : collapseOne + i
+			str += '<div class="panel-heading"><h4 class="panel-title">';
+			str += categoryList[i].category_nm;
+			str += '</h4>';
+			str += '</a>';
+			str += '</div>';
+
+			// 2. 폴더 아래 해당 카테고리의 일정들 표시
+			/*
+				카테고리 펼치기	: class="panel-collapse collapse in"
+				카테고리 접기	: class="panel-collapse collapse"
+			*/
+			str += '<div id="collapseOne' + i + '" class="panel-collapse collapse" aria-expanded="true" style="">';
+			str += '<div class="panel-body">';
+			str += '<ul class="nav nav-second-level">';
+
+			// 일정 반복
+			var category_no = categoryList[i].category_no;
+			for(var k = 0; k < dateScheduleList.length; k++) {
+				var dateSchedule = dateScheduleList[k];
+				if(dateSchedule.category_no == category_no) {		// 일치하는 카테고리의 일정들만 표시
+
+					// 일정이 존재하는 카테고리 id 추가
+					if(notEmptyCateList > 0) {
+						if(notEmptyCateList[notEmptyCateList.length-1] != i) {
+							notEmptyCateList.push(i);
+						}
+					}
+					else {
+						notEmptyCateList.push(i);
+					}
+
+					str += '<li style="border-bottom: none;">';
+
+					// 일정 달성여부 표시(checkBox) + 일정 내용 표시
+					var complete = dateSchedule.complete;
+					var completeId = "date" + dateSchedule.day + "ContentComplete";
+					if(complete == "Y") {
+						str += "<a><input type='checkbox' id='" + completeId + "' value='' checked='checked' > " + dateSchedule.content + "</a>";
+					}
+					else {
+						str += "<a><input type='checkbox' id='" + completeId + "' value='' > " + dateSchedule.content + "</a>";
+					}
+
+					str += '</li>';
+				}
+			}
+			str += '</ul>';
+
+			str += '</div></div>';
+			str += '</div>';
+		}
+
+		// 일정 내용
+		$("#modalTodoList").text("");
+		$("#modalTodoList").append(str);
+
+		// 일정이 존재하는 카테고리만 펼치기
+		//$("#collapseOne" + i).attr('class', 'panel-collapse collapse in');
+		for(var i = 0; i < notEmptyCateList.length; i++) {
+			$("#collapseOne" + notEmptyCateList[i]).addClass('in');
+		}
+
 		// 클릭한 날짜 표시
-		$("#modalDate").text(dateScheduleList[0].plan_date);
+		//$("#modalDate").text(dateScheduleList[0].plan_date);
+		$("#modalDate").text("${now_FD_ym }" + dateDay);		// '2023-08-' + '13'
 
 		$("#todoListModal").modal("show");
 	}
