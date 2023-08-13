@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +48,11 @@ public class ScheduleController {
 		return scheduleService.selectScheduleListByMonth(schedule);
 	}
 
-	// TODO :: /pages/addSchedule
+	@PostMapping("/addSchedule")
+	public int addSchedule(ScheduleVO schedule) {
+		log.info("addSchedule..............");
+		Integer.parseInt("A");
+		return scheduleService.insertSchedule(schedule);
+	}
 
 }

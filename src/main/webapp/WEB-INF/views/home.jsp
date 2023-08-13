@@ -221,23 +221,13 @@
 					<div class="modal-body" id="modalDate">Modal Date</div>
 					<div class="modal-body" id="modalTodoList">
 						<div class="col-lg-12">
-
-							<!-- <div class="modal-body" id="modalDate">Modal Date</div> -->
 							<div class="panel panel-default">
-								<!-- <div class="panel-heading">
-									Collapsible Accordion Panel Group
-								</div> -->
-
-								<!-- .panel-heading -->
 								<div class="panel-body">
 									<div class="panel-group" id="modalTodoList">
 										<!-- 카테고리 및 일정 -->
 									</div>
 								</div>
-								<!-- .panel-body -->
-
 							</div>
-							<!-- /.panel -->
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -256,21 +246,36 @@
 						<button type="button" class="close"	data-dismiss="modal" aria-hidden="true">&times;</button>
 		                <h4 class="modal-title" id="modalTitle">새로운 일정 추가하기</h4>
 					</div>
-					<form role="form" action="./pages/addSchedule" method="post">
-						<div class="modal-body" id="addNewSchedultForm">
-					            <div class="modal-body">
-					                <input type="text" class="form-control" id="content" name="content" placeholder="새로운 할 일을 적어주세요." ><hr>
-					                <div id="category_area">
-					                	<input type="button" class="btn btn-default" id="category_btn" name="category_btn" value="+카테고리">
-					                </div>
-					            </div>
-	<!-- 				            <div class="find_password">
-					                <a href="/forgot-password">아이디 또는 비밀번호를 잊으셨나요?</a>
-					            </div>
-	 -->
+					<form role="form" id="addNewScheduleForm" action="/pages/addSchedule" method="post">
+						<div class="modal-body" id="addNewScheDate">Modal Date</div>
+						<div class="modal-body">
+			                <input type="text" class="form-control" name="content" placeholder="새로운 할 일을 적어주세요." ><hr>
+			                <input type="hidden" name="member_no" value="">
+			                <div class="form-group">
+								<label>카테고리</label>
+								<select class="form-control" name="category_no">
+									<c:forEach var="item" items="${categoryList }" varStatus="status">
+										<option value="${item.category_no}">${item.category_nm}</option>
+									</c:forEach>
+								</select>
+			                </div>
+			                <input type="hidden" name="plan_date" value="">
+			                <div class="form-group">
+								<label>반복여부</label>
+								<div class="radio">
+									<label><input type="radio" name="dday" value="0" checked="">없음</label>
+								</div>
+								<div class="radio">
+									<label><input type="radio" name="dday" value="1">디데이</label>
+								</div>
+								<div class="radio">
+									<label><input type="radio" name="dday" value="2">기념일</label>
+								</div>
+							</div>
+			                <input type="hidden" name="complete" value="N">
 						</div>
 						<div class="modal-footer">
-			                <input type="submit" class="btn btn-primary" id="btn-login" value="저장">
+			                <input type="button" class="btn btn-primary" onclick="addScheduleSubmit();" value="저장">
 			            </div>
 		            </form>
 				</div><!-- /.modal-content -->
@@ -556,7 +561,19 @@
 	// 새로운 일정 추가 Modal(addNewScheduleModal) 호출
 	function addNewScheduleClick() {
 		//alert("addNewScheduleClick");
+
+		var date = $("#modalDate").text();
+		$("#addNewScheDate").text(date);
+
+		$("#addNewScheduleForm [name='plan_date']").val(date);
+		$("#addNewScheduleForm [name='member_no']").val($("#member_no").text());
+
 		$("#addNewScheduleModal").modal("show");
+	}
+
+	// 새로운 일정 추가 Submit 버튼
+	function addScheduleSubmit() {
+		$("#addNewScheduleForm").submit();
 	}
 
 	</script>

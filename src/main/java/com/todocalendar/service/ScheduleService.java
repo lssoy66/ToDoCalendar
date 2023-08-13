@@ -15,7 +15,7 @@ public interface ScheduleService {
 	/**
 	 * 스케줄(일정) 저장
 	 */
-	public void insertSchedule(ScheduleVO schedule);
+	public int insertSchedule(ScheduleVO schedule);
 
 	/**
 	 * 스케줄(일정) 목록
@@ -28,9 +28,9 @@ public interface ScheduleService {
 	public List<ScheduleVO> selectScheduleListByMonth(ScheduleVO schedule);
 
 	public List<ScheduleVO> selectScheduleListAll(int member_no);
-	
+
 	public void changeComplete(@Param("member_no") int member_no, @Param("complete") String complete, @Param("schedule_no") int schedule_no); //체크박스 on/off
-	
+
 	/**
 	 * 개수 카운트를 위한 오늘 날짜 스케줄(일정) 목록
 	 */

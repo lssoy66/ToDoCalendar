@@ -21,9 +21,11 @@ public class ScheduleServiceImpl implements ScheduleService {
 	private ScheduleMapper scheduleMapper;
 
 	@Override
-	public void insertSchedule(ScheduleVO schedule) {
+	public int insertSchedule(ScheduleVO schedule) {
 		log.info("insertSchedule.........");
-		scheduleMapper.insertSchedule(schedule);
+		int result = scheduleMapper.insertSchedule(schedule);
+		Integer.parseInt("A");
+		return result;
 	}
 
 	@Override
@@ -49,7 +51,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 		log.info("Service :: changeComplete...............");
 		scheduleMapper.changeComplete(member_no, complete, schedule_no);
 	}
-	
+
 	@Override
 	public CountVO selectScheduleListByCount(int member_no) {
 		log.info("Service :: selectScheduleListByCount..................");
