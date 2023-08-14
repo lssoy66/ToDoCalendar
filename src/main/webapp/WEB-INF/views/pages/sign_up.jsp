@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">회원가입과 동시에 개인정보취급방침및 이용약관에 동의하게 됩니다.
+                                        <input name="remember" type="checkbox" value="Remember Me" id="agree">회원가입과 동시에 개인정보취급방침및 이용약관에 동의하게 됩니다.
                                     </label>
                                 </div>
                                 <!--  
@@ -85,7 +85,7 @@
                                 -->
                                 
                                 <!-- Change this to a button or input when using this as a form -->
-                                <input type="submit" value="회원가입" class="btn btn-lg btn-success btn-block">
+                                <input type="submit" value="회원가입" class="btn btn-lg btn-success btn-block" id="registerBtn" disabled="disabled">
                             </fieldset>
                         </form>
                     </div>
@@ -169,14 +169,17 @@
     		
     		console.log("입력코드 : " + inputCode);
     		console.log("인증코드 : " + code);
+    		
     		if(Number(inputCode) === code){
         		$("#emailAuthWarn").html('인증번호가 일치합니다.');
-        		$("#emailAuthWarn").css('color','green');
-    			$('#emailAuth').attr('disabled',true);
-    			$('#email').attr('readonly',true);
+        		$("#emailAuthWarn").css('color', 'green');
+    			$('#emailAuth').attr('disabled', true);
+    			$('#email').attr('readonly', true);
+    			$("#registerBtn").attr("disabled", false);
     		}else{
         		$("#emailAuthWarn").html('인증번호가 불일치 합니다. 다시 확인해주세요!');
-        		$("#emailAuthWarn").css('color','red');
+        		$("#emailAuthWarn").css('color', 'red');
+        		$("#registerBtn").attr("disabled", true);
     		}
     	});
     </script>
