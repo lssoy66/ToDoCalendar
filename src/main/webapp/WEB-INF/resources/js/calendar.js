@@ -78,7 +78,10 @@ function calendarInit() {
         }
         // 이번달
         for (var i = 1; i <= nextDate; i++) {
-            calendar.innerHTML = calendar.innerHTML + '<div class="day current" id="date' + i + '" style="cursor: pointer;" onclick="dateClick(date'+ i +')">' + i + '</div>'
+            calendar.innerHTML = calendar.innerHTML + '<div class="day current" id="date' + i + '" style="cursor: pointer;" onclick="dateClick(date'+ i +')">'
+														+ '<div id = "date' + i + 'Day">' + i + '</div>'
+														+ '<div id = "date' + i + 'Content"></div>'
+														+ '</div>'
         }
         // 다음달
         for (var i = 1; i <= (7 - nextDay == 7 ? 0 : 7 - nextDay); i++) {
