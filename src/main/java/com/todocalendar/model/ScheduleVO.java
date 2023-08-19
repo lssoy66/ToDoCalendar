@@ -14,9 +14,9 @@ import lombok.Data;
 @Data
 public class ScheduleVO {
 
-	private String schedule_no;       /* 일정번호(PK) */
-	private String member_no;         /* 회원번호(FK) */
-	private String category_no;       /* 카테고리번호(FK) */
+	private int schedule_no;       /* 일정번호(PK) */
+	private int member_no;         /* 회원번호(FK) */
+	private int category_no;       /* 카테고리번호(FK) */
 	private String category_nm;       /* 카테고리이름 */
 	private String content;        /* 내용 */
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
