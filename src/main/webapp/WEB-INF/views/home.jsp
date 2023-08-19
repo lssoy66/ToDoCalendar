@@ -248,6 +248,7 @@
 					</div>
 					<form role="form" id="addNewScheduleForm" action="/pages/addSchedule" method="post">
 						<div class="modal-body" id="addNewScheDate">Modal Date</div>
+						<!--
 						<div class="modal-body">
 			                <input type="text" class="form-control" name="content" placeholder="새로운 할 일을 적어주세요." ><hr>
 			                <input type="hidden" name="member_no" value="">
@@ -258,6 +259,7 @@
 										<option value="${item.category_no}">${item.category_nm}</option>
 									</c:forEach>
 								</select>
+								<button type="button" class="btn btn-link">새로운 카테고리 추가</button>
 			                </div>
 			                <input type="hidden" name="plan_date" value="">
 			                <div class="form-group">
@@ -274,6 +276,17 @@
 							</div>
 			                <input type="hidden" name="complete" value="N">
 						</div>
+						 -->
+
+						<input type="hidden" name="member_no" value="1">
+						<input type="hidden" name="category_no" value="1">
+						<input type="hidden" name="content" value="111111">
+
+						<%-- <fmt:parseDate var="testDate" value="2023-08-14" pattern="yyyy-MM-dd" />
+						<input type="hidden" name="plan_date" value="${testDate }"> --%>
+
+						<input type="hidden" name="dday" value="1">
+						<input type="hidden" name="complete" value="N">
 						<div class="modal-footer">
 			                <input type="button" class="btn btn-primary" onclick="addScheduleSubmit();" value="저장">
 			            </div>
@@ -553,6 +566,7 @@
 
 		// 클릭한 날짜 표시
 		//$("#modalDate").text(dateScheduleList[0].plan_date);
+		if(dateDay.length < 2) dateDay = '0' + dateDay;
 		$("#modalDate").text("${now_FD_ym }" + dateDay);		// '2023-08-' + '13'
 
 		$("#todoListModal").modal("show");
@@ -573,6 +587,7 @@
 
 	// 새로운 일정 추가 Submit 버튼
 	function addScheduleSubmit() {
+		debugger;
 		$("#addNewScheduleForm").submit();
 	}
 

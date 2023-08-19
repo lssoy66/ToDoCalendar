@@ -9,26 +9,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.todocalendar.model.ScheduleVO;
 import com.todocalendar.service.CategoryService;
 import com.todocalendar.service.MemberService;
 import com.todocalendar.service.ScheduleService;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 @Log4j
 @RequestMapping("/pages/*")
 @Controller
+@AllArgsConstructor
 public class ScheduleController {
 
-	@Autowired
 	MemberService memberService;
-
-	@Autowired
 	ScheduleService scheduleService;
-
-	@Autowired
 	CategoryService categoryService;
 
 	/*
@@ -49,10 +47,11 @@ public class ScheduleController {
 	}
 
 	@PostMapping("/addSchedule")
-	public int addSchedule(ScheduleVO schedule) {
-		log.info("addSchedule..............");
-		Integer.parseInt("A");
-		return scheduleService.insertSchedule(schedule);
+	public String addSchedule(ScheduleVO schedule, RedirectAttributes rttr) {
+		log.info("addSchedule.............. :: " + schedule);
+		scheduleService.insertSchedule(schedule);
+		rttr.addFlashAttribute("result", schedule.getPlan_date());
+		return "redirect:/home";
 	}
 
 }
