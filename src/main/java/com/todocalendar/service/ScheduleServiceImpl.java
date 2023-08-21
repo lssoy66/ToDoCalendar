@@ -1,5 +1,7 @@
 package com.todocalendar.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +23,16 @@ public class ScheduleServiceImpl implements ScheduleService {
 	private ScheduleMapper scheduleMapper;
 
 	@Override
-	public int insertSchedule(ScheduleVO schedule) {
+	public int insertSchedule(ScheduleVO schedule) throws Exception {
 		log.info("insertSchedule.........");
+
+		String dateStr = schedule.getPlan_date2();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date strToDate = null;
+		strToDate = formatter.parse(dateStr);
+		schedule.setPlan_date(strToDate);
+
 		int result = scheduleMapper.insertSchedule(schedule);
-		Integer.parseInt("A");
 		return result;
 	}
 

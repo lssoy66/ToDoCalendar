@@ -14,8 +14,9 @@ public interface ScheduleService {
 
 	/**
 	 * 스케줄(일정) 저장
+	 * @throws Exception
 	 */
-	public int insertSchedule(ScheduleVO schedule);
+	public int insertSchedule(ScheduleVO schedule) throws Exception;
 
 	/**
 	 * 스케줄(일정) 목록

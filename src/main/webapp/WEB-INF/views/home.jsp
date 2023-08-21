@@ -96,7 +96,7 @@
 				<div class="sidebar-nav navbar-collapse">
 					<ul class="nav" id="side-menu">
 						<li class="sidebar-search">
-							
+
 							<div class="input-group custom-search-form">
                                 <legend style="border-bottom: none;"><a style="text-decoration: none; font-weight: bold;">D-day</a></legend>
                                 <ul class="nav">
@@ -128,10 +128,10 @@
                                     </li>
                                 </ul>
                             </div>
-                            
+
 						</li>
 						<li class="sidebar-search">
-							
+
 							<div class="input-group custom-search-form">
                                 <legend style="border-bottom: none;"><a style="text-decoration: none; font-weight: bold;">기념일</a></legend>
                                 <ul class="nav">
@@ -164,7 +164,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            
+
 						</li>
 						<li class="sidebar-search">
                             <div class="input-group custom-search-form" \>
@@ -181,7 +181,7 @@
 	                            	</a>
 	                            </c:if>
                             </c:forEach>
-                            
+
                             <ul class="nav nav-second-level">
 	                            <c:forEach var="schedule" items="${scheduleList }" varStatus="status">
 	                            <fmt:formatDate var="planDate_FD"  value="${schedule.plan_date }" pattern="yyyy-MM-dd"/>
@@ -294,7 +294,6 @@
 					</div>
 					<form role="form" id="addNewScheduleForm" action="/pages/addSchedule" method="post">
 						<div class="modal-body" id="addNewScheDate">Modal Date</div>
-						<!--
 						<div class="modal-body">
 			                <input type="text" class="form-control" name="content" placeholder="새로운 할 일을 적어주세요." ><hr>
 			                <input type="hidden" name="member_no" value="">
@@ -307,7 +306,8 @@
 								</select>
 								<button type="button" class="btn btn-link">새로운 카테고리 추가</button>
 			                </div>
-			                <input type="hidden" name="plan_date" value="">
+			                <!-- <input type="date" name="plan_date" value="2023-08-19"> -->
+			                <input type="hidden" name="plan_date2" value="">
 			                <div class="form-group">
 								<label>반복여부</label>
 								<div class="radio">
@@ -322,17 +322,6 @@
 							</div>
 			                <input type="hidden" name="complete" value="N">
 						</div>
-						 -->
-
-						<input type="hidden" name="member_no" value="1">
-						<input type="hidden" name="category_no" value="1">
-						<input type="hidden" name="content" value="111111">
-
-						<%-- <fmt:parseDate var="testDate" value="2023-08-14" pattern="yyyy-MM-dd" />
-						<input type="hidden" name="plan_date" value="${testDate }"> --%>
-
-						<input type="hidden" name="dday" value="1">
-						<input type="hidden" name="complete" value="N">
 						<div class="modal-footer">
 			                <input type="button" class="btn btn-primary" onclick="addScheduleSubmit();" value="저장">
 			            </div>
@@ -354,7 +343,7 @@
 			$("#completeY${status.count}").attr("id", "completeN${status.count}");
 			var value = $("#completeN${status.count}").val();
 			console.log(value);
-			
+
 			//Ajax로 전송
 			$.ajax({
 				url : './ChangeComplete',
@@ -388,7 +377,7 @@
 				dataType : 'json',
 				success : function(result) {
 					console.log("success N to Y ");
-					console.log(result.scheduleCount.y_count);	
+					console.log(result.scheduleCount.y_count);
 					$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");
 				}
 			}); //End Ajax
@@ -630,7 +619,7 @@
 		var date = $("#modalDate").text();
 		$("#addNewScheDate").text(date);
 
-		$("#addNewScheduleForm [name='plan_date']").val(date);
+		$("#addNewScheduleForm [name='plan_date2']").val(date);
 		$("#addNewScheduleForm [name='member_no']").val($("#member_no").text());
 
 		$("#addNewScheduleModal").modal("show");
