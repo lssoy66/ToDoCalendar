@@ -51,12 +51,6 @@
                             	<div class="form-group">
                                     <input class="form-control" placeholder="ID를 입력해주세요" name="id" id="id" type="text" autofocus>
                                     <label id="label1"></label>
-                                    <div style="display: block; text-align: right;">
-                                    	<span style="text-align: left;" id="result"></span>
-                                    	<!--  
-                                    	<input type="button" value="중복확인" class="btn btn-primary" id="comfirm" onclick="confirmId()">
-                                    	-->
-                                    </div>
                                 </div>
                             	이름
                             	<div class="form-group">
