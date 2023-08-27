@@ -47,6 +47,9 @@
 <!-- Calendar CSS -->
 <link href="resources/css/calendar-style.css" rel="stylesheet">
 
+<!-- Bootstrap Toggle -->
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -68,27 +71,81 @@
 			<!-- /.navbar-header -->
 
 			<ul class="nav navbar-top-links navbar-right">
-
 				<!-- /.dropdown -->
 				<c:if test="${member != null }">
-				<div id="member_no" style="display:none">${member.member_no }</div>
-				<li class="dropdown"><a class="dropdown-toggle"
-					data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i> ${member.name }님
-						<i class="fa fa-caret-down"></i>
-				</a>
-					<ul class="dropdown-menu dropdown-user">
-						<li><a href="pages/mypage"><i class="fa fa-user fa-fw"></i> 프로필</a></li>
-						<li><a href="#"><i class="fa fa-gear fa-fw"></i> 설정</a></li>
-						<li class="divider"></li>
-						<li><a href="pages/logout"><i class="fa fa-sign-out fa-fw"></i>
-								로그아웃</a></li>
-					</ul> <!-- /.dropdown-user -->
-				</li>
+					<div id="member_no" style="display:none">${member.member_no }</div>
+					<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i> ${member.name }님 <i class="fa fa-caret-down"></i></a>
+						<ul class="dropdown-menu dropdown-user">
+							<li>
+								<a><i class="fa fa-star fa-fw"></i>
+								<c:choose>
+									<c:when test="${member.membership == 1 }">
+										베이직
+									</c:when>
+									<c:otherwise>
+										프리미엄
+									</c:otherwise>
+								</c:choose>
+								</a>
+							</li>
+							<li class="divider"></li>
+							<li><a href="pages/mypage"><i class="fa fa-user fa-fw"></i> 사용자 정보 수정</a></li>
+							<li class="divider"></li>
+							<li><a href="pages/logout"><i class="fa fa-sign-out fa-fw"></i> 로그아웃</a></li>
+						</ul> <!-- /.dropdown-user -->
+					</li>
 				</c:if>
+				
 				<c:if test="${member == null }">
 					회원 정보 없음
 				</c:if>
 				<!-- /.dropdown -->
+				
+				<!-- /.dropdown -->
+				<c:if test="${member != null }">
+					<div id="member_no" style="display:none">${member.member_no }</div>
+					<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i class="fa fa-ellipsis-h fa-fw"></i></a>
+						<ul class="dropdown-menu dropdown-user" style="width: max-content;">
+							<li><a href="#"><i class="fa fa-user fa-fw"></i> 카테고리 관리</a></li>
+							<li><a href="#"><i class="fa fa-gear fa-fw"></i> 알림 관리</a></li>
+							<li><a href="#"><i class="fa fa-gear fa-fw"></i> 디데이 관리</a></li>
+							<li><a href="#"><i class="fa fa-gear fa-fw"></i> 참여회원 관리</a></li>
+							<li class="divider"></li>
+							<li>
+								<a><i class="fa fa-gear fa-fw"></i> 설정</a>
+								<div>
+									<ul>
+										<li>
+											<div>
+											<!--  
+												<span>공휴일 자동 표시</span>
+												<input data-toggle="toggle" id="publicAutoN" type="checkbox">
+											-->
+											</div>
+										</li>
+										<li>
+											<div>
+												<span>자동 미루기</span>
+												<c:choose>
+													<c:when test="${member.delay_auto eq 'Y' }">
+														<input data-toggle="toggle" id="delayAutoY" type="checkbox" checked="checked">
+													</c:when>
+													<c:otherwise>
+														<input data-toggle="toggle" id="delayAutoN" type="checkbox">
+													</c:otherwise>
+												</c:choose>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</li>
+							
+						</ul>
+						<!-- /.dropdown-user -->
+					</li>
+				</c:if>
+				<!-- /.dropdown -->
+				
 			</ul>
 			<!-- /.navbar-top-links -->
 
@@ -345,8 +402,8 @@
 	</div>
 	<!-- /#wrapper -->
 
-	<!-- Today Check List 체크박스 on/off -->
 	<script type="text/javascript">
+	<!-- Today Check List 체크박스 on/off -->
 	<c:forEach var="schedule" items="${scheduleList}" varStatus="status">
 	$(document).ready(function() {
 		$(document).on("change", "#completeY${status.count}", function() {
@@ -393,9 +450,93 @@
 				}
 			}); //End Ajax
 		});
+    	
 	});
 	</c:forEach>
+	
+	$(document).ready(function() {
+		//공휴일 자동 표시
+		$(document).on("change", "#publicAutoY", function(){
+			$("#publicAutoN").removeAttr("checked");
+			$("#publicAutoN").attr("id", "publicAutoY");
+			
+			/*
+			//Ajax로 전송
+			$.ajax({
+				url : './ChangeDelayAuto',
+				data : {
+					delay_auto : 'N'
+				},
+				type : 'POST',
+				dataType : 'json',
+				success : function(result) {
+					console.log("success Y to N ");
+				}
+			}); //End Ajax
+			*/
+		});
+		
+    	$(document).on("change", "#publicAutoN", function(){
+			$("#publicAutoY").attr("checked", "checked");
+			$("#publicAutoY").attr("id", "publicAutoN");
+			
+			/*
+			//Ajax로 전송
+			$.ajax({
+				url : './ChangeDelayAuto',
+				data : {
+					delay_auto : 'Y'
+				},
+				type : 'POST',
+				dataType : 'json',
+				success : function(result) {
+					console.log("success N to Y ");
+				}
+			}); //End Ajax
+			*/
+		});
+		
+		//자동 미루기
+		$(document).on("change", "#delayAutoY", function(){
+			$("#delayAutoY").removeAttr("checked");
+			$("#delayAutoY").attr("id", "delayAutoN");
+			
+			//Ajax로 전송
+			$.ajax({
+				url : './pages/ChangeDelayAuto',
+				data : {
+					delay_auto : 'N'
+				},
+				type : 'POST',
+				dataType : 'json',
+				success : function(result) {
+					console.log("success Y to N ");
+				}
+			}); //End Ajax
+		});
+		
+    	$(document).on("change", "#delayAutoN", function(){
+			$("#delayAutoN").attr("checked", "checked");
+			$("#delayAutoN").attr("id", "delayAutoY");
+			
+			//Ajax로 전송
+			$.ajax({
+				url : './pages/ChangeDelayAuto',
+				data : {
+					delay_auto : 'Y'
+				},
+				type : 'POST',
+				dataType : 'json',
+				success : function(result) {
+					console.log("success N to Y ");
+				}
+			}); //End Ajax
+		});
+	});
 	</script>
+	
+    
+    </script>
 
 	<!-- jQuery -->
 	<script src="resources/vendor/jquery/jquery.min.js"></script>
@@ -417,6 +558,9 @@
 	<!-- Calendar JavaScript -->
 
 	<script src="resources/js/calendar.js"></script>
+	
+	<!-- Bootstrap Toggle -->
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
 	<script type="text/javascript">
 

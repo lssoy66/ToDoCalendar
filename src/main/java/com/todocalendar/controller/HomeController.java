@@ -73,12 +73,16 @@ public class HomeController {
 		
 		CountVO scheduleCount = scheduleService.selectScheduleListByCount(member.getMember_no());
 		log.info("count : " + scheduleCount);
-		model.addAttribute("y_count", scheduleCount.getY_count());
-		model.addAttribute("n_count", scheduleCount.getN_count());
-		model.addAttribute("all_count", scheduleCount.getAll_count());
 		
-		List<PaletteVO> paletteList = paletteService.selectPaletteListAll();
-		model.addAttribute("paletteList", paletteList);
+		//scheduleCount의 내용이 null이 아닐때에 아래의 내용을 수행
+		if(scheduleCount != null) {
+			model.addAttribute("y_count", scheduleCount.getY_count());
+			model.addAttribute("n_count", scheduleCount.getN_count());
+			model.addAttribute("all_count", scheduleCount.getAll_count());
+			
+			List<PaletteVO> paletteList = paletteService.selectPaletteListAll();
+			model.addAttribute("paletteList", paletteList);
+		}
 		
 	}
 

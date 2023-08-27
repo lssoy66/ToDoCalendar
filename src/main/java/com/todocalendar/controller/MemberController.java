@@ -60,7 +60,10 @@ public class MemberController {
 			return "redirect:../home";
 		} else {
 			log.info("로그인 실패");
-			return "redirect:/pages/login";
+			request.setAttribute("msg", "로그인에 실패했습니다.");
+			request.setAttribute("url", "./login");
+
+			return "alert";
 		}
 
 	}
