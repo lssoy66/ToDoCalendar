@@ -97,7 +97,7 @@ function calendarInit() {
 
 		//var myElement = document.getElementById("month").innerHTML;
 		//alert(myElement);
-		getScheduleByMonth();
+		getScheduleByMonth();	// 이번달 날짜 표시
     }
 
     // 이전달로 이동

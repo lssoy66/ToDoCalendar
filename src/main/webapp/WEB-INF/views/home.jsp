@@ -445,8 +445,26 @@
 		]
 	*/
 
+	$(document).ready(function() {
+
+		// TODO1 :: 달이 변경될 때마다 Month에 적용되도록 하며, 각 날짜 클릭 시 해당 달 Modal 띄우기
+
+		// TODO2 저장 성공 시 메시지와 함께 일정이 저장된 날짜의 Modal 띄우기
+		var result = '<c:out value="${msg }"/>';
+		if(result == "success") {
+			var plan_date = '<c:out value="${plan_date }"/>';
+			alert("저장이 완료되었습니다.");
+
+			//console.log(plan_date);
+
+			//if(dateDay.length < 2) dateDay = '0' + dateDay;
+			//dateClick(date);
+		}
+	});
+
 	// 이번달 스케줄 리스트 가져오기
 	function getScheduleByMonth() {
+		scheduleList = [];
 		var month = document.getElementById("month").innerHTML;
 		var member_no = document.getElementById("member_no").innerHTML;
 		var data = JSON.stringify({'month': month, 'member_no':member_no});
@@ -486,6 +504,7 @@
 
 	// 날짜 클릭 시 Modal(todoListModal) 호출
 	function dateClick(date) {
+		//console.log(date);
 		var dateId  = date.getAttribute('id');							// 클릭한 날짜의 ID, ex. date12
 
 		var dateDayId = dateId + "Day";									// 클릭한 날짜의 Day ID, ex. date12Day
@@ -505,39 +524,6 @@
 		var notEmptyCateList = [];	// 일정이 존재하는 카테고리
 
 		for(var i = 0; i < categoryList.length; i++) {
-
-			/*
-			// 1. 카테고리 이름(category_nm) 표시(폴더)
-			str += '<a href="#" style="text-decoration: none;"><i class="fa fa-folder fa-fw"></i> '
-			str += categoryList[i].category_nm;
-			str += '<span class="fa arrow"></span></a>';
-			str += '<ul class="nav nav-second-level">';
-
-			// 2. 폴더 아래 해당 카테고리의 일정들 표시
-			var category_no = categoryList[i].category_no;
-			for(var k = 0; k < dateScheduleList.length; k++) {
-				var dateSchedule = dateScheduleList[k];
-				if(dateSchedule.category_no == category_no) {		// 일치하는 카테고리의 일정들만 표시
-
-					str += '<li style="border-bottom: none;">';
-
-					// 일정 달성여부 표시(checkBox) + 일정 내용 표시
-					var complete = dateSchedule.complete;
-					var completeId = "date" + dateSchedule.day + "ContentComplete";
-					if(complete == "Y") {
-						str += "<a><input type='checkbox' id='" + completeId + "' value='' checked='checked' > " + dateSchedule.content + "</a>";
-					}
-					else {
-						str += "<a><input type='checkbox' id='" + completeId + "' value='' > " + dateSchedule.content + "</a>";
-					}
-
-					str += '</li>';
-
-				}
-
-			}
-			str += '</ul>';
-			*/
 
 			// 1. 카테고리 이름(category_nm) 표시(폴더)
 			str += '<div class="panel panel-default">';
