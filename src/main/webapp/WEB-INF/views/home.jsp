@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:useBean id="now" class="java.util.Date" />
 <fmt:formatDate var="now_FD" value="${now }" pattern="yyyy-MM-dd"/>
-<fmt:formatDate var="now_FD_ym" value="${now }" pattern="yyyy-MM-"/>
+<fmt:formatDate var="now_FD_yy" value="${now }" pattern="yyyy"/>
 
 <!DOCTYPE html>
 <html lang="kr">
@@ -233,6 +233,7 @@
 							<div class="cal_nav">
 								<a href="javascript:;" class="nav-btn go-prev">prev</a>
 								<div class="year-month"></div>
+								<div class="year" id="year" style="display:none"></div>
 								<div class="month" id="month" style="display:none"></div>
 								<a href="javascript:;" class="nav-btn go-next">next</a>
 							</div>
@@ -447,18 +448,18 @@
 
 	$(document).ready(function() {
 
-		// TODO1 :: 달이 변경될 때마다 Month에 적용되도록 하며, 각 날짜 클릭 시 해당 달 Modal 띄우기
-
 		// TODO2 저장 성공 시 메시지와 함께 일정이 저장된 날짜의 Modal 띄우기
 		var result = '<c:out value="${msg }"/>';
-		if(result == "success") {
-			var plan_date = '<c:out value="${plan_date }"/>';
+		if(result != '' && result == "success") {
 			alert("저장이 완료되었습니다.");
 
-			//console.log(plan_date);
+			var plan_date = '<c:out value="${plan_date }"/>';		// 2023-08-31
+			var date = plan_date.replace(/-/g, '');					// 20230831
 
-			//if(dateDay.length < 2) dateDay = '0' + dateDay;
-			//dateClick(date);
+			document.getElementById("year").innerHTML = date.substring(0, 4);
+			document.getElementById("month").innerHTML = date.substring(4, 6);
+
+			dateClick(date.slice(-2));
 		}
 	});
 
@@ -503,19 +504,13 @@
 	}
 
 	// 날짜 클릭 시 Modal(todoListModal) 호출
-	function dateClick(date) {
-		//console.log(date);
-		var dateId  = date.getAttribute('id');							// 클릭한 날짜의 ID, ex. date12
-
-		var dateDayId = dateId + "Day";									// 클릭한 날짜의 Day ID, ex. date12Day
-		var dateDay = document.getElementById(dateDayId).innerHTML;		// 클릭한 날짜의 Day, ex. 12
-
-		var dateContentId = dateId + "Content";							// 클릭한 날짜의 Content ID, ex.date12Content
+	function dateClick(dateDay) {
+		var day = dateDay.toString();
 
 		// 클릭한 날짜의 일정 목록 가져오기
 		dateScheduleList = [];
 		for(var i = 0; i < scheduleList.length; i++) {
-			if(scheduleList[i].day == dateDay) {
+			if(scheduleList[i].day == day) {
 				dateScheduleList.push(scheduleList[i]);
 			}
 		}
@@ -591,9 +586,12 @@
 		}
 
 		// 클릭한 날짜 표시
-		//$("#modalDate").text(dateScheduleList[0].plan_date);
-		if(dateDay.length < 2) dateDay = '0' + dateDay;
-		$("#modalDate").text("${now_FD_ym }" + dateDay);		// '2023-08-' + '13'
+		var year = document.getElementById("year").innerHTML;
+		var month = document.getElementById("month").innerHTML;
+		if(month.length < 2) month = '0' + month;
+		if(day.length < 2) day = '0' + day;
+
+		$("#modalDate").text(year + '-' + month + '-' + day);		// '2023' + '-' + '08' + '-' + '13'
 
 		$("#todoListModal").modal("show");
 	}
@@ -613,7 +611,6 @@
 
 	// 새로운 일정 추가 Submit 버튼
 	function addScheduleSubmit() {
-		debugger;
 		$("#addNewScheduleForm").submit();
 	}
 
