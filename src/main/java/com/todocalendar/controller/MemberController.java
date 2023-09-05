@@ -192,6 +192,28 @@ public class MemberController {
 
 		return new ResponseEntity<>(memberService.readById(id), HttpStatus.OK);
 	}
+	
+	//ID찾기 페이지 진입
+	@GetMapping("/ForgetId")
+	public String forgetId() {
+		log.info("forget Id.........");
+		return "/pages/forgetId";
+	}
+	
+	//PW찾기 페이지 진입
+	@GetMapping("/ForgetPassword")
+	public String forgetPassword() {
+		log.info("forget Password.........");
+		return "/pages/forgetPassword";
+	}
+	
+	//PW찾기 페이지 진입-2
+	@PostMapping("/forgetPwCheck")
+	public String forgetPasswordCheck(String id) {
+		log.info("forget Password check.........");
+		//pw찾기를 위한 mapper 작성부터!!
+		return "";
+	}
 
 	//비밀번호 변경 1 페이지 진입
 	@RequestMapping(value = "/password1", method = RequestMethod.GET)
