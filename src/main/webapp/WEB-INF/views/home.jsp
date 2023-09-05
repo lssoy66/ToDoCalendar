@@ -95,12 +95,12 @@
 						</ul> <!-- /.dropdown-user -->
 					</li>
 				</c:if>
-				
+
 				<c:if test="${member == null }">
 					회원 정보 없음
 				</c:if>
 				<!-- /.dropdown -->
-				
+
 				<!-- /.dropdown -->
 				<c:if test="${member != null }">
 					<div id="member_no" style="display:none">${member.member_no }</div>
@@ -117,7 +117,7 @@
 									<ul>
 										<li>
 											<div>
-											<!--  
+											<!--
 												<span>공휴일 자동 표시</span>
 												<input data-toggle="toggle" id="publicAutoN" type="checkbox">
 											-->
@@ -139,13 +139,13 @@
 									</ul>
 								</div>
 							</li>
-							
+
 						</ul>
 						<!-- /.dropdown-user -->
 					</li>
 				</c:if>
 				<!-- /.dropdown -->
-				
+
 			</ul>
 			<!-- /.navbar-top-links -->
 
@@ -350,7 +350,7 @@
 						<button type="button" class="close"	data-dismiss="modal" aria-hidden="true">&times;</button>
 		                <h4 class="modal-title" id="modalTitle">새로운 일정 추가하기</h4>
 					</div>
-					<form role="form" id="addNewScheduleForm" action="/pages/addSchedule" method="post">
+					<form role="form" id="addNewScheduleForm" action="./pages/addSchedule" method="post">
 						<div class="modal-body" id="addNewScheDate">Modal Date</div>
 						<div class="modal-body">
 			                <input type="text" class="form-control" name="content" placeholder="새로운 할 일을 적어주세요." ><hr>
@@ -440,16 +440,16 @@
 				}
 			}); //End Ajax
 		});
-    	
+
 	});
 	</c:forEach>
-	
+
 	$(document).ready(function() {
 		//공휴일 자동 표시
 		$(document).on("change", "#publicAutoY", function(){
 			$("#publicAutoN").removeAttr("checked");
 			$("#publicAutoN").attr("id", "publicAutoY");
-			
+
 			/*
 			//Ajax로 전송
 			$.ajax({
@@ -465,11 +465,11 @@
 			}); //End Ajax
 			*/
 		});
-		
+
     	$(document).on("change", "#publicAutoN", function(){
 			$("#publicAutoY").attr("checked", "checked");
 			$("#publicAutoY").attr("id", "publicAutoN");
-			
+
 			/*
 			//Ajax로 전송
 			$.ajax({
@@ -485,12 +485,12 @@
 			}); //End Ajax
 			*/
 		});
-		
+
 		//자동 미루기
 		$(document).on("change", "#delayAutoY", function(){
 			$("#delayAutoY").removeAttr("checked");
 			$("#delayAutoY").attr("id", "delayAutoN");
-			
+
 			//Ajax로 전송
 			$.ajax({
 				url : './pages/ChangeDelayAuto',
@@ -504,11 +504,11 @@
 				}
 			}); //End Ajax
 		});
-		
+
     	$(document).on("change", "#delayAutoN", function(){
 			$("#delayAutoN").attr("checked", "checked");
 			$("#delayAutoN").attr("id", "delayAutoY");
-			
+
 			//Ajax로 전송
 			$.ajax({
 				url : './pages/ChangeDelayAuto',
@@ -524,8 +524,8 @@
 		});
 	});
 	</script>
-	
-    
+
+
     </script>
 
 	<!-- jQuery -->
@@ -548,7 +548,7 @@
 	<!-- Calendar JavaScript -->
 
 	<script src="resources/js/calendar.js"></script>
-	
+
 	<!-- Bootstrap Toggle -->
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
