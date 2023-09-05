@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:useBean id="now" class="java.util.Date" />
 <fmt:formatDate var="now_FD" value="${now }" pattern="yyyy-MM-dd"/>
-<fmt:formatDate var="now_FD_ym" value="${now }" pattern="yyyy-MM-"/>
+<fmt:formatDate var="now_FD_yy" value="${now }" pattern="yyyy"/>
 
 <!DOCTYPE html>
 <html lang="kr">
@@ -153,7 +153,7 @@
 				<div class="sidebar-nav navbar-collapse">
 					<ul class="nav" id="side-menu">
 						<li class="sidebar-search">
-							
+
 							<div class="input-group custom-search-form">
                                 <legend style="border-bottom: none;"><a style="text-decoration: none; font-weight: bold;">D-day</a></legend>
                                 <ul class="nav">
@@ -185,10 +185,10 @@
                                     </li>
                                 </ul>
                             </div>
-                            
+
 						</li>
 						<li class="sidebar-search">
-							
+
 							<div class="input-group custom-search-form">
                                 <legend style="border-bottom: none;"><a style="text-decoration: none; font-weight: bold;">기념일</a></legend>
                                 <ul class="nav">
@@ -221,7 +221,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            
+
 						</li>
 						<li class="sidebar-search">
                             <div class="input-group custom-search-form" \>
@@ -238,7 +238,7 @@
 	                            	</a>
 	                            </c:if>
                             </c:forEach>
-                            
+
                             <ul class="nav nav-second-level">
 	                            <c:forEach var="schedule" items="${scheduleList }" varStatus="status">
 	                            <fmt:formatDate var="planDate_FD"  value="${schedule.plan_date }" pattern="yyyy-MM-dd"/>
@@ -290,6 +290,7 @@
 							<div class="cal_nav">
 								<a href="javascript:;" class="nav-btn go-prev">prev</a>
 								<div class="year-month"></div>
+								<div class="year" id="year" style="display:none"></div>
 								<div class="month" id="month" style="display:none"></div>
 								<a href="javascript:;" class="nav-btn go-next">next</a>
 							</div>
@@ -351,7 +352,6 @@
 					</div>
 					<form role="form" id="addNewScheduleForm" action="/pages/addSchedule" method="post">
 						<div class="modal-body" id="addNewScheDate">Modal Date</div>
-						<!--
 						<div class="modal-body">
 			                <input type="text" class="form-control" name="content" placeholder="새로운 할 일을 적어주세요." ><hr>
 			                <input type="hidden" name="member_no" value="">
@@ -364,7 +364,8 @@
 								</select>
 								<button type="button" class="btn btn-link">새로운 카테고리 추가</button>
 			                </div>
-			                <input type="hidden" name="plan_date" value="">
+			                <!-- <input type="date" name="plan_date" value="2023-08-19"> -->
+			                <input type="hidden" name="plan_date2" value="">
 			                <div class="form-group">
 								<label>반복여부</label>
 								<div class="radio">
@@ -379,17 +380,6 @@
 							</div>
 			                <input type="hidden" name="complete" value="N">
 						</div>
-						 -->
-
-						<input type="hidden" name="member_no" value="1">
-						<input type="hidden" name="category_no" value="1">
-						<input type="hidden" name="content" value="111111">
-
-						<%-- <fmt:parseDate var="testDate" value="2023-08-14" pattern="yyyy-MM-dd" />
-						<input type="hidden" name="plan_date" value="${testDate }"> --%>
-
-						<input type="hidden" name="dday" value="1">
-						<input type="hidden" name="complete" value="N">
 						<div class="modal-footer">
 			                <input type="button" class="btn btn-primary" onclick="addScheduleSubmit();" value="저장">
 			            </div>
@@ -411,7 +401,7 @@
 			$("#completeY${status.count}").attr("id", "completeN${status.count}");
 			var value = $("#completeN${status.count}").val();
 			console.log(value);
-			
+
 			//Ajax로 전송
 			$.ajax({
 				url : './ChangeComplete',
@@ -445,7 +435,7 @@
 				dataType : 'json',
 				success : function(result) {
 					console.log("success N to Y ");
-					console.log(result.scheduleCount.y_count);	
+					console.log(result.scheduleCount.y_count);
 					$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");
 				}
 			}); //End Ajax
@@ -600,8 +590,26 @@
 		]
 	*/
 
+	$(document).ready(function() {
+
+		// TODO2 저장 성공 시 메시지와 함께 일정이 저장된 날짜의 Modal 띄우기
+		var result = '<c:out value="${msg }"/>';
+		if(result != '' && result == "success") {
+			alert("저장이 완료되었습니다.");
+
+			var plan_date = '<c:out value="${plan_date }"/>';		// 2023-08-31
+			var date = plan_date.replace(/-/g, '');					// 20230831
+
+			document.getElementById("year").innerHTML = date.substring(0, 4);
+			document.getElementById("month").innerHTML = date.substring(4, 6);
+
+			dateClick(date.slice(-2));
+		}
+	});
+
 	// 이번달 스케줄 리스트 가져오기
 	function getScheduleByMonth() {
+		scheduleList = [];
 		var month = document.getElementById("month").innerHTML;
 		var member_no = document.getElementById("member_no").innerHTML;
 		var data = JSON.stringify({'month': month, 'member_no':member_no});
@@ -640,18 +648,13 @@
 	}
 
 	// 날짜 클릭 시 Modal(todoListModal) 호출
-	function dateClick(date) {
-		var dateId  = date.getAttribute('id');							// 클릭한 날짜의 ID, ex. date12
-
-		var dateDayId = dateId + "Day";									// 클릭한 날짜의 Day ID, ex. date12Day
-		var dateDay = document.getElementById(dateDayId).innerHTML;		// 클릭한 날짜의 Day, ex. 12
-
-		var dateContentId = dateId + "Content";							// 클릭한 날짜의 Content ID, ex.date12Content
+	function dateClick(dateDay) {
+		var day = dateDay.toString();
 
 		// 클릭한 날짜의 일정 목록 가져오기
 		dateScheduleList = [];
 		for(var i = 0; i < scheduleList.length; i++) {
-			if(scheduleList[i].day == dateDay) {
+			if(scheduleList[i].day == day) {
 				dateScheduleList.push(scheduleList[i]);
 			}
 		}
@@ -660,39 +663,6 @@
 		var notEmptyCateList = [];	// 일정이 존재하는 카테고리
 
 		for(var i = 0; i < categoryList.length; i++) {
-
-			/*
-			// 1. 카테고리 이름(category_nm) 표시(폴더)
-			str += '<a href="#" style="text-decoration: none;"><i class="fa fa-folder fa-fw"></i> '
-			str += categoryList[i].category_nm;
-			str += '<span class="fa arrow"></span></a>';
-			str += '<ul class="nav nav-second-level">';
-
-			// 2. 폴더 아래 해당 카테고리의 일정들 표시
-			var category_no = categoryList[i].category_no;
-			for(var k = 0; k < dateScheduleList.length; k++) {
-				var dateSchedule = dateScheduleList[k];
-				if(dateSchedule.category_no == category_no) {		// 일치하는 카테고리의 일정들만 표시
-
-					str += '<li style="border-bottom: none;">';
-
-					// 일정 달성여부 표시(checkBox) + 일정 내용 표시
-					var complete = dateSchedule.complete;
-					var completeId = "date" + dateSchedule.day + "ContentComplete";
-					if(complete == "Y") {
-						str += "<a><input type='checkbox' id='" + completeId + "' value='' checked='checked' > " + dateSchedule.content + "</a>";
-					}
-					else {
-						str += "<a><input type='checkbox' id='" + completeId + "' value='' > " + dateSchedule.content + "</a>";
-					}
-
-					str += '</li>';
-
-				}
-
-			}
-			str += '</ul>';
-			*/
 
 			// 1. 카테고리 이름(category_nm) 표시(폴더)
 			str += '<div class="panel panel-default">';
@@ -760,9 +730,12 @@
 		}
 
 		// 클릭한 날짜 표시
-		//$("#modalDate").text(dateScheduleList[0].plan_date);
-		if(dateDay.length < 2) dateDay = '0' + dateDay;
-		$("#modalDate").text("${now_FD_ym }" + dateDay);		// '2023-08-' + '13'
+		var year = document.getElementById("year").innerHTML;
+		var month = document.getElementById("month").innerHTML;
+		if(month.length < 2) month = '0' + month;
+		if(day.length < 2) day = '0' + day;
+
+		$("#modalDate").text(year + '-' + month + '-' + day);		// '2023' + '-' + '08' + '-' + '13'
 
 		$("#todoListModal").modal("show");
 	}
@@ -774,7 +747,7 @@
 		var date = $("#modalDate").text();
 		$("#addNewScheDate").text(date);
 
-		$("#addNewScheduleForm [name='plan_date']").val(date);
+		$("#addNewScheduleForm [name='plan_date2']").val(date);
 		$("#addNewScheduleForm [name='member_no']").val($("#member_no").text());
 
 		$("#addNewScheduleModal").modal("show");
@@ -782,7 +755,6 @@
 
 	// 새로운 일정 추가 Submit 버튼
 	function addScheduleSubmit() {
-		debugger;
 		$("#addNewScheduleForm").submit();
 	}
 

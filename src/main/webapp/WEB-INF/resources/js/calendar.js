@@ -63,6 +63,9 @@ function calendarInit() {
         var year_month = document.querySelector(".year-month");
         year_month.innerHTML = (currentYear + '.' + (currentMonth + 1));
 
+		var year = document.querySelector(".year");
+		year.innerHTML = currentYear;
+
 		var month = document.querySelector(".month");
 		month.innerHTML = (currentMonth + 1);
 
@@ -78,7 +81,7 @@ function calendarInit() {
         }
         // 이번달
         for (var i = 1; i <= nextDate; i++) {
-            calendar.innerHTML = calendar.innerHTML + '<div class="day current" id="date' + i + '" style="cursor: pointer;" onclick="dateClick(date'+ i +')">'
+            calendar.innerHTML = calendar.innerHTML + '<div class="day current" id="date' + i + '" style="cursor: pointer;" onclick="dateClick('+ i +')">'
 														+ '<div id = "date' + i + 'Day">' + i + '</div>'
 														+ '<div id = "date' + i + 'Content"></div>'
 														+ '</div>'
@@ -97,7 +100,7 @@ function calendarInit() {
 
 		//var myElement = document.getElementById("month").innerHTML;
 		//alert(myElement);
-		getScheduleByMonth();
+		getScheduleByMonth();	// 이번달 날짜 표시
     }
 
     // 이전달로 이동
