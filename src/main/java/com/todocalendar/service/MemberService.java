@@ -22,5 +22,7 @@ public interface MemberService {
 	public List<MemberVO> selectMemberList(MemberVO member);
 	
 	public boolean selectId(String id); //중복 Id 검색
+	
+	public String findId(@Param("name") String name, @Param("email") String email); //이름과 email로 id찾기
 
 }

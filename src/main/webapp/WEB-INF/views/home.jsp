@@ -350,7 +350,7 @@
 						<button type="button" class="close"	data-dismiss="modal" aria-hidden="true">&times;</button>
 		                <h4 class="modal-title" id="modalTitle">새로운 일정 추가하기</h4>
 					</div>
-					<form role="form" id="addNewScheduleForm" action="/pages/addSchedule" method="post">
+					<form role="form" id="addNewScheduleForm" action="./pages/addSchedule" method="post">
 						<div class="modal-body" id="addNewScheDate">Modal Date</div>
 						<div class="modal-body">
 			                <input type="text" class="form-control" name="content" placeholder="새로운 할 일을 적어주세요." ><hr>

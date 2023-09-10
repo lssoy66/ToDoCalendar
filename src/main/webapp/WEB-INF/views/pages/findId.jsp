@@ -43,23 +43,18 @@
 		<div class="row">
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
-                	<div class="panel-heading">
-                        <h3 class="panel-title">비밀번호를 찾고자 하는 아이디를 입력해주세요.</h3>
-                    </div>
                     <div class="panel-body">
-                        <form role="form" name="forgetPwForm" action="../pages/ForgetPwCheck" method="post">
+                        <form role="form" name="forgetIdForm" action="../pages/#" method="post">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="ID를 입력해주세요." name="id" type="text" autofocus>
+                                    ${name }님의 아이디는
                                 </div>
-                                <!-- Change this to a button or input when using this as a form -->
-                                <input type="submit" value="비밀번호 찾기" class="btn btn-lg btn-success btn-block">
+                                <div class="form-group">
+                                    <span>${id }이거 입니다.</span>
+                                </div>
+                               
                             </fieldset>
                         </form>
-                        
-                        <div style="text-align: center; padding-top: 20px">
-                        	아이디가 기억나지 않으신가요? <a href="../pages/ForgetId">ID 찾기</a>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -80,5 +75,6 @@
     
     <!-- Bootstrap Toggle -->
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
 </body>
 </html>
