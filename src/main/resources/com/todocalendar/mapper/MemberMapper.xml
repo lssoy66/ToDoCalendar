@@ -87,5 +87,12 @@
 		  FROM MEMBER
 		 WHERE ID = #{id}
 	</select>
+	
+	<select id="findId" resultType="string">
+		SELECT ID
+		  FROM MEMBER
+		 WHERE NAME = #{name}
+		   AND EMAIL = #{email}
+	</select>
 
 </mapper>

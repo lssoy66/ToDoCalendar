@@ -47,19 +47,22 @@
                         <h3 class="panel-title">가입 시 입력한 이메일로 인증</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form" name="forgetIdForm" action="../pages/#" method="post">
+                        <form role="form" name="forgetIdForm" action="../pages/ForgetIdCheck" method="post">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="ID를 입력해주세요." name="id" type="text" autofocus>
+                                    <input class="form-control" placeholder="이름을 입력해주세요." name="name" type="text" autofocus>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="이메일을 입력해주세요." name="email" type="email" autofocus>
-                                </div>
-                                <input class="form-control" placeholder="인증 코드 6자리를 입력해주세요." maxlength="6" disabled="disabled" name="authCode" id="authCode" type="text" autofocus>
+                                    <input class="form-control" placeholder="이메일을 입력해주세요." name="email" id="email" type="email" autofocus>
+                                	<div style="display: block; text-align: right;">
+                                    	<input type="button" value="인증하기" class="btn btn-primary" id="emailAuth">
+                                    </div>
+                                    <input class="form-control" placeholder="인증 코드 6자리를 입력해주세요." maxlength="6" disabled="disabled" name="authCode" id="authCode" type="text" autofocus>
                                 	<span id="emailAuthWarn"></span>
+                                </div>
                                 
                                 <!-- Change this to a button or input when using this as a form -->
-                                <input type="submit" value="비밀번호 찾기" class="btn btn-lg btn-success btn-block">
+                                <input type="submit" value="비밀번호 찾기" id="findId" class="btn btn-lg btn-success btn-block" disabled="disabled">
                             </fieldset>
                         </form>
                     </div>
@@ -120,11 +123,11 @@
         		$("#emailAuthWarn").css('color', 'green');
     			$('#emailAuth').attr('disabled', true);
     			$('#email').attr('readonly', true);
-    			$("#registerBtn").attr("disabled", false);
+    			$("#findId").attr("disabled", false);
     		}else{
         		$("#emailAuthWarn").html('인증번호가 불일치 합니다. 다시 확인해주세요!');
         		$("#emailAuthWarn").css('color', 'red');
-        		$("#registerBtn").attr("disabled", true);
+        		$("#findId").attr("disabled", true);
     		}
     	});
 	})

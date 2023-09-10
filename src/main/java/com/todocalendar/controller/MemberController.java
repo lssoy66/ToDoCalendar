@@ -123,7 +123,7 @@ public class MemberController {
 		//이메일 보낼 양식
 		String setFrom = "12ecember_@naver.com"; //2단계 인증 x, 메일 설정에서 POP/IMAP 사용 설정에서 POP/SMTP 사용함으로 설정o
 		String toMail = email;
-		String title = "ToDoCalender 회원가입 인증 이메일 입니다.";
+		String title = "ToDoCalender 인증 이메일 입니다.";
 		String content = "인증 코드는 " + checkNum + " 입니다." +
 						 "<br>" +
 						 "해당 인증 코드를 인증 코드 확인란에 기입하여 주세요.";
@@ -200,6 +200,24 @@ public class MemberController {
 		return "/pages/forgetId";
 	}
 	
+	//ID찾기 페이지 진입-2
+	@PostMapping("/ForgetIdCheck")
+	public String forgetIdCheck(Model model, String name, String email, HttpServletRequest request) {
+		log.info("forget Id check.........");
+		
+		String id = memberService.findId(name, email);
+		//Form으로부터 전달 받은 이름과 인증된 이메일이 일치하면 해당 사용자의 id를 반환해야한다.
+		if(id != null) {
+			model.addAttribute("id", id);
+			model.addAttribute("name", name);
+			return "/pages/findId";
+		}
+		request.setAttribute("msg", "존재하지 않는 계정 정보입니다.");
+		request.setAttribute("url", "./ForgetIdCheck");
+		
+		return "alert";
+	}
+	
 	//PW찾기 페이지 진입
 	@GetMapping("/ForgetPassword")
 	public String forgetPassword() {
@@ -208,7 +226,7 @@ public class MemberController {
 	}
 	
 	//PW찾기 페이지 진입-2
-	@PostMapping("/forgetPwCheck")
+	@PostMapping("/ForgetPwCheck")
 	public String forgetPasswordCheck(String id) {
 		log.info("forget Password check.........");
 		//pw찾기를 위한 mapper 작성부터!!

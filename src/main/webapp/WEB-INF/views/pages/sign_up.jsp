@@ -135,7 +135,7 @@
     })
     
     
-    //이메일 인증
+    	//이메일 인증
     	$("#emailAuth").click(function() {
     		const email = $("#email").val(); //사용자가 입력한 이메일 값 얻어오기
     		const checkInput = $("#authCode"); //인증 코드 입력하는 곳

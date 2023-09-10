@@ -76,4 +76,10 @@ public class MemberServiceImpl implements MemberService {
 		return memberMapper.selectId(id);
 	}
 	
+	@Override
+	public String findId(String name, String email) {
+		log.info("Service :: findId...................");
+		return memberMapper.findId(name, email);
+	}
+	
 }
