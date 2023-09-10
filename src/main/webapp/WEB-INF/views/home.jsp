@@ -9,62 +9,55 @@
 <!DOCTYPE html>
 <html lang="kr">
 <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<title>To Do Calendar</title>
 
-<title>To Do Calendar</title>
+	<!-- Bootstrap Core CSS -->
+	<link href="resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Bootstrap Core CSS -->
-<link href="resources/vendor/bootstrap/css/bootstrap.min.css"
-	rel="stylesheet">
+	<!-- MetisMenu CSS -->
+	<link href="resources/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
 
-<!-- MetisMenu CSS -->
-<link href="resources/vendor/metisMenu/metisMenu.min.css"
-	rel="stylesheet">
+	<!-- Custom CSS -->
+	<link href="resources/dist/css/sb-admin-2.css" rel="stylesheet">
 
-<!-- Custom CSS -->
-<link href="resources/dist/css/sb-admin-2.css" rel="stylesheet">
+	<!-- Morris Charts CSS -->
+	<link href="resources/vendor/morrisjs/morris.css" rel="stylesheet">
 
-<!-- Morris Charts CSS -->
-<link href="resources/vendor/morrisjs/morris.css" rel="stylesheet">
+	<!-- Custom Fonts -->
+	<link href="resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-<!-- Custom Fonts -->
-<link href="resources/vendor/font-awesome/css/font-awesome.min.css"
-	rel="stylesheet" type="text/css">
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	    <![endif]-->
 
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	<!-- Calendar CSS -->
+	<link href="resources/css/calendar-style.css" rel="stylesheet">
 
-<!-- Calendar CSS -->
-<link href="resources/css/calendar-style.css" rel="stylesheet">
-
-<!-- Bootstrap Toggle -->
-<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-
+	<!-- Bootstrap Toggle -->
+	<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 </head>
 
 <body>
-
 	<div id="wrapper">
 
 		<!-- Navigation -->
-		<nav class="navbar navbar-default navbar-static-top" role="navigation"
-			style="margin-bottom: 0">
+		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse"
-					data-target=".navbar-collapse">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="./home">To do Calendar</a>
 			</div>
@@ -74,7 +67,8 @@
 				<!-- /.dropdown -->
 				<c:if test="${member != null }">
 					<div id="member_no" style="display:none">${member.member_no }</div>
-					<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i> ${member.name }님 <i class="fa fa-caret-down"></i></a>
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i> ${member.name }님 <i class="fa fa-caret-down"></i></a>
 						<ul class="dropdown-menu dropdown-user">
 							<li>
 								<a><i class="fa fa-star fa-fw"></i>
@@ -194,7 +188,7 @@
                                 <ul class="nav">
                                     <li style="border-bottom: none;">
                                     	<c:forEach var="anniversary" items="${ddayList }" varStatus="status">
-	                                    <!-- DDAY 컬럼의 값이 2(D-day)인 것만 보여준다. -->
+	                                    	<!-- DDAY 컬럼의 값이 2(D-day)인 것만 보여준다. -->
 	                                    	<c:if test="${anniversary.schedule.dday == 2 }">
 	                                    	<!--
 	                                    	formatDate는 날짜 및 시간 값을 지정한 형식으로 변경해준다.
@@ -250,7 +244,7 @@
 			                            					<a><input type="checkbox" id="completeY${status.count }" value="${schedule.schedule_no }" checked="checked"> ${schedule.content }</a>
 			                            				</c:when>
 					                                   	<c:otherwise>
-					                                   		<a><input type="checkbox" value="${schedule.schedule_no }" id="completeN${status.count }"> ${schedule.content }</a>
+					                                   		<a><input type="checkbox" id="completeN${status.count }" value="${schedule.schedule_no }" > ${schedule.content }</a>
 					                                   	</c:otherwise>
 					                                </c:choose>
 			                            		</c:if>
@@ -369,7 +363,7 @@
 			                <div class="form-group">
 								<label>반복여부</label>
 								<div class="radio">
-									<label><input type="radio" name="dday" value="0" checked="">없음</label>
+									<label><input type="radio" name="dday" value="0">없음</label>
 								</div>
 								<div class="radio">
 									<label><input type="radio" name="dday" value="1">디데이</label>
@@ -389,10 +383,33 @@
 			</div><!-- ./modal-dialog -->
 		</div><!-- /.modal -->
 
-	</div>
-	<!-- /#wrapper -->
+	</div><!-- /#wrapper -->
 
-	<script type="text/javascript">
+	<!-- jQuery -->
+	<script src="resources/vendor/jquery/jquery.min.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="resources/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+	<!-- Metis Menu Plugin JavaScript -->
+	<script src="resources/vendor/metisMenu/metisMenu.min.js"></script>
+
+	<!-- Morris Charts JavaScript -->
+	<script src="resources/vendor/raphael/raphael.min.js"></script>
+	<script src="resources/vendor/morrisjs/morris.min.js"></script>
+	<script src="resources/data/morris-data.js"></script>
+
+	<!-- Custom Theme JavaScript -->
+	<script src="resources/dist/js/sb-admin-2.js"></script>
+
+	<!-- Calendar JavaScript -->
+	<script src="resources/js/calendar.js"></script>
+
+	<!-- Bootstrap Toggle -->
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+    <script type="text/javascript">
+
 	<!-- Today Check List 체크박스 on/off -->
 	<c:forEach var="schedule" items="${scheduleList}" varStatus="status">
 	$(document).ready(function() {
@@ -523,36 +540,6 @@
 			}); //End Ajax
 		});
 	});
-	</script>
-
-
-    </script>
-
-	<!-- jQuery -->
-	<script src="resources/vendor/jquery/jquery.min.js"></script>
-
-	<!-- Bootstrap Core JavaScript -->
-	<script src="resources/vendor/bootstrap/js/bootstrap.min.js"></script>
-
-	<!-- Metis Menu Plugin JavaScript -->
-	<script src="resources/vendor/metisMenu/metisMenu.min.js"></script>
-
-	<!-- Morris Charts JavaScript -->
-	<script src="resources/vendor/raphael/raphael.min.js"></script>
-	<script src="resources/vendor/morrisjs/morris.min.js"></script>
-	<script src="resources/data/morris-data.js"></script>
-
-	<!-- Custom Theme JavaScript -->
-	<script src="resources/dist/js/sb-admin-2.js"></script>
-
-	<!-- Calendar JavaScript -->
-
-	<script src="resources/js/calendar.js"></script>
-
-	<!-- Bootstrap Toggle -->
-    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-
-	<script type="text/javascript">
 
 	var scheduleList = [];			// 이번달 스케줄 리스트(JSON)
 	var dateScheduleList = [];		// 해당 날짜의 일정 목록(JSON)
@@ -592,7 +579,6 @@
 
 	$(document).ready(function() {
 
-		// TODO2 저장 성공 시 메시지와 함께 일정이 저장된 날짜의 Modal 띄우기
 		var result = '<c:out value="${msg }"/>';
 		if(result != '' && result == "success") {
 			alert("저장이 완료되었습니다.");
@@ -742,14 +728,17 @@
 
 	// 새로운 일정 추가 Modal(addNewScheduleModal) 호출
 	function addNewScheduleClick() {
-		//alert("addNewScheduleClick");
 
+		// 내용 초기화
 		var date = $("#modalDate").text();
 		$("#addNewScheDate").text(date);
+		$("#addNewScheduleForm [name='content']").val('');
+		$("#addNewScheduleForm [name='dday']").prop('checked', false);
 
 		$("#addNewScheduleForm [name='plan_date2']").val(date);
 		$("#addNewScheduleForm [name='member_no']").val($("#member_no").text());
 
+		// 모달 호출
 		$("#addNewScheduleModal").modal("show");
 	}
 
