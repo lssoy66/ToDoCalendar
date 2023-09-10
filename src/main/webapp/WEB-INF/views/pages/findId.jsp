@@ -52,7 +52,6 @@
                                 <div class="form-group">
                                     <span>${id }이거 입니다.</span>
                                 </div>
-                               
                             </fieldset>
                         </form>
                     </div>
