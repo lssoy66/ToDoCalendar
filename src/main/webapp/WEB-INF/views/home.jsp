@@ -237,18 +237,18 @@
 	                            <c:forEach var="schedule" items="${scheduleList }" varStatus="status">
 	                            <fmt:formatDate var="planDate_FD"  value="${schedule.plan_date }" pattern="yyyy-MM-dd"/>
 	                            	<c:if test="${category.category_no == schedule.category_no }">
-		                            		<li style="border-bottom: none;">
-			                            		<c:if test="${now_FD == planDate_FD }">
-			                            			<c:choose>
-			                            				<c:when test="${schedule.complete eq 'Y' }">
-			                            					<a><input type="checkbox" id="completeY${status.count }" value="${schedule.schedule_no }" checked="checked"> ${schedule.content }</a>
-			                            				</c:when>
-					                                   	<c:otherwise>
-					                                   		<a><input type="checkbox" id="completeN${status.count }" value="${schedule.schedule_no }" > ${schedule.content }</a>
-					                                   	</c:otherwise>
-					                                </c:choose>
-			                            		</c:if>
-				                            </li>
+	                            		<li style="border-bottom: none;">
+		                            		<c:if test="${now_FD == planDate_FD }">
+		                            			<c:choose>
+		                            				<c:when test="${schedule.complete eq 'Y' }">
+		                            					<a><input type="checkbox" id="completeY${status.count }" value="${schedule.schedule_no }" checked="checked"> ${schedule.content }</a>
+		                            				</c:when>
+				                                   	<c:otherwise>
+				                                   		<a><input type="checkbox" id="completeN${status.count }" value="${schedule.schedule_no }" > ${schedule.content }</a>
+				                                   	</c:otherwise>
+				                                </c:choose>
+		                            		</c:if>
+			                            </li>
 	                               	</c:if>
 	                            </c:forEach>
                             </ul>
@@ -307,6 +307,11 @@
 
 		</div>
 		<!-- /#page-wrapper -->
+
+
+		<!-------------------------------
+			* modal
+		--------------------------------->
 
 		<!-- 날짜 클릭 Modal -->
 		<div class="modal fade" id="todoListModal" tabindex="-1" role="dialog" aria-labelledby="todoListModalLabel" aria-hidden="true">
@@ -383,7 +388,37 @@
 			</div><!-- ./modal-dialog -->
 		</div><!-- /.modal -->
 
+		<!-- 일정 상세 수정 Modal -->
+		<div class="modal fade" id="updateScheduleModal" tabindex="-1" role="dialog" aria-labelledby="updateScheduleLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close"	data-dismiss="modal" aria-hidden="true">&times;</button>
+		                <h4 class="modal-title" id="modalTitle">일정 수정하기</h4>
+					</div>
+					<form role="form" id="updateScheduleForm" action="./pages/updateSchedule" method="post">
+						<div class="modal-body" id="updateScheDate">Modal Date</div>
+						<div class="modal-body">
+			                <input type="text" class="form-control" name="content" placeholder="할일이름여기에표시" ><hr>
+			                <input type="hidden" name="member_no" value="">
+						</div>
+						<div class="modal-footer">
+			                <input type="button" class="btn btn-primary" onclick="updateScheduleSubmit('update');" value="수정">
+			                <input type="button" class="btn btn-danger"  onclick="updateScheduleSubmit('delete');" value="삭제">
+			                <!-- <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button> -->
+			            </div>
+		            </form>
+				</div><!-- /.modal-content -->
+
+			</div><!-- ./modal-dialog -->
+		</div><!-- /.modal -->
+
 	</div><!-- /#wrapper -->
+
+
+	<!-------------------------------
+		* script
+	--------------------------------->
 
 	<!-- jQuery -->
 	<script src="resources/vendor/jquery/jquery.min.js"></script>
@@ -429,8 +464,8 @@
 				type : 'POST',
 				dataType : 'json',
 				success : function(result) {
-					console.log("success Y to N ");
-					console.log(result.scheduleCount.y_count);
+					//console.log("success Y to N ");
+					//console.log(result.scheduleCount.y_count);
 					$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");
 				}
 			}); //End Ajax
@@ -441,6 +476,7 @@
 			$("#completeN${status.count}").attr("id", "completeY${status.count}");
 			var value = $("#completeY${status.count}").val();
 			console.log(value);
+
 			//Ajax로 전송
 			$.ajax({
 				url : './ChangeComplete',
@@ -451,8 +487,8 @@
 				type : 'POST',
 				dataType : 'json',
 				success : function(result) {
-					console.log("success N to Y ");
-					console.log(result.scheduleCount.y_count);
+					//console.log("success N to Y ");
+					//console.log(result.scheduleCount.y_count);
 					$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");
 				}
 			}); //End Ajax
@@ -461,46 +497,17 @@
 	});
 	</c:forEach>
 
+	/* 설정 관련 */
 	$(document).ready(function() {
 		//공휴일 자동 표시
 		$(document).on("change", "#publicAutoY", function(){
 			$("#publicAutoN").removeAttr("checked");
 			$("#publicAutoN").attr("id", "publicAutoY");
-
-			/*
-			//Ajax로 전송
-			$.ajax({
-				url : './ChangeDelayAuto',
-				data : {
-					delay_auto : 'N'
-				},
-				type : 'POST',
-				dataType : 'json',
-				success : function(result) {
-					console.log("success Y to N ");
-				}
-			}); //End Ajax
-			*/
 		});
 
     	$(document).on("change", "#publicAutoN", function(){
 			$("#publicAutoY").attr("checked", "checked");
 			$("#publicAutoY").attr("id", "publicAutoN");
-
-			/*
-			//Ajax로 전송
-			$.ajax({
-				url : './ChangeDelayAuto',
-				data : {
-					delay_auto : 'Y'
-				},
-				type : 'POST',
-				dataType : 'json',
-				success : function(result) {
-					console.log("success N to Y ");
-				}
-			}); //End Ajax
-			*/
 		});
 
 		//자동 미루기
@@ -577,6 +584,7 @@
 		]
 	*/
 
+	/* 일정 저장 후 alert 표시 + 이전 모달 다시 road */
 	$(document).ready(function() {
 
 		var result = '<c:out value="${msg }"/>';
@@ -595,6 +603,7 @@
 
 	// 이번달 스케줄 리스트 가져오기
 	function getScheduleByMonth() {
+
 		scheduleList = [];
 		var month = document.getElementById("month").innerHTML;
 		var member_no = document.getElementById("member_no").innerHTML;
@@ -616,6 +625,7 @@
 
 						var complete = result[i].complete;
 
+						// Content에 일정 추가
 						$(dateContentId).append("<br>");
 						if(complete == "Y") {
 							$(dateContentId).append("<input type='checkbox' id='" + dateContentId + "Complete" + "' value='' checked='checked' >&nbsp");
@@ -623,12 +633,10 @@
 						else {
 							$(dateContentId).append("<input type='checkbox' id='" + dateContentId + "Complete" + "' value='' >&nbsp");
 						}
-
 						$(dateContentId).append(result[i].content);
 						scheduleList.push(result[i]);
 					}
 				}
-
 			}
 		});
 	}
@@ -689,11 +697,14 @@
 					// 일정 달성여부 표시(checkBox) + 일정 내용 표시
 					var complete = dateSchedule.complete;
 					var completeId = "date" + dateSchedule.day + "ContentComplete";
+					var schedule_no = dateSchedule.schedule_no;
 					if(complete == "Y") {
-						str += "<a><input type='checkbox' id='" + completeId + "' value='' checked='checked' > " + dateSchedule.content + "</a>";
+						str += "<a style='display:inline;'><input type='checkbox' id='" + completeId + "' value='' checked='checked' >";
+						str += "<a href='#' style='display:inline;' onclick='updateScheduleModalOpen(" + schedule_no + ");'>" + dateSchedule.content + "</a></a>";
 					}
 					else {
-						str += "<a><input type='checkbox' id='" + completeId + "' value='' > " + dateSchedule.content + "</a>";
+						str += "<a style='display:inline;'><input type='checkbox' id='" + completeId + "' value='' >";
+						str += "<a href='#' style='display:inline;' onclick='updateScheduleModalOpen(" + schedule_no + ");'>" + dateSchedule.content + "</a></a>";
 					}
 
 					str += '</li>';
@@ -734,6 +745,7 @@
 		$("#addNewScheDate").text(date);
 		$("#addNewScheduleForm [name='content']").val('');
 		$("#addNewScheduleForm [name='dday']").prop('checked', false);
+		$("#addNewScheduleForm [value='0']").prop('checked', true);
 
 		$("#addNewScheduleForm [name='plan_date2']").val(date);
 		$("#addNewScheduleForm [name='member_no']").val($("#member_no").text());
@@ -745,6 +757,35 @@
 	// 새로운 일정 추가 Submit 버튼
 	function addScheduleSubmit() {
 		$("#addNewScheduleForm").submit();
+	}
+
+	// 일정 상세 Modal
+	function updateScheduleModalOpen(schedule_no) {
+		// 세팅 후 모달 호출
+		//console.log(dateScheduleList);
+		var schedule = "";
+		for(var i = 0; i < dateScheduleList.length; i++) {
+			if(dateScheduleList[i].schedule_no == schedule_no) {
+				schedule = dateScheduleList[i];
+			}
+		}
+
+		var date = $("#modalDate").text();
+		$("#updateScheDate").text(date);
+		$("#updateScheduleForm [name='content']").val(schedule.content);
+
+		// 모달 호출
+		$("#updateScheduleModal").modal("show");
+	}
+
+	// 일정 상세 Modal - 수정/삭제
+	function updateScheduleSubmit(status) {
+		if("update" == status) {
+			//alert("수정은 수정하겠냐고 묻지 않음");
+		}
+		else if("delete" == status) {
+			alert("삭제하시겠습니까?");
+		}
 	}
 
 	</script>
