@@ -50,7 +50,7 @@
                         <form role="form" name="forgetPwForm" action="../pages/ForgetPwCheck" method="post">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="ID를 입력해주세요." name="id" type="text" autofocus>
+                                    <input class="form-control" placeholder="ID를 입력해주세요." name="id" id="id" type="text" autofocus>
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
                                 <input type="submit" value="비밀번호 찾기" class="btn btn-lg btn-success btn-block">

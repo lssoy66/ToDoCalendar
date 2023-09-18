@@ -82,4 +82,15 @@ public class MemberServiceImpl implements MemberService {
 		return memberMapper.findId(name, email);
 	}
 	
+	@Override
+	public String findAccount(String id) {
+		log.info("Service :: findAcount...................");		
+		return memberMapper.findAccount(id);
+	}
+	
+	@Override
+	public void updateTempPassword(String id, String name, String email, String tempPassword) {
+		log.info("Service :: updateTempPassword...................");
+		memberMapper.updateTempPassword(id, name, email, tempPassword);
+	}
 }

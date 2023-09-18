@@ -25,4 +25,7 @@ public interface MemberService {
 	
 	public String findId(@Param("name") String name, @Param("email") String email); //이름과 email로 id찾기
 
+	public String findAccount(String id); //Id로 계정 유무 찾기
+	
+	public void updateTempPassword(@Param("id") String id, @Param("name") String name, @Param("email") String email, @Param("tempPassword") String tempPassword); //기존 Password를 임시 Password로 변경
 }
