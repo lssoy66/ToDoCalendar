@@ -15,6 +15,16 @@ public interface ScheduleMapper {
 	public int insertSchedule(ScheduleVO schedule);
 
 	/**
+	 * 스케줄(일정) 수정
+	 */
+	public int updateSchedule(ScheduleVO schedule);
+
+	/**
+	 * 스케줄(일정) 삭제
+	 */
+	public int deleteSchedule(ScheduleVO schedule);
+
+	/**
 	 * 스케줄(일정) 목록
 	 */
 	public List<ScheduleVO> selectScheduleList(ScheduleVO schedule);

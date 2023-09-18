@@ -30,6 +30,20 @@
 		)
 	</insert>
 
+	<update id="updateSchedule">
+		UPDATE SCHEDULE
+		   SET CATEGORY_NO = #{category_no}
+		     , CONTENT = #{content}
+		     , DDAY = #{dday}
+		 WHERE SCHEDULE_NO = #{schedule_no}
+	</update>
+
+	<delete id="deleteSchedule">
+		DELETE
+		  FROM SCHEDULE
+		 WHERE SCHEDULE_NO = #{schedule_no}
+	</delete>
+
 	<select id="selectScheduleList" resultType="com.todocalendar.model.ScheduleVO">
 		SELECT SCHEDULE_NO      /* 일정번호(PK) */
 		     , MEMBER_NO        /* 회원번호(FK) */

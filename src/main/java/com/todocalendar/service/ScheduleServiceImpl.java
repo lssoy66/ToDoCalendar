@@ -37,6 +37,34 @@ public class ScheduleServiceImpl implements ScheduleService {
 	}
 
 	@Override
+	public int updateSchedule(ScheduleVO schedule) throws Exception {
+		log.info("updateSchedule.........");
+
+		String dateStr = schedule.getPlan_date2();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date strToDate = null;
+		strToDate = formatter.parse(dateStr);
+		schedule.setPlan_date(strToDate);
+
+		int result = scheduleMapper.updateSchedule(schedule);
+		return result;
+	}
+
+	@Override
+	public int deleteSchedule(ScheduleVO schedule) throws Exception {
+		log.info("deleteSchedule.........");
+
+		String dateStr = schedule.getPlan_date2();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date strToDate = null;
+		strToDate = formatter.parse(dateStr);
+		schedule.setPlan_date(strToDate);
+
+		int result = scheduleMapper.deleteSchedule(schedule);
+		return result;
+	}
+
+	@Override
 	public List<ScheduleVO> selectScheduleList(ScheduleVO schedule) {
 		log.info("Service :: selectScheduleList...................");
 		return scheduleMapper.selectScheduleList(schedule);

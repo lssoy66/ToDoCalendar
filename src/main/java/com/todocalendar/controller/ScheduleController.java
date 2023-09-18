@@ -52,6 +52,12 @@ public class ScheduleController {
 		return scheduleService.selectScheduleListByMonth(schedule);
 	}
 
+	/**
+	 * 일정 추가
+	 * @param schedule
+	 * @param rttr
+	 * @return
+	 */
 	@RequestMapping(value = "/addSchedule", method = RequestMethod.POST)
 	public String addSchedule(ScheduleVO schedule, RedirectAttributes rttr) {
 		log.info("addSchedule.............. :: " + schedule);
@@ -59,10 +65,69 @@ public class ScheduleController {
 			int resultCnt = scheduleService.insertSchedule(schedule);
 			if(resultCnt > 0) {
 				rttr.addFlashAttribute("msg", "success");
+				rttr.addFlashAttribute("status", "insert");
 
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 				String DateToStr = formatter.format(schedule.getPlan_date());
 				rttr.addFlashAttribute("plan_date", DateToStr);
+			}
+			else {
+				rttr.addFlashAttribute("msg", "저장 중 오류가 발생했습니다.");
+			}
+		} catch (Exception e) {
+			log.debug(e.getStackTrace());
+		}
+
+		return "redirect:../home";
+	}
+
+	/**
+	 * 일정 수정
+	 * @param schedule
+	 * @param rttr
+	 * @return
+	 */
+	@RequestMapping(value = "/updateSchedule", method = RequestMethod.POST)
+	public String updateSchedule(ScheduleVO schedule, RedirectAttributes rttr) {
+		log.info("updateSchedule.............. :: " + schedule);
+		try {
+			int resultCnt = scheduleService.updateSchedule(schedule);
+			if(resultCnt > 0) {
+				rttr.addFlashAttribute("msg", "success");
+				rttr.addFlashAttribute("status", "update");
+
+//				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//				String DateToStr = formatter.format(schedule.getPlan_date());
+//				rttr.addFlashAttribute("plan_date", DateToStr);
+			}
+			else {
+				rttr.addFlashAttribute("msg", "저장 중 오류가 발생했습니다.");
+			}
+		} catch (Exception e) {
+			log.debug(e.getStackTrace());
+		}
+
+		return "redirect:../home";
+	}
+
+	/**
+	 * 일정 삭제
+	 * @param schedule
+	 * @param rttr
+	 * @return
+	 */
+	@RequestMapping(value = "/deleteSchedule", method = RequestMethod.POST)
+	public String deleteSchedule(ScheduleVO schedule, RedirectAttributes rttr) {
+		log.info("deleteSchedule.............. :: " + schedule);
+		try {
+			int resultCnt = scheduleService.deleteSchedule(schedule);
+			if(resultCnt > 0) {
+				rttr.addFlashAttribute("msg", "success");
+				rttr.addFlashAttribute("status", "delete");
+
+//				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//				String DateToStr = formatter.format(schedule.getPlan_date());
+//				rttr.addFlashAttribute("plan_date", DateToStr);
 			}
 			else {
 				rttr.addFlashAttribute("msg", "저장 중 오류가 발생했습니다.");

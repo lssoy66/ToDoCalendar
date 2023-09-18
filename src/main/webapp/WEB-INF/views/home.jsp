@@ -9,62 +9,55 @@
 <!DOCTYPE html>
 <html lang="kr">
 <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<title>To Do Calendar</title>
 
-<title>To Do Calendar</title>
+	<!-- Bootstrap Core CSS -->
+	<link href="resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Bootstrap Core CSS -->
-<link href="resources/vendor/bootstrap/css/bootstrap.min.css"
-	rel="stylesheet">
+	<!-- MetisMenu CSS -->
+	<link href="resources/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
 
-<!-- MetisMenu CSS -->
-<link href="resources/vendor/metisMenu/metisMenu.min.css"
-	rel="stylesheet">
+	<!-- Custom CSS -->
+	<link href="resources/dist/css/sb-admin-2.css" rel="stylesheet">
 
-<!-- Custom CSS -->
-<link href="resources/dist/css/sb-admin-2.css" rel="stylesheet">
+	<!-- Morris Charts CSS -->
+	<link href="resources/vendor/morrisjs/morris.css" rel="stylesheet">
 
-<!-- Morris Charts CSS -->
-<link href="resources/vendor/morrisjs/morris.css" rel="stylesheet">
+	<!-- Custom Fonts -->
+	<link href="resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-<!-- Custom Fonts -->
-<link href="resources/vendor/font-awesome/css/font-awesome.min.css"
-	rel="stylesheet" type="text/css">
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	    <![endif]-->
 
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	<!-- Calendar CSS -->
+	<link href="resources/css/calendar-style.css" rel="stylesheet">
 
-<!-- Calendar CSS -->
-<link href="resources/css/calendar-style.css" rel="stylesheet">
-
-<!-- Bootstrap Toggle -->
-<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-
+	<!-- Bootstrap Toggle -->
+	<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 </head>
 
 <body>
-
 	<div id="wrapper">
 
 		<!-- Navigation -->
-		<nav class="navbar navbar-default navbar-static-top" role="navigation"
-			style="margin-bottom: 0">
+		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse"
-					data-target=".navbar-collapse">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="./home">To do Calendar</a>
 			</div>
@@ -74,7 +67,8 @@
 				<!-- /.dropdown -->
 				<c:if test="${member != null }">
 					<div id="member_no" style="display:none">${member.member_no }</div>
-					<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i> ${member.name }님 <i class="fa fa-caret-down"></i></a>
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i> ${member.name }님 <i class="fa fa-caret-down"></i></a>
 						<ul class="dropdown-menu dropdown-user">
 							<li>
 								<a><i class="fa fa-star fa-fw"></i>
@@ -95,12 +89,12 @@
 						</ul> <!-- /.dropdown-user -->
 					</li>
 				</c:if>
-				
+
 				<c:if test="${member == null }">
 					회원 정보 없음
 				</c:if>
 				<!-- /.dropdown -->
-				
+
 				<!-- /.dropdown -->
 				<c:if test="${member != null }">
 					<div id="member_no" style="display:none">${member.member_no }</div>
@@ -117,7 +111,7 @@
 									<ul>
 										<li>
 											<div>
-											<!--  
+											<!--
 												<span>공휴일 자동 표시</span>
 												<input data-toggle="toggle" id="publicAutoN" type="checkbox">
 											-->
@@ -139,13 +133,13 @@
 									</ul>
 								</div>
 							</li>
-							
+
 						</ul>
 						<!-- /.dropdown-user -->
 					</li>
 				</c:if>
 				<!-- /.dropdown -->
-				
+
 			</ul>
 			<!-- /.navbar-top-links -->
 
@@ -194,7 +188,7 @@
                                 <ul class="nav">
                                     <li style="border-bottom: none;">
                                     	<c:forEach var="anniversary" items="${ddayList }" varStatus="status">
-	                                    <!-- DDAY 컬럼의 값이 2(D-day)인 것만 보여준다. -->
+	                                    	<!-- DDAY 컬럼의 값이 2(D-day)인 것만 보여준다. -->
 	                                    	<c:if test="${anniversary.schedule.dday == 2 }">
 	                                    	<!--
 	                                    	formatDate는 날짜 및 시간 값을 지정한 형식으로 변경해준다.
@@ -243,18 +237,18 @@
 	                            <c:forEach var="schedule" items="${scheduleList }" varStatus="status">
 	                            <fmt:formatDate var="planDate_FD"  value="${schedule.plan_date }" pattern="yyyy-MM-dd"/>
 	                            	<c:if test="${category.category_no == schedule.category_no }">
-		                            		<li style="border-bottom: none;">
-			                            		<c:if test="${now_FD == planDate_FD }">
-			                            			<c:choose>
-			                            				<c:when test="${schedule.complete eq 'Y' }">
-			                            					<a><input type="checkbox" id="completeY${status.count }" value="${schedule.schedule_no }" checked="checked"> ${schedule.content }</a>
-			                            				</c:when>
-					                                   	<c:otherwise>
-					                                   		<a><input type="checkbox" value="${schedule.schedule_no }" id="completeN${status.count }"> ${schedule.content }</a>
-					                                   	</c:otherwise>
-					                                </c:choose>
-			                            		</c:if>
-				                            </li>
+	                            		<li style="border-bottom: none;">
+		                            		<c:if test="${now_FD == planDate_FD }">
+		                            			<c:choose>
+		                            				<c:when test="${schedule.complete eq 'Y' }">
+		                            					<a><input type="checkbox" id="completeY${status.count }" value="${schedule.schedule_no }" checked="checked"> ${schedule.content }</a>
+		                            				</c:when>
+				                                   	<c:otherwise>
+				                                   		<a><input type="checkbox" id="completeN${status.count }" value="${schedule.schedule_no }" > ${schedule.content }</a>
+				                                   	</c:otherwise>
+				                                </c:choose>
+		                            		</c:if>
+			                            </li>
 	                               	</c:if>
 	                            </c:forEach>
                             </ul>
@@ -314,6 +308,11 @@
 		</div>
 		<!-- /#page-wrapper -->
 
+
+		<!-------------------------------
+			* modal
+		--------------------------------->
+
 		<!-- 날짜 클릭 Modal -->
 		<div class="modal fade" id="todoListModal" tabindex="-1" role="dialog" aria-labelledby="todoListModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
@@ -369,7 +368,7 @@
 			                <div class="form-group">
 								<label>반복여부</label>
 								<div class="radio">
-									<label><input type="radio" name="dday" value="0" checked="">없음</label>
+									<label><input type="radio" name="dday" value="0">없음</label>
 								</div>
 								<div class="radio">
 									<label><input type="radio" name="dday" value="1">디데이</label>
@@ -389,144 +388,62 @@
 			</div><!-- ./modal-dialog -->
 		</div><!-- /.modal -->
 
-	</div>
-	<!-- /#wrapper -->
+		<!-- 일정 상세 수정 Modal -->
+		<div class="modal fade" id="updateScheduleModal" tabindex="-1" role="dialog" aria-labelledby="updateScheduleLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close"	data-dismiss="modal" aria-hidden="true">&times;</button>
+		                <h4 class="modal-title" id="modalTitle">일정 수정하기</h4>
+					</div>
+					<form role="form" id="updateScheduleForm" action="#" method="post">
+						<div class="modal-body" id="updateScheDate">Modal Date</div>
+						<div class="modal-body">
+			                <input type="text" class="form-control" name="content" placeholder="새로운 할 일을 적어주세요." ><hr>
+			                <input type="hidden" name="schedule_no" value="">
+			                <input type="hidden" name="member_no" value="">
+			                <div class="form-group">
+								<label>카테고리</label>
+								<select class="form-control" name="category_no">
+									<c:forEach var="item" items="${categoryList }" varStatus="status">
+										<option value="${item.category_no}">${item.category_nm}</option>
+									</c:forEach>
+								</select>
+								<button type="button" class="btn btn-link">새로운 카테고리 추가</button>
+			                </div>
+			                <!-- <input type="date" name="plan_date" value="2023-08-19"> -->
+			                <input type="hidden" name="plan_date2" value="">
+			                <div class="form-group">
+								<label>반복여부</label>
+								<div class="radio">
+									<label><input type="radio" name="dday" value="0">없음</label>
+								</div>
+								<div class="radio">
+									<label><input type="radio" name="dday" value="1">디데이</label>
+								</div>
+								<div class="radio">
+									<label><input type="radio" name="dday" value="2">기념일</label>
+								</div>
+							</div>
+			                <input type="hidden" name="complete" value="N">
+						</div>
+						<div class="modal-footer">
+			                <input type="button" class="btn btn-primary" onclick="updateScheduleSubmit('update');" value="수정">
+			                <input type="button" class="btn btn-danger"  onclick="updateScheduleSubmit('delete');" value="삭제">
+			                <!-- <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button> -->
+			            </div>
+		            </form>
+				</div><!-- /.modal-content -->
 
-	<script type="text/javascript">
-	<!-- Today Check List 체크박스 on/off -->
-	<c:forEach var="schedule" items="${scheduleList}" varStatus="status">
-	$(document).ready(function() {
-		$(document).on("change", "#completeY${status.count}", function() {
-			$("#completeY${status.count}").removeAttr("checked");
-			$("#completeY${status.count}").attr("id", "completeN${status.count}");
-			var value = $("#completeN${status.count}").val();
-			console.log(value);
+			</div><!-- ./modal-dialog -->
+		</div><!-- /.modal -->
 
-			//Ajax로 전송
-			$.ajax({
-				url : './ChangeComplete',
-				data : {
-					complete : 'N',
-					schedule_no : value
-				},
-				type : 'POST',
-				dataType : 'json',
-				success : function(result) {
-					console.log("success Y to N ");
-					console.log(result.scheduleCount.y_count);
-					$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");
-				}
-			}); //End Ajax
-		});
+	</div><!-- /#wrapper -->
 
-		$(document).on("change", "#completeN${status.count}", function() {
-			$("#completeN${status.count}").attr("checked", "checked");
-			$("#completeN${status.count}").attr("id", "completeY${status.count}");
-			var value = $("#completeY${status.count}").val();
-			console.log(value);
-			//Ajax로 전송
-			$.ajax({
-				url : './ChangeComplete',
-				data : {
-					complete : 'Y',
-					schedule_no : value
-				},
-				type : 'POST',
-				dataType : 'json',
-				success : function(result) {
-					console.log("success N to Y ");
-					console.log(result.scheduleCount.y_count);
-					$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");
-				}
-			}); //End Ajax
-		});
-    	
-	});
-	</c:forEach>
-	
-	$(document).ready(function() {
-		//공휴일 자동 표시
-		$(document).on("change", "#publicAutoY", function(){
-			$("#publicAutoN").removeAttr("checked");
-			$("#publicAutoN").attr("id", "publicAutoY");
-			
-			/*
-			//Ajax로 전송
-			$.ajax({
-				url : './ChangeDelayAuto',
-				data : {
-					delay_auto : 'N'
-				},
-				type : 'POST',
-				dataType : 'json',
-				success : function(result) {
-					console.log("success Y to N ");
-				}
-			}); //End Ajax
-			*/
-		});
-		
-    	$(document).on("change", "#publicAutoN", function(){
-			$("#publicAutoY").attr("checked", "checked");
-			$("#publicAutoY").attr("id", "publicAutoN");
-			
-			/*
-			//Ajax로 전송
-			$.ajax({
-				url : './ChangeDelayAuto',
-				data : {
-					delay_auto : 'Y'
-				},
-				type : 'POST',
-				dataType : 'json',
-				success : function(result) {
-					console.log("success N to Y ");
-				}
-			}); //End Ajax
-			*/
-		});
-		
-		//자동 미루기
-		$(document).on("change", "#delayAutoY", function(){
-			$("#delayAutoY").removeAttr("checked");
-			$("#delayAutoY").attr("id", "delayAutoN");
-			
-			//Ajax로 전송
-			$.ajax({
-				url : './pages/ChangeDelayAuto',
-				data : {
-					delay_auto : 'N'
-				},
-				type : 'POST',
-				dataType : 'json',
-				success : function(result) {
-					console.log("success Y to N ");
-				}
-			}); //End Ajax
-		});
-		
-    	$(document).on("change", "#delayAutoN", function(){
-			$("#delayAutoN").attr("checked", "checked");
-			$("#delayAutoN").attr("id", "delayAutoY");
-			
-			//Ajax로 전송
-			$.ajax({
-				url : './pages/ChangeDelayAuto',
-				data : {
-					delay_auto : 'Y'
-				},
-				type : 'POST',
-				dataType : 'json',
-				success : function(result) {
-					console.log("success N to Y ");
-				}
-			}); //End Ajax
-		});
-	});
-	</script>
-	
-    
-    </script>
+
+	<!-------------------------------
+		* script
+	--------------------------------->
 
 	<!-- jQuery -->
 	<script src="resources/vendor/jquery/jquery.min.js"></script>
@@ -546,13 +463,115 @@
 	<script src="resources/dist/js/sb-admin-2.js"></script>
 
 	<!-- Calendar JavaScript -->
-
 	<script src="resources/js/calendar.js"></script>
-	
+
 	<!-- Bootstrap Toggle -->
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
-	<script type="text/javascript">
+    <script type="text/javascript">
+
+	<!-- Today Check List 체크박스 on/off -->
+	<c:forEach var="schedule" items="${scheduleList}" varStatus="status">
+	$(document).ready(function() {
+		$(document).on("change", "#completeY${status.count}", function() {
+			$("#completeY${status.count}").removeAttr("checked");
+			$("#completeY${status.count}").attr("id", "completeN${status.count}");
+			var value = $("#completeN${status.count}").val();
+			console.log(value);
+
+			//Ajax로 전송
+			$.ajax({
+				url : './ChangeComplete',
+				data : {
+					complete : 'N',
+					schedule_no : value
+				},
+				type : 'POST',
+				dataType : 'json',
+				success : function(result) {
+					//console.log("success Y to N ");
+					//console.log(result.scheduleCount.y_count);
+					$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");
+				}
+			}); //End Ajax
+		});
+
+		$(document).on("change", "#completeN${status.count}", function() {
+			$("#completeN${status.count}").attr("checked", "checked");
+			$("#completeN${status.count}").attr("id", "completeY${status.count}");
+			var value = $("#completeY${status.count}").val();
+			console.log(value);
+
+			//Ajax로 전송
+			$.ajax({
+				url : './ChangeComplete',
+				data : {
+					complete : 'Y',
+					schedule_no : value
+				},
+				type : 'POST',
+				dataType : 'json',
+				success : function(result) {
+					//console.log("success N to Y ");
+					//console.log(result.scheduleCount.y_count);
+					$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");
+				}
+			}); //End Ajax
+		});
+
+	});
+	</c:forEach>
+
+	/* 설정 관련 */
+	$(document).ready(function() {
+		//공휴일 자동 표시
+		$(document).on("change", "#publicAutoY", function(){
+			$("#publicAutoN").removeAttr("checked");
+			$("#publicAutoN").attr("id", "publicAutoY");
+		});
+
+    	$(document).on("change", "#publicAutoN", function(){
+			$("#publicAutoY").attr("checked", "checked");
+			$("#publicAutoY").attr("id", "publicAutoN");
+		});
+
+		//자동 미루기
+		$(document).on("change", "#delayAutoY", function(){
+			$("#delayAutoY").removeAttr("checked");
+			$("#delayAutoY").attr("id", "delayAutoN");
+
+			//Ajax로 전송
+			$.ajax({
+				url : './pages/ChangeDelayAuto',
+				data : {
+					delay_auto : 'N'
+				},
+				type : 'POST',
+				dataType : 'json',
+				success : function(result) {
+					console.log("success Y to N ");
+				}
+			}); //End Ajax
+		});
+
+    	$(document).on("change", "#delayAutoN", function(){
+			$("#delayAutoN").attr("checked", "checked");
+			$("#delayAutoN").attr("id", "delayAutoY");
+
+			//Ajax로 전송
+			$.ajax({
+				url : './pages/ChangeDelayAuto',
+				data : {
+					delay_auto : 'Y'
+				},
+				type : 'POST',
+				dataType : 'json',
+				success : function(result) {
+					console.log("success N to Y ");
+				}
+			}); //End Ajax
+		});
+	});
 
 	var scheduleList = [];			// 이번달 스케줄 리스트(JSON)
 	var dateScheduleList = [];		// 해당 날짜의 일정 목록(JSON)
@@ -590,25 +609,35 @@
 		]
 	*/
 
+	/* 일정 저장 후 alert 표시 + 이전 모달 다시 road */
 	$(document).ready(function() {
 
-		// TODO2 저장 성공 시 메시지와 함께 일정이 저장된 날짜의 Modal 띄우기
 		var result = '<c:out value="${msg }"/>';
+		var resultStatus = '<c:out value="${status }"/>';
 		if(result != '' && result == "success") {
-			alert("저장이 완료되었습니다.");
+			if(resultStatus == "insert") {
+				alert("저장이 완료되었습니다.");
 
-			var plan_date = '<c:out value="${plan_date }"/>';		// 2023-08-31
-			var date = plan_date.replace(/-/g, '');					// 20230831
+				var plan_date = '<c:out value="${plan_date }"/>';		// 2023-08-31
+				var date = plan_date.replace(/-/g, '');					// 20230831
 
-			document.getElementById("year").innerHTML = date.substring(0, 4);
-			document.getElementById("month").innerHTML = date.substring(4, 6);
+				document.getElementById("year").innerHTML = date.substring(0, 4);
+				document.getElementById("month").innerHTML = date.substring(4, 6);
 
-			dateClick(date.slice(-2));
+				dateClick(date.slice(-2));
+			}
+			else if(resultStatus == "update") {
+				alert("수정이 완료되었습니다.");
+			}
+			else if(resultStatus == "delete") {
+				alert("삭제되었습니다.");
+			}
 		}
 	});
 
 	// 이번달 스케줄 리스트 가져오기
 	function getScheduleByMonth() {
+
 		scheduleList = [];
 		var month = document.getElementById("month").innerHTML;
 		var member_no = document.getElementById("member_no").innerHTML;
@@ -630,6 +659,7 @@
 
 						var complete = result[i].complete;
 
+						// Content에 일정 추가
 						$(dateContentId).append("<br>");
 						if(complete == "Y") {
 							$(dateContentId).append("<input type='checkbox' id='" + dateContentId + "Complete" + "' value='' checked='checked' >&nbsp");
@@ -637,12 +667,10 @@
 						else {
 							$(dateContentId).append("<input type='checkbox' id='" + dateContentId + "Complete" + "' value='' >&nbsp");
 						}
-
 						$(dateContentId).append(result[i].content);
 						scheduleList.push(result[i]);
 					}
 				}
-
 			}
 		});
 	}
@@ -703,11 +731,14 @@
 					// 일정 달성여부 표시(checkBox) + 일정 내용 표시
 					var complete = dateSchedule.complete;
 					var completeId = "date" + dateSchedule.day + "ContentComplete";
+					var schedule_no = dateSchedule.schedule_no;
 					if(complete == "Y") {
-						str += "<a><input type='checkbox' id='" + completeId + "' value='' checked='checked' > " + dateSchedule.content + "</a>";
+						str += "<a style='display:inline;'><input type='checkbox' id='" + completeId + "' value='' checked='checked' >";
+						str += "<a href='#' style='display:inline;' onclick='updateScheduleModalOpen(" + schedule_no + ");'>" + dateSchedule.content + "</a></a>";
 					}
 					else {
-						str += "<a><input type='checkbox' id='" + completeId + "' value='' > " + dateSchedule.content + "</a>";
+						str += "<a style='display:inline;'><input type='checkbox' id='" + completeId + "' value='' >";
+						str += "<a href='#' style='display:inline;' onclick='updateScheduleModalOpen(" + schedule_no + ");'>" + dateSchedule.content + "</a></a>";
 					}
 
 					str += '</li>';
@@ -742,20 +773,75 @@
 
 	// 새로운 일정 추가 Modal(addNewScheduleModal) 호출
 	function addNewScheduleClick() {
-		//alert("addNewScheduleClick");
 
+		// 내용 초기화
 		var date = $("#modalDate").text();
 		$("#addNewScheDate").text(date);
+		$("#addNewScheduleForm [name='content']").val('');
+		$("#addNewScheduleForm [name='dday']").prop('checked', false);
+		$("#addNewScheduleForm [value='0']").prop('checked', true);
 
 		$("#addNewScheduleForm [name='plan_date2']").val(date);
 		$("#addNewScheduleForm [name='member_no']").val($("#member_no").text());
 
+		// 모달 호출
 		$("#addNewScheduleModal").modal("show");
 	}
 
 	// 새로운 일정 추가 Submit 버튼
 	function addScheduleSubmit() {
 		$("#addNewScheduleForm").submit();
+	}
+
+	// 일정 상세 Modal
+	function updateScheduleModalOpen(schedule_no) {
+		// 세팅 후 모달 호출
+		var schedule = "";
+		for(var i = 0; i < dateScheduleList.length; i++) {
+			if(dateScheduleList[i].schedule_no == schedule_no) {
+				schedule = dateScheduleList[i];
+			}
+		}
+
+		//console.log(schedule);
+		/*
+			{ category_nm:"취미", category_no:2, complete:"N", content:"17일 새로운 일정", day:"17"
+			, dday:"0", dday_cnt:"-1", dday_nm:"해당없음", member_no:1, month:"9", plan_date:1694876400000, plan_date2:null, schedule_no:53 }
+		*/
+
+		var date = $("#modalDate").text();
+		$("#updateScheDate").text(date);
+		$("#updateScheduleForm [name='content']").val(schedule.content);
+
+		var category_no = schedule.category_no;
+		$("#updateScheduleForm [name='category_no']").val(category_no).prop('checked', false);
+
+		var dday = schedule.dday;
+		$("#updateScheduleForm [name='dday']").prop('checked', false);
+		$("#updateScheduleForm [value='"+ dday +"']").prop('checked', true);
+		$("#updateScheduleForm [name='plan_date2']").val(date);
+
+		$("#updateScheduleForm [name='member_no']").val(schedule.member_no);
+		$("#updateScheduleForm [name='schedule_no']").val(schedule.schedule_no);
+
+		// 모달 호출
+		$("#updateScheduleModal").modal("show");
+	}
+
+	// 일정 상세 Modal - 수정/삭제
+	function updateScheduleSubmit(status) {
+		if("update" == status) {
+			$("#updateScheduleForm").attr("action", "./pages/updateSchedule");
+		}
+		else if("delete" == status) {
+		    if (!confirm("삭제하시겠습니까?")) {
+		        return;
+		    }
+			$("#updateScheduleForm").attr("action", "./pages/deleteSchedule");
+		}
+
+		// 저장
+		$("#updateScheduleForm").submit();
 	}
 
 	</script>
