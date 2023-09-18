@@ -44,15 +44,16 @@
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
                 	<div class="panel-heading">
-                        <h3 class="panel-title">가입 시 입력한 이메일로 인증</h3>
+                        <h3 class="panel-title">회원가입시 등록했던 회원정보를 입력해주세요.</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form" name="forgetIdForm" action="../pages/ForgetIdCheck" method="post">
+                        <form role="form" name="forgetPwForm" action="../pages/SendTempPassword" method="post">
                             <fieldset>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="이름을 입력해주세요." name="name" type="text" autofocus>
+                            	<div class="form-group">
+                                    <input class="form-control" placeholder="이름을 입력해주세요." name="name" id="name" type="text" autofocus>
                                 </div>
                                 <div class="form-group">
+                                    <input name="id" id="id" value="${id }" type="hidden">
                                     <input class="form-control" placeholder="이메일을 입력해주세요." name="email" id="email" type="email" autofocus>
                                 	<div style="display: block; text-align: right;">
                                     	<input type="button" value="인증하기" class="btn btn-primary" id="emailAuth">
@@ -62,7 +63,7 @@
                                 </div>
                                 
                                 <!-- Change this to a button or input when using this as a form -->
-                                <input type="submit" value="비밀번호 찾기" id="findId" class="btn btn-lg btn-success btn-block" disabled="disabled">
+                                <input type="submit" value="임시비밀번호 발급" id="crtTempPw" class="btn btn-lg btn-success btn-block" disabled="disabled">
                             </fieldset>
                         </form>
                     </div>
@@ -85,7 +86,7 @@
     
     <!-- Bootstrap Toggle -->
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-	
+
 	<script type="text/javascript">
 	$(document).ready(function() {
 		//이메일 인증
@@ -113,6 +114,7 @@
 		//인증 코드 비교
 		$("#authCode").on("focusout", function() {
     		const inputCode = $("#authCode").val();
+    		const email = $("#email").val(); //사용자가 입력한 이메일 값 얻어오기
     		
     		console.log("입력코드 : " + inputCode);
     		console.log("인증코드 : " + code);
@@ -122,15 +124,15 @@
         		$("#emailAuthWarn").css('color', 'green');
     			$('#emailAuth').attr('disabled', true);
     			$('#email').attr('readonly', true);
-    			$("#findId").attr("disabled", false);
+    			$("#crtTempPw").attr("disabled", false);
     		}else{
         		$("#emailAuthWarn").html('인증번호가 불일치 합니다. 다시 확인해주세요!');
         		$("#emailAuthWarn").css('color', 'red');
-        		$("#findId").attr("disabled", true);
+        		$("#crtTempPw").attr("disabled", true);
     		}
     	});
 	})
 	</script>
-
+	
 </body>
 </html>
