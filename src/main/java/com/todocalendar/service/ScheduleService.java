@@ -19,6 +19,18 @@ public interface ScheduleService {
 	public int insertSchedule(ScheduleVO schedule) throws Exception;
 
 	/**
+	 * 스케줄(일정) 수정
+	 * @throws Exception
+	 */
+	public int updateSchedule(ScheduleVO schedule) throws Exception;
+
+	/**
+	 * 스케줄(일정) 삭제
+	 * @throws Exception
+	 */
+	public int deleteSchedule(ScheduleVO schedule) throws Exception;
+
+	/**
 	 * 스케줄(일정) 목록
 	 */
 	public List<ScheduleVO> selectScheduleList(ScheduleVO schedule);

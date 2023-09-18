@@ -396,11 +396,36 @@
 						<button type="button" class="close"	data-dismiss="modal" aria-hidden="true">&times;</button>
 		                <h4 class="modal-title" id="modalTitle">일정 수정하기</h4>
 					</div>
-					<form role="form" id="updateScheduleForm" action="./pages/updateSchedule" method="post">
+					<form role="form" id="updateScheduleForm" action="#" method="post">
 						<div class="modal-body" id="updateScheDate">Modal Date</div>
 						<div class="modal-body">
-			                <input type="text" class="form-control" name="content" placeholder="할일이름여기에표시" ><hr>
+			                <input type="text" class="form-control" name="content" placeholder="새로운 할 일을 적어주세요." ><hr>
+			                <input type="hidden" name="schedule_no" value="">
 			                <input type="hidden" name="member_no" value="">
+			                <div class="form-group">
+								<label>카테고리</label>
+								<select class="form-control" name="category_no">
+									<c:forEach var="item" items="${categoryList }" varStatus="status">
+										<option value="${item.category_no}">${item.category_nm}</option>
+									</c:forEach>
+								</select>
+								<button type="button" class="btn btn-link">새로운 카테고리 추가</button>
+			                </div>
+			                <!-- <input type="date" name="plan_date" value="2023-08-19"> -->
+			                <input type="hidden" name="plan_date2" value="">
+			                <div class="form-group">
+								<label>반복여부</label>
+								<div class="radio">
+									<label><input type="radio" name="dday" value="0">없음</label>
+								</div>
+								<div class="radio">
+									<label><input type="radio" name="dday" value="1">디데이</label>
+								</div>
+								<div class="radio">
+									<label><input type="radio" name="dday" value="2">기념일</label>
+								</div>
+							</div>
+			                <input type="hidden" name="complete" value="N">
 						</div>
 						<div class="modal-footer">
 			                <input type="button" class="btn btn-primary" onclick="updateScheduleSubmit('update');" value="수정">
@@ -588,16 +613,25 @@
 	$(document).ready(function() {
 
 		var result = '<c:out value="${msg }"/>';
+		var resultStatus = '<c:out value="${status }"/>';
 		if(result != '' && result == "success") {
-			alert("저장이 완료되었습니다.");
+			if(resultStatus == "insert") {
+				alert("저장이 완료되었습니다.");
 
-			var plan_date = '<c:out value="${plan_date }"/>';		// 2023-08-31
-			var date = plan_date.replace(/-/g, '');					// 20230831
+				var plan_date = '<c:out value="${plan_date }"/>';		// 2023-08-31
+				var date = plan_date.replace(/-/g, '');					// 20230831
 
-			document.getElementById("year").innerHTML = date.substring(0, 4);
-			document.getElementById("month").innerHTML = date.substring(4, 6);
+				document.getElementById("year").innerHTML = date.substring(0, 4);
+				document.getElementById("month").innerHTML = date.substring(4, 6);
 
-			dateClick(date.slice(-2));
+				dateClick(date.slice(-2));
+			}
+			else if(resultStatus == "update") {
+				alert("수정이 완료되었습니다.");
+			}
+			else if(resultStatus == "delete") {
+				alert("삭제되었습니다.");
+			}
 		}
 	});
 
@@ -762,7 +796,6 @@
 	// 일정 상세 Modal
 	function updateScheduleModalOpen(schedule_no) {
 		// 세팅 후 모달 호출
-		//console.log(dateScheduleList);
 		var schedule = "";
 		for(var i = 0; i < dateScheduleList.length; i++) {
 			if(dateScheduleList[i].schedule_no == schedule_no) {
@@ -770,9 +803,26 @@
 			}
 		}
 
+		//console.log(schedule);
+		/*
+			{ category_nm:"취미", category_no:2, complete:"N", content:"17일 새로운 일정", day:"17"
+			, dday:"0", dday_cnt:"-1", dday_nm:"해당없음", member_no:1, month:"9", plan_date:1694876400000, plan_date2:null, schedule_no:53 }
+		*/
+
 		var date = $("#modalDate").text();
 		$("#updateScheDate").text(date);
 		$("#updateScheduleForm [name='content']").val(schedule.content);
+
+		var category_no = schedule.category_no;
+		$("#updateScheduleForm [name='category_no']").val(category_no).prop('checked', false);
+
+		var dday = schedule.dday;
+		$("#updateScheduleForm [name='dday']").prop('checked', false);
+		$("#updateScheduleForm [value='"+ dday +"']").prop('checked', true);
+		$("#updateScheduleForm [name='plan_date2']").val(date);
+
+		$("#updateScheduleForm [name='member_no']").val(schedule.member_no);
+		$("#updateScheduleForm [name='schedule_no']").val(schedule.schedule_no);
 
 		// 모달 호출
 		$("#updateScheduleModal").modal("show");
@@ -781,11 +831,17 @@
 	// 일정 상세 Modal - 수정/삭제
 	function updateScheduleSubmit(status) {
 		if("update" == status) {
-			//alert("수정은 수정하겠냐고 묻지 않음");
+			$("#updateScheduleForm").attr("action", "./pages/updateSchedule");
 		}
 		else if("delete" == status) {
-			alert("삭제하시겠습니까?");
+		    if (!confirm("삭제하시겠습니까?")) {
+		        return;
+		    }
+			$("#updateScheduleForm").attr("action", "./pages/deleteSchedule");
 		}
+
+		// 저장
+		$("#updateScheduleForm").submit();
 	}
 
 	</script>
