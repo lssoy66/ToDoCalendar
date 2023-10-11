@@ -50,7 +50,10 @@
                                     ${name }님의 아이디는
                                 </div>
                                 <div class="form-group">
-                                    <span>${id }이거 입니다.</span>
+                                    <span>${id } 입니다.</span>
+                                </div>
+                                <div class="form-group">
+                                	<a href="../pages/login">로그인하러 가기</a> | <a href="../pages/ForgetPassword">비밀번호 찾기</a>
                                 </div>
                                
                             </fieldset>
