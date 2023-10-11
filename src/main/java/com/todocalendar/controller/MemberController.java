@@ -334,7 +334,7 @@ public class MemberController {
 		log.info("password check 5.........");
 
 		request.setAttribute("msg", "비밀번호가 변경되었습니다.");
-		request.setAttribute("url", "./mypage");
+		request.setAttribute("url", "./logout");
 
 		return "alert";
 	}

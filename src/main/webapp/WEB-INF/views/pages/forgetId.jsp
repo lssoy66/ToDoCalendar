@@ -62,7 +62,7 @@
                                 </div>
                                 
                                 <!-- Change this to a button or input when using this as a form -->
-                                <input type="submit" value="비밀번호 찾기" id="findId" class="btn btn-lg btn-success btn-block" disabled="disabled">
+                                <input type="submit" value="ID 찾기" id="findId" class="btn btn-lg btn-success btn-block" disabled="disabled">
                             </fieldset>
                         </form>
                     </div>
