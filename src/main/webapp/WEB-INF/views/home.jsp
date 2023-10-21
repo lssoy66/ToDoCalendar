@@ -465,45 +465,71 @@
 	<!-- Today Check List 체크박스 on/off -->
 	<c:forEach var="schedule" items="${scheduleList}" varStatus="status">
 	$(document).ready(function() {
+
+		/*
+		$(document).on("change", "#completeY${status.count}", function() {				// checkBox
+			$("#completeY${status.count}").removeAttr("checked");
+			$("#completeY${status.count}").attr("id", "completeN${status.count}");
+			var value = $("#completeN${status.count}").val();
+			//console.log(value);
+
+			//Ajax로 전송
+			$.ajax({
+				url : './ChangeComplete',
+				data : {
+					complete : 'N',
+					schedule_no : value
+				},
+				type : 'POST',
+				dataType : 'json',
+				success : function(result) {
+					//console.log("success Y to N ");
+					//console.log(result.scheduleCount.y_count);
+					$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");		// 달성도
+				}
+			}); //End Ajax
+		});
+
+		$(document).on("change", "#completeN${status.count}", function() {
+			$("#completeN${status.count}").attr("checked", "checked");
+			$("#completeN${status.count}").attr("id", "completeY${status.count}");	// id를 변경함 ex. completeN$1 -> completeY$1
+			var value = $("#completeY${status.count}").val();	// schedule_no
+			//console.log(value);
+
+			//Ajax로 전송
+			// 해당 schedule_no(value)의 데이터에 대해, complete = 'Y'로 update
+			$.ajax({
+				url : './ChangeComplete',
+				data : {
+					complete : 'Y',
+					schedule_no : value
+				},
+				type : 'POST',
+				dataType : 'json',
+				success : function(result) {
+					//console.log("success N to Y ");
+					//console.log(result.scheduleCount.y_count);
+					$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");	// 달성도
+				}
+			}); //End Ajax
+		});
+		*/
+
 		$(document).on("change", "#todayComplete${schedule.schedule_no}", function() {
-			//$("#completeY${status.count}").removeAttr("checked");
-			//$("#completeY${status.count}").attr("id", "completeN${status.count}");
-			//var schedule_no = $("#completeN${status.count}").val();
-
 			var schedule_no = $("#todayComplete${schedule.schedule_no}").val();
-			var schedule_id = $("#todayComplete${schedule.schedule_no}").attr("id");
-
 			var completeYN = $("#todayComplete${schedule.schedule_no}").attr("checked");	// 현재 달성여부
+			var todayYN = "Y";
+
 			if(completeYN == null) {
 				// N to Y
-				checkSchedule(schedule_no);
+				checkSchedule(schedule_no, todayYN);
 			}
 			else if(completeYN == 'checked') {
 				// Y to N
-				uncheckSchedule(schedule_no)
+				uncheckSchedule(schedule_no, todayYN)
 			}
 
-			//Ajax로 전송
-			//uncheckSchedule(schedule_no);
-
 		});
-
-		/*
-		$(document).on("change", "#completeN${status.count}", function() {
-			$("#completeN${status.count}").attr("checked", "checked");
-			$("#completeN${status.count}").attr("id", "completeY${status.count}");
-			var schedule_no = $("#completeY${status.count}").val();
-			//console.log(value);
-
-			var statusCount = $("#completeY${status.count}").attr("id");
-			console.log("statusCount : " + statusCount);
-			console.log("scheduleNo : " + schedule_no);
-
-			//Ajax로 전송
-			//checkSchedule(schedule_no);
-
-		});
-		*/
 
 	});
 	</c:forEach>
@@ -511,11 +537,13 @@
 	/* ************************************
 	 * check / uncheck Ajax 전송
 	************************************ */
-	function checkSchedule(schedule_no) {
-		// 1. Today CheckList 일정 + 달력에 표시되는 일정 check 표시
-		var todayCompleteId = "#todayComplete" + schedule_no;
+	function checkSchedule(schedule_no, todayYN) {
+		// 1. 일정 check 표시
+		if(todayYN == "Y") {	// 오늘의 일정이면 Today CheckList + 달력 일정 함께 변경
+			var todayCompleteId = "#todayComplete" + schedule_no;
+			$(todayCompleteId).attr("checked", "checked");
+		}
 		var completeId = "#complete" + schedule_no;
-		$(todayCompleteId).attr("checked", "checked");
 		$(completeId).attr("checked", "checked");
 
 		// 2. check 상태로 변경하는 ajax 호출
@@ -535,12 +563,15 @@
 		});
 	}
 
-	function uncheckSchedule(schedule_no) {
-		// 1. Today CheckList 일정 + 달력에 표시되는 일정 check 속성 삭제
-		var todayCompleteId = "#todayComplete" + schedule_no;
+	function uncheckSchedule(schedule_no, todayYN) {
+		// 1. 일정 check 속성 삭제
+		if(todayYN == "Y") {	// 오늘의 일정이면 Today CheckList + 달력 일정 함께 변경
+			var todayCompleteId = "#todayComplete" + schedule_no;
+			$(todayCompleteId).removeAttr("checked");
+		}
+
 		var completeId = "#complete" + schedule_no;
 		$(completeId).removeAttr("checked");
-		$(todayCompleteId).removeAttr("checked");
 
 		// 2. uncheck 상태로 변경하는 ajax 호출
 		$.ajax({
@@ -562,6 +593,7 @@
 
 	/* 설정 관련 */
 	$(document).ready(function() {
+
 		//공휴일 자동 표시
 		$(document).on("change", "#publicAutoY", function(){
 			$("#publicAutoN").removeAttr("checked");
