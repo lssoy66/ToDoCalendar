@@ -241,10 +241,10 @@
 		                            		<c:if test="${now_FD == planDate_FD }">
 		                            			<c:choose>
 		                            				<c:when test="${schedule.complete eq 'Y' }">
-		                            					<a><input type="checkbox" id="completeY${status.count }" value="${schedule.schedule_no }" checked="checked"> ${schedule.content }</a>
+		                            					<a><input type="checkbox" id="todayComplete${schedule.schedule_no }" value="${schedule.schedule_no }" checked="checked"> ${schedule.content }</a>
 		                            				</c:when>
 				                                   	<c:otherwise>
-				                                   		<a><input type="checkbox" id="completeN${status.count }" value="${schedule.schedule_no }" > ${schedule.content }</a>
+				                                   		<a><input type="checkbox" id="todayComplete${schedule.schedule_no }" value="${schedule.schedule_no }" > ${schedule.content }</a>
 				                                   	</c:otherwise>
 				                                </c:choose>
 		                            		</c:if>
@@ -266,15 +266,7 @@
 		</nav>
 
 		<div id="page-wrapper">
-			<div class="row">
-				<!--
-				<div class="col-lg-12">
-					<h1 class="page-header">Dashboard</h1>
-				</div>
-				-->
-				<!-- /.col-lg-12 -->
-			</div>
-			<!-- /.row -->
+			<div class="row"></div>
 			<div class="row" style="padding-top: 50px;">
 				<div class="col-lg-12">
 					<!-- 캘린더 -->
@@ -473,54 +465,100 @@
 	<!-- Today Check List 체크박스 on/off -->
 	<c:forEach var="schedule" items="${scheduleList}" varStatus="status">
 	$(document).ready(function() {
-		$(document).on("change", "#completeY${status.count}", function() {
-			$("#completeY${status.count}").removeAttr("checked");
-			$("#completeY${status.count}").attr("id", "completeN${status.count}");
-			var value = $("#completeN${status.count}").val();
-			console.log(value);
+		$(document).on("change", "#todayComplete${schedule.schedule_no}", function() {
+			//$("#completeY${status.count}").removeAttr("checked");
+			//$("#completeY${status.count}").attr("id", "completeN${status.count}");
+			//var schedule_no = $("#completeN${status.count}").val();
+
+			var schedule_no = $("#todayComplete${schedule.schedule_no}").val();
+			var schedule_id = $("#todayComplete${schedule.schedule_no}").attr("id");
+
+			var completeYN = $("#todayComplete${schedule.schedule_no}").attr("checked");	// 현재 달성여부
+			if(completeYN == null) {
+				// N to Y
+				checkSchedule(schedule_no);
+			}
+			else if(completeYN == 'checked') {
+				// Y to N
+				uncheckSchedule(schedule_no)
+			}
 
 			//Ajax로 전송
-			$.ajax({
-				url : './ChangeComplete',
-				data : {
-					complete : 'N',
-					schedule_no : value
-				},
-				type : 'POST',
-				dataType : 'json',
-				success : function(result) {
-					//console.log("success Y to N ");
-					//console.log(result.scheduleCount.y_count);
-					$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");
-				}
-			}); //End Ajax
+			//uncheckSchedule(schedule_no);
+
 		});
 
+		/*
 		$(document).on("change", "#completeN${status.count}", function() {
 			$("#completeN${status.count}").attr("checked", "checked");
 			$("#completeN${status.count}").attr("id", "completeY${status.count}");
-			var value = $("#completeY${status.count}").val();
-			console.log(value);
+			var schedule_no = $("#completeY${status.count}").val();
+			//console.log(value);
+
+			var statusCount = $("#completeY${status.count}").attr("id");
+			console.log("statusCount : " + statusCount);
+			console.log("scheduleNo : " + schedule_no);
 
 			//Ajax로 전송
-			$.ajax({
-				url : './ChangeComplete',
-				data : {
-					complete : 'Y',
-					schedule_no : value
-				},
-				type : 'POST',
-				dataType : 'json',
-				success : function(result) {
-					//console.log("success N to Y ");
-					//console.log(result.scheduleCount.y_count);
-					$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");
-				}
-			}); //End Ajax
+			//checkSchedule(schedule_no);
+
 		});
+		*/
 
 	});
 	</c:forEach>
+
+	/* ************************************
+	 * check / uncheck Ajax 전송
+	************************************ */
+	function checkSchedule(schedule_no) {
+		// 1. Today CheckList 일정 + 달력에 표시되는 일정 check 표시
+		var todayCompleteId = "#todayComplete" + schedule_no;
+		var completeId = "#complete" + schedule_no;
+		$(todayCompleteId).attr("checked", "checked");
+		$(completeId).attr("checked", "checked");
+
+		// 2. check 상태로 변경하는 ajax 호출
+		$.ajax({
+			url : './ChangeComplete',
+			data : {
+				complete : 'Y',
+				schedule_no : schedule_no
+			},
+			type : 'POST',
+			dataType : 'json',
+			success : function(result) {
+				//console.log("success N to Y ");
+				// 달성도
+				$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");
+			}
+		});
+	}
+
+	function uncheckSchedule(schedule_no) {
+		// 1. Today CheckList 일정 + 달력에 표시되는 일정 check 속성 삭제
+		var todayCompleteId = "#todayComplete" + schedule_no;
+		var completeId = "#complete" + schedule_no;
+		$(completeId).removeAttr("checked");
+		$(todayCompleteId).removeAttr("checked");
+
+		// 2. uncheck 상태로 변경하는 ajax 호출
+		$.ajax({
+			url : './ChangeComplete',
+			data : {
+				complete : 'N',
+				schedule_no : schedule_no
+			},
+			type : 'POST',
+			dataType : 'json',
+			success : function(result) {
+				//console.log("success Y to N ");
+				// 달성도
+				$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");
+			}
+		});
+	}
+
 
 	/* 설정 관련 */
 	$(document).ready(function() {
@@ -653,19 +691,19 @@
 			success : function(result){
 				if(result != "") {
 					for(var i = 0; i < result.length; i++) {
-						var day = result[i].day;
-						var dateId = "#date" + day;
+						var dateId = "#date" + result[i].day;
 						var dateContentId = dateId + "Content";
 
+						var completeId = "complete" + result[i].schedule_no;
 						var complete = result[i].complete;
 
 						// Content에 일정 추가
 						$(dateContentId).append("<br>");
 						if(complete == "Y") {
-							$(dateContentId).append("<input type='checkbox' id='" + dateContentId + "Complete" + "' value='' checked='checked' >&nbsp");
+							$(dateContentId).append("<input type='checkbox' id='" + completeId + "' value='' checked='checked' onClick='return false' >&nbsp");
 						}
 						else {
-							$(dateContentId).append("<input type='checkbox' id='" + dateContentId + "Complete" + "' value='' >&nbsp");
+							$(dateContentId).append("<input type='checkbox' id='" + completeId + "' value='' onClick='return false' >&nbsp");
 						}
 						$(dateContentId).append(result[i].content);
 						scheduleList.push(result[i]);
@@ -729,9 +767,10 @@
 					str += '<li style="border-bottom: none;">';
 
 					// 일정 달성여부 표시(checkBox) + 일정 내용 표시
-					var complete = dateSchedule.complete;
-					var completeId = "date" + dateSchedule.day + "ContentComplete";
 					var schedule_no = dateSchedule.schedule_no;
+					var completeId = "complete" + schedule_no;
+					var complete = dateSchedule.complete;
+
 					if(complete == "Y") {
 						str += "<a style='display:inline;'><input type='checkbox' id='" + completeId + "' value='' checked='checked' >";
 						str += "<a href='#' style='display:inline;' onclick='updateScheduleModalOpen(" + schedule_no + ");'>" + dateSchedule.content + "</a></a>";
