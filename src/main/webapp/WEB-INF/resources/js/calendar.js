@@ -81,9 +81,9 @@ function calendarInit() {
         }
         // 이번달
         for (var i = 1; i <= nextDate; i++) {
-            calendar.innerHTML = calendar.innerHTML + '<div class="day current" id="date' + i + '" style="cursor: pointer;" onclick="dateClick('+ i +')">'
-														+ '<div id = "date' + i + 'Day">' + i + '</div>'
-														+ '<div id = "date' + i + 'Content"></div>'
+            calendar.innerHTML = calendar.innerHTML + '<div class="day current" id="date' + i + '" style="display: block; cursor: pointer;" onclick="dateClick('+ i +')">'
+														+ '<span>' + i + '</span>'
+														+ '<span id = "date' + i + 'Content"></span>'
 														+ '</div>'
         }
         // 다음달
