@@ -527,9 +527,8 @@
 			}
 			else if(completeYN == 'checked') {
 				// Y to N
-				uncheckSchedule(schedule_no, todayYN)
+				uncheckSchedule(schedule_no, todayYN);
 			}
-
 		});
 
 		// 달력 일정 check/unckeck
@@ -549,7 +548,7 @@
 			}
 			else if(completeYN == 'checked') {
 				// Y to N
-				uncheckSchedule(schedule_no, todayYN)
+				uncheckSchedule(schedule_no, todayYN);
 			}
 
 		});
