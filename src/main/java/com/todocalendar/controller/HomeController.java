@@ -1,5 +1,6 @@
 package com.todocalendar.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ import com.todocalendar.service.CategoryServiceImpl;
 import com.todocalendar.service.DdayServiceImpl;
 import com.todocalendar.service.MemberServiceImpl;
 import com.todocalendar.service.PaletteService;
+import com.todocalendar.service.RequestAPI;
 import com.todocalendar.service.ScheduleServiceImpl;
 
 import lombok.AllArgsConstructor;
@@ -107,5 +109,51 @@ public class HomeController {
 
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
+	
+	
+	//공휴일 Ajax
+	@PostMapping("/GetHoliday")
+	@ResponseBody
+	public ResponseEntity<ArrayList<HashMap<String, Object>>> holidayInfoApi(String year, String month) {
+		
+		System.out.println("year = " + year);
+        System.out.println("month = " + month);
+        
+		ArrayList<HashMap<String, Object>> responseHolidayArr = new ArrayList<HashMap<String, Object>>();
+		
+		RequestAPI requestAPI = new RequestAPI();
+		
+		try {
+			Map<String, Object> holidayMap = requestAPI.holidayInfoAPI(year, month);
+			Map<String, Object> response = (Map<String, Object>) holidayMap.get("response");
+			Map<String, Object> body = (Map<String, Object>) response.get("body");
+			
+			int totalCount = (int) body.get("totalCount");
+			
+			if(totalCount <= 0) {
+				System.out.println("공휴일 없음");
+				System.out.println("body = " + body);
+			}
+			if(totalCount == 1) {
+				HashMap<String, Object> items = (HashMap<String, Object>) body.get("items");
+				HashMap<String, Object> item = (HashMap<String, Object>) items.get("item");
+				responseHolidayArr.add(item);
+				System.out.println("item = " + item);
+			}
+			if(totalCount > 1) {
+				HashMap<String, Object> items = (HashMap<String, Object>) body.get("items");
+				ArrayList<HashMap<String, Object>> item = (ArrayList<HashMap<String,Object>>) items.get("item");
+				for(HashMap<String, Object> itemMap : item) {
+					System.out.println("itemMap = " + itemMap);
+					responseHolidayArr.add(itemMap);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<>(responseHolidayArr, HttpStatus.OK);
+	}
+	
+	
 
 }
