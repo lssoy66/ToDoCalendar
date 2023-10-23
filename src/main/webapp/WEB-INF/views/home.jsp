@@ -239,10 +239,10 @@
 		                            		<c:if test="${now_FD == planDate_FD }">
 		                            			<c:choose>
 		                            				<c:when test="${schedule.complete eq 'Y' }">
-		                            					<a><input type="checkbox" id="completeY${status.count }" value="${schedule.schedule_no }" checked="checked"> ${schedule.content }</a>
+		                            					<a><input type="checkbox" id="todayComplete${schedule.schedule_no }" value="${schedule.schedule_no }" checked="checked"> ${schedule.content }</a>
 		                            				</c:when>
 				                                   	<c:otherwise>
-				                                   		<a><input type="checkbox" id="completeN${status.count }" value="${schedule.schedule_no }" > ${schedule.content }</a>
+				                                   		<a><input type="checkbox" id="todayComplete${schedule.schedule_no }" value="${schedule.schedule_no }" > ${schedule.content }</a>
 				                                   	</c:otherwise>
 				                                </c:choose>
 		                            		</c:if>
@@ -264,15 +264,7 @@
 		</nav>
 
 		<div id="page-wrapper">
-			<div class="row">
-				<!--
-				<div class="col-lg-12">
-					<h1 class="page-header">Dashboard</h1>
-				</div>
-				-->
-				<!-- /.col-lg-12 -->
-			</div>
-			<!-- /.row -->
+			<div class="row"></div>
 			<div class="row" style="padding-top: 50px;">
 				<div class="col-lg-12">
 					<!-- 캘린더 -->
@@ -471,11 +463,13 @@
 	<!-- Today Check List 체크박스 on/off -->
 	<c:forEach var="schedule" items="${scheduleList}" varStatus="status">
 	$(document).ready(function() {
-		$(document).on("change", "#completeY${status.count}", function() {
+
+		/*
+		$(document).on("change", "#completeY${status.count}", function() {				// checkBox
 			$("#completeY${status.count}").removeAttr("checked");
 			$("#completeY${status.count}").attr("id", "completeN${status.count}");
 			var value = $("#completeN${status.count}").val();
-			console.log(value);
+			//console.log(value);
 
 			//Ajax로 전송
 			$.ajax({
@@ -489,18 +483,19 @@
 				success : function(result) {
 					//console.log("success Y to N ");
 					//console.log(result.scheduleCount.y_count);
-					$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");
+					$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");		// 달성도
 				}
 			}); //End Ajax
 		});
 
 		$(document).on("change", "#completeN${status.count}", function() {
 			$("#completeN${status.count}").attr("checked", "checked");
-			$("#completeN${status.count}").attr("id", "completeY${status.count}");
-			var value = $("#completeY${status.count}").val();
-			console.log(value);
+			$("#completeN${status.count}").attr("id", "completeY${status.count}");	// id를 변경함 ex. completeN$1 -> completeY$1
+			var value = $("#completeY${status.count}").val();	// schedule_no
+			//console.log(value);
 
 			//Ajax로 전송
+			// 해당 schedule_no(value)의 데이터에 대해, complete = 'Y'로 update
 			$.ajax({
 				url : './ChangeComplete',
 				data : {
@@ -512,16 +507,135 @@
 				success : function(result) {
 					//console.log("success N to Y ");
 					//console.log(result.scheduleCount.y_count);
-					$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");
+					$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");	// 달성도
 				}
 			}); //End Ajax
+		});
+		*/
+
+		// Today CheckList 일정 check/unckeck
+		$(document).on("change", "#todayComplete${schedule.schedule_no}", function() {
+			var schedule_no = $("#todayComplete${schedule.schedule_no}").val();
+			var completeYN = $("#todayComplete${schedule.schedule_no}").attr("checked");	// 현재 달성여부
+			var todayYN = "Y";
+
+			if(completeYN == null) {
+				// N to Y
+				checkSchedule(schedule_no, todayYN);
+			}
+			else if(completeYN == 'checked') {
+				// Y to N
+				uncheckSchedule(schedule_no, todayYN);
+			}
+		});
+
+		// 달력 일정 check/unckeck
+		// 달력에 표시되는 일정의 check/uncheck는 모달에서만 변경 가능
+		$(document).on("change", "#modalComplete${schedule.schedule_no}", function() {
+			var schedule_no = $("#modalComplete${schedule.schedule_no}").val();
+			var completeYN = $("#modalComplete${schedule.schedule_no}").attr("checked");	// 현재 달성여부
+
+			var todayYN = "N";
+			var nowDate = "${now_FD }";				  // 오늘 날짜
+			var date = dateScheduleList[0].plan_date; // (dateScheduleList는 현재 띄워진 Modal 날짜에 해당하는 모든 일정 정보를 가지고 있음)
+			if(nowDate == date) todayYN = "Y";
+
+			if(completeYN == null) {
+				// N to Y
+				checkSchedule(schedule_no, todayYN);
+			}
+			else if(completeYN == 'checked') {
+				// Y to N
+				uncheckSchedule(schedule_no, todayYN);
+			}
+
 		});
 
 	});
 	</c:forEach>
 
+	/* ************************************
+	 * check / uncheck Ajax 전송
+	************************************ */
+	function checkSchedule(schedule_no, todayYN) {
+
+		// check 상태로 변경하는 ajax 호출
+		$.ajax({
+			url : './ChangeComplete',
+			data : {
+				complete : 'Y',
+				schedule_no : schedule_no
+			},
+			type : 'POST',
+			dataType : 'json',
+			success : function(result) {
+				//console.log("success N to Y ");
+
+				// 일정 check 표시
+				if(todayYN == "Y") {	// 오늘의 일정이면 Today CheckList + 달력 일정 함께 변경
+					var todayCompleteId = "#todayComplete" + schedule_no;
+					$(todayCompleteId).attr("checked", "checked");
+				}
+				var completeId = "#complete" + schedule_no;				// 달력 표시 일정
+				var modalCompleteId = "#modalComplete" + schedule_no;	// 날짜 클릭 상세정보 일정(modal)
+				$(completeId).attr("checked", "checked");
+				$(modalCompleteId).attr("checked", "checked");
+
+				// scheduleList의 complete 변경(modal 표시 시에 필요)
+				for(var i = 0; i < scheduleList.length; i++) {
+					var schedule = scheduleList[i];
+					if(schedule.schedule_no == schedule_no) {
+						schedule.complete = 'Y';
+					}
+				}
+
+				// 달성도
+				$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");
+			}
+		});
+	}
+
+	function uncheckSchedule(schedule_no, todayYN) {
+
+		// uncheck 상태로 변경하는 ajax 호출
+		$.ajax({
+			url : './ChangeComplete',
+			data : {
+				complete : 'N',
+				schedule_no : schedule_no
+			},
+			type : 'POST',
+			dataType : 'json',
+			success : function(result) {
+				//console.log("success Y to N ");
+
+				// 일정 check 속성 삭제
+				if(todayYN == "Y") {	// 오늘의 일정이면 Today CheckList + 달력 일정 함께 변경
+					var todayCompleteId = "#todayComplete" + schedule_no;
+					$(todayCompleteId).removeAttr("checked");
+				}
+				var completeId = "#complete" + schedule_no;				// 달력 표시 일정
+				var modalCompleteId = "#modalComplete" + schedule_no;	// 날짜 클릭 상세정보 일정(modal)
+				$(completeId).removeAttr("checked");
+				$(modalCompleteId).removeAttr("checked");
+
+				// scheduleList의 complete 변경(modal 표시 시에 필요)
+				for(var i = 0; i < scheduleList.length; i++) {
+					var schedule = scheduleList[i];
+					if(schedule.schedule_no == schedule_no) {
+						schedule.complete = 'N';
+					}
+				}
+
+				// 달성도
+				$("#y_count").html(" <span id='y_count'>" + result.scheduleCount.y_count + "</span>");
+			}
+		});
+	}
+
 	/* 설정 관련 */
 	$(document).ready(function() {
+
 		//공휴일 자동 표시
 		$(document).on("change", "#publicAutoY", function(){
 			console.log("Y->N");
@@ -734,19 +848,19 @@
 			success : function(result){
 				if(result != "") {
 					for(var i = 0; i < result.length; i++) {
-						var day = result[i].day;
-						var dateId = "#date" + day;
+						var dateId = "#date" + result[i].day;
 						var dateContentId = dateId + "Content";
 
+						var completeId = "complete" + result[i].schedule_no;
 						var complete = result[i].complete;
 
 						// Content에 일정 추가
 						$(dateContentId).append("<br>");
 						if(complete == "Y") {
-							$(dateContentId).append("<input type='checkbox' id='" + dateContentId + "Complete" + "' value='' checked='checked' >&nbsp");
+							$(dateContentId).append("<input type='checkbox' id='" + completeId + "' value='' checked='checked' onClick='return false' >&nbsp");
 						}
 						else {
-							$(dateContentId).append("<input type='checkbox' id='" + dateContentId + "Complete" + "' value='' >&nbsp");
+							$(dateContentId).append("<input type='checkbox' id='" + completeId + "' value='' onClick='return false' >&nbsp");
 						}
 						$(dateContentId).append(result[i].content);
 						scheduleList.push(result[i]);
@@ -810,15 +924,16 @@
 					str += '<li style="border-bottom: none;">';
 
 					// 일정 달성여부 표시(checkBox) + 일정 내용 표시
-					var complete = dateSchedule.complete;
-					var completeId = "date" + dateSchedule.day + "ContentComplete";
 					var schedule_no = dateSchedule.schedule_no;
+					var completeId = "modalComplete" + schedule_no;
+					var complete = dateSchedule.complete;
+
 					if(complete == "Y") {
-						str += "<a style='display:inline;'><input type='checkbox' id='" + completeId + "' value='' checked='checked' >";
+						str += "<a style='display:inline;'><input type='checkbox' id='" + completeId + "' value='" + schedule_no + "' checked='checked' >";
 						str += "<a href='#' style='display:inline;' onclick='updateScheduleModalOpen(" + schedule_no + ");'>" + dateSchedule.content + "</a></a>";
 					}
 					else {
-						str += "<a style='display:inline;'><input type='checkbox' id='" + completeId + "' value='' >";
+						str += "<a style='display:inline;'><input type='checkbox' id='" + completeId + "' value='" + schedule_no + "' >";
 						str += "<a href='#' style='display:inline;' onclick='updateScheduleModalOpen(" + schedule_no + ");'>" + dateSchedule.content + "</a></a>";
 					}
 
