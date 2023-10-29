@@ -18,6 +18,7 @@ public interface MemberService {
 	public MemberVO memberCheck(MemberVO member);	//회원정보 확인
 	
 	public void changeDelayAuto(@Param("id") String id, @Param("delay_auto") String delay_auto); 	//자동미루기 on/off
+	public void changeHoliday(@Param("id") String id, @Param("holiday") String holiday); 			//공휴일 on/off
 	
 	public List<MemberVO> selectMemberList(MemberVO member);
 	

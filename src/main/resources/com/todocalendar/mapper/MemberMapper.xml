@@ -15,6 +15,7 @@
 					, JOIN_DATE
 					, MEMBERSHIP
 					, DELAY_AUTO
+					, HOLIDAY
 					)
 		VALUES (
 					(
@@ -27,6 +28,7 @@
 					, #{email}
 					, SYSDATE
 					, 1
+					, 'N'
 					, 'N'
 				)
 	</insert>
@@ -68,8 +70,14 @@
 		   SET DELAY_AUTO = #{delay_auto}
 		 WHERE ID = #{id}
 	</update>
-  
-  <select id="selectMemberList" resultType="com.todocalendar.model.MemberVO">
+	
+	<update id="changeHoliday">
+		UPDATE MEMBER
+		   SET HOLIDAY = #{holiday}
+		 WHERE ID = #{id}
+	</update>
+	
+	<select id="selectMemberList" resultType="com.todocalendar.model.MemberVO">
 		SELECT MEMBER_NO		/* 회원번호 */
 		     , ID 				/* 아이디 */
 		     , PASSWORD		    /* 패스워드 */
@@ -78,6 +86,7 @@
 		     , JOIN_DATE		/* 가입일시 */
 		     , MEMBERSHIP		/* 멤버십 */
 		     , DELAY_AUTO		/* 자동미루기 Y/N */
+		     , HOLIDAY			/* 공휴일 Y/N */
 		  FROM MEMBER           /* 회원 테이블 */
 		 WHERE MEMBER_NO = #{member_no}
 	</select>

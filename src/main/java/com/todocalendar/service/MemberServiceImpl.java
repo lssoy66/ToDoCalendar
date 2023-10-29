@@ -65,6 +65,12 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
+	public void changeHoliday(String id, String holiday) {
+		log.info("changeHoliday........." + id + ", " + holiday);
+		memberMapper.changeHoliday(id, holiday);
+	}
+	
+	@Override
 	public List<MemberVO> selectMemberList(MemberVO member) {
 		log.info("Service :: selectMemberList...................");
 		return memberMapper.selectMemberList(member);
