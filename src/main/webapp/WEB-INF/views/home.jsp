@@ -462,7 +462,7 @@
 
 	<!-- Today Check List 체크박스 on/off -->
 	<c:forEach var="schedule" items="${scheduleList}" varStatus="status">
-	$(document).ready(function() {
+	//$(document).ready(function() {
 
 		/*
 		$(document).on("change", "#completeY${status.count}", function() {				// checkBox
@@ -516,48 +516,53 @@
 		// Today CheckList 일정 check/unckeck
 		$(document).on("change", "#todayComplete${schedule.schedule_no}", function() {
 			var schedule_no = $("#todayComplete${schedule.schedule_no}").val();
-			var completeYN = $("#todayComplete${schedule.schedule_no}").attr("checked");	// 현재 달성여부
+			var completeYN = $("#todayComplete${schedule.schedule_no}").prop("checked");	// 현재 달성여부
 			var todayYN = "Y";
 
-			if(completeYN == null) {
+			if(completeYN) {
 				// N to Y
 				checkSchedule(schedule_no, todayYN);
 			}
-			else if(completeYN == 'checked') {
+			else if(!completeYN) {
 				// Y to N
 				uncheckSchedule(schedule_no, todayYN);
 			}
+
 		});
 
 		// 달력 일정 check/unckeck
 		// 달력에 표시되는 일정의 check/uncheck는 모달에서만 변경 가능
 		$(document).on("change", "#modalComplete${schedule.schedule_no}", function() {
 			var schedule_no = $("#modalComplete${schedule.schedule_no}").val();
-			var completeYN = $("#modalComplete${schedule.schedule_no}").attr("checked");	// 현재 달성여부
+			var completeYN = $("#modalComplete${schedule.schedule_no}").prop("checked");	// 현재 달성여부
 
 			var todayYN = "N";
 			var nowDate = "${now_FD }";				  // 오늘 날짜
 			var date = dateScheduleList[0].plan_date; // (dateScheduleList는 현재 띄워진 Modal 날짜에 해당하는 모든 일정 정보를 가지고 있음)
 			if(nowDate == date) todayYN = "Y";
 
-			if(completeYN == null) {
+			if(completeYN) {
 				// N to Y
 				checkSchedule(schedule_no, todayYN);
 			}
-			else if(completeYN == 'checked') {
+			else if(!completeYN) {
 				// Y to N
 				uncheckSchedule(schedule_no, todayYN);
 			}
 
 		});
 
-	});
+	//});
 	</c:forEach>
 
 	/* ************************************
 	 * check / uncheck Ajax 전송
 	************************************ */
 	function checkSchedule(schedule_no, todayYN) {
+
+		var todayCompleteId = "#todayComplete" + schedule_no;
+		var completeId = "#complete" + schedule_no;				// 달력 표시 일정
+		var modalCompleteId = "#modalComplete" + schedule_no;	// 날짜 클릭 상세정보 일정(modal)
 
 		// check 상태로 변경하는 ajax 호출
 		$.ajax({
@@ -573,13 +578,10 @@
 
 				// 일정 check 표시
 				if(todayYN == "Y") {	// 오늘의 일정이면 Today CheckList + 달력 일정 함께 변경
-					var todayCompleteId = "#todayComplete" + schedule_no;
-					$(todayCompleteId).attr("checked", "checked");
+					$(todayCompleteId).prop("checked", true);
 				}
-				var completeId = "#complete" + schedule_no;				// 달력 표시 일정
-				var modalCompleteId = "#modalComplete" + schedule_no;	// 날짜 클릭 상세정보 일정(modal)
-				$(completeId).attr("checked", "checked");
-				$(modalCompleteId).attr("checked", "checked");
+				$(completeId).prop("checked", true);
+				$(modalCompleteId).prop("checked", true);
 
 				// scheduleList의 complete 변경(modal 표시 시에 필요)
 				for(var i = 0; i < scheduleList.length; i++) {
@@ -597,6 +599,10 @@
 
 	function uncheckSchedule(schedule_no, todayYN) {
 
+		var todayCompleteId = "#todayComplete" + schedule_no;
+		var completeId = "#complete" + schedule_no;				// 달력 표시 일정
+		var modalCompleteId = "#modalComplete" + schedule_no;	// 날짜 클릭 상세정보 일정(modal)
+
 		// uncheck 상태로 변경하는 ajax 호출
 		$.ajax({
 			url : './ChangeComplete',
@@ -611,13 +617,10 @@
 
 				// 일정 check 속성 삭제
 				if(todayYN == "Y") {	// 오늘의 일정이면 Today CheckList + 달력 일정 함께 변경
-					var todayCompleteId = "#todayComplete" + schedule_no;
-					$(todayCompleteId).removeAttr("checked");
+					$(todayCompleteId).prop("checked", false);
 				}
-				var completeId = "#complete" + schedule_no;				// 달력 표시 일정
-				var modalCompleteId = "#modalComplete" + schedule_no;	// 날짜 클릭 상세정보 일정(modal)
-				$(completeId).removeAttr("checked");
-				$(modalCompleteId).removeAttr("checked");
+				$(completeId).prop("checked", false);
+				$(modalCompleteId).prop("checked", false);
 
 				// scheduleList의 complete 변경(modal 표시 시에 필요)
 				for(var i = 0; i < scheduleList.length; i++) {
@@ -641,10 +644,10 @@
 			console.log("Y->N");
 			$("#publicAutoY").removeAttr("checked");
 			$("#publicAutoY").attr("id", "publicAutoN");
-			
+
 			var year = $("#year").text();
 			var month = $("#month").text();
-			
+
 			//Ajax로 전송
 			$.ajax({
 				url : './GetHoliday',
@@ -669,9 +672,9 @@
 									dateId = "date" + ((result[j].locdate).toString()).slice(-2);
 								}
 								var dateContentId = dateId + "Content";
-								
+
 								var date = ((result[j].locdate).toString()).slice(-1);
-								
+
 								if ($("#date" + i + "Day").text() == ((result[j].locdate).toString()).slice(-1) || $("#date" + i + "Day").text() == ((result[j].locdate).toString()).slice(-2)) {
 									$("#" + dateContentId).empty();
 								}
@@ -686,10 +689,10 @@
     		console.log("N->Y");
 			$("#publicAutoN").attr("checked", "checked");
 			$("#publicAutoN").attr("id", "publicAutoY");
-			
+
 			var year = $("#year").text();
 			var month = $("#month").text();
-			
+
 			//Ajax로 전송
 			$.ajax({
 				url : './GetHoliday',
@@ -714,9 +717,9 @@
 									dateId = "date" + ((result[j].locdate).toString()).slice(-2);
 								}
 								var dateContentId = dateId + "Content";
-								
+
 								var date = ((result[j].locdate).toString()).slice(-1);
-								
+
 								if ($("#date" + i + "Day").text() == ((result[j].locdate).toString()).slice(-1) || $("#date" + i + "Day").text() == ((result[j].locdate).toString()).slice(-2)) {
 									$("#" + dateId).css("color", "#ff0000");
 									$("#" + dateContentId).append("<br>");
