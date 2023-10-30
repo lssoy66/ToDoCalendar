@@ -73,7 +73,7 @@ public class HomeController {
 		
 		model.addAttribute("ddayList", ddayList);
 		
-		String holiday = member.getHoliday();
+		String holiday = memberService.readById(member.getId()).getHoliday();
 		model.addAttribute("holiday", holiday);
 		
 		CountVO scheduleCount = scheduleService.selectScheduleListByCount(member.getMember_no());

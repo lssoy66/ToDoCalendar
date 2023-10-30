@@ -639,15 +639,12 @@
 			}
 		});
 	}
-
+	
 	/* 설정 관련 */
 	$(document).ready(function() {
-		//공휴일 자동 표시
 		var yn = '<c:out value="${holiday}"/>';
 		var year = $("#year").text();
 		var month = $("#month").text();
-		
-		console.log("holiday : " + yn);
 		
 		if(yn=="Y") {
 			$.ajax({
@@ -685,10 +682,12 @@
 								}
 							}
 						}
+						
 					}
 				}
 			}); //End Ajax
 		}
+		
 		
 		$(document).on("change", "#publicAutoY", function(){
 			var year = $("#year").text();
