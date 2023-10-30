@@ -13,4 +13,5 @@ public class CategoryVO {
 	private int member_no;        /* 회원번호(FK) */
 	private String category_nm;   /* 카테고리이름 */
 	private int color_code;       /* 컬러코드(FK) */
+	private String hex_code;	  /* 헥스코드(palette) */
 }

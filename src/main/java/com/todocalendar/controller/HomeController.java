@@ -52,7 +52,7 @@ public class HomeController {
 
 	@Autowired
 	DdayServiceImpl ddayService;
-	
+
 	@Autowired
 	PaletteService paletteService;
 
@@ -67,25 +67,25 @@ public class HomeController {
 
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("scheduleList", scheduleList);
-		
+
 		List<DdayVO> ddayList = ddayService.selectDdayList(member.getMember_no());
 		log.info("member_no : " + member.getMember_no() + ", ddayList : " + ddayList);
-		
+
 		model.addAttribute("ddayList", ddayList);
-		
+
 		CountVO scheduleCount = scheduleService.selectScheduleListByCount(member.getMember_no());
 		log.info("count : " + scheduleCount);
-		
+
 		//scheduleCount의 내용이 null이 아닐때에 아래의 내용을 수행
 		if(scheduleCount != null) {
 			model.addAttribute("y_count", scheduleCount.getY_count());
 			model.addAttribute("n_count", scheduleCount.getN_count());
 			model.addAttribute("all_count", scheduleCount.getAll_count());
-			
+
 			List<PaletteVO> paletteList = paletteService.selectPaletteListAll();
 			model.addAttribute("paletteList", paletteList);
 		}
-		
+
 	}
 
 	//Complete Ajax
@@ -102,34 +102,34 @@ public class HomeController {
 		log.info("member_no : " + member_no + ", schedule_no : " + schedule_no);
 
 		scheduleService.changeComplete(member_no, complete, schedule_no);
-		
+
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("scheduleAll", scheduleService.selectScheduleListAll(member_no));
 		result.put("scheduleCount", scheduleService.selectScheduleListByCount(member_no));
 
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-	
-	
+
+
 	//공휴일 Ajax
 	@PostMapping("/GetHoliday")
 	@ResponseBody
 	public ResponseEntity<ArrayList<HashMap<String, Object>>> holidayInfoApi(String year, String month) {
-		
+
 		System.out.println("year = " + year);
         System.out.println("month = " + month);
-        
+
 		ArrayList<HashMap<String, Object>> responseHolidayArr = new ArrayList<HashMap<String, Object>>();
-		
+
 		RequestAPI requestAPI = new RequestAPI();
-		
+
 		try {
 			Map<String, Object> holidayMap = requestAPI.holidayInfoAPI(year, month);
 			Map<String, Object> response = (Map<String, Object>) holidayMap.get("response");
 			Map<String, Object> body = (Map<String, Object>) response.get("body");
-			
+
 			int totalCount = (int) body.get("totalCount");
-			
+
 			if(totalCount <= 0) {
 				System.out.println("공휴일 없음");
 				System.out.println("body = " + body);
@@ -153,7 +153,7 @@ public class HomeController {
 		}
 		return new ResponseEntity<>(responseHolidayArr, HttpStatus.OK);
 	}
-	
-	
+
+
 
 }

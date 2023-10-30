@@ -26,12 +26,15 @@
 	</insert>
 
 	<select id="selectCategoryList" resultType="com.todocalendar.model.CategoryVO">
-		SELECT MEMBER_NO        /* 회원번호(FK) */
-		     , CATEGORY_NO      /* 카테고리번호(PK) */
-		     , CATEGORY_NM      /* 카테고리이름 */
-		     , COLOR_CODE       /* 컬러코드(FK) */
-		  FROM CATEGORY         /* 카테고리 테이블 */
-		 WHERE MEMBER_NO = #{member_no}
+		SELECT C.MEMBER_NO        /* 회원번호(FK) */
+		     , C.CATEGORY_NO      /* 카테고리번호(PK) */
+		     , C.CATEGORY_NM      /* 카테고리이름 */
+		     , C.COLOR_CODE       /* 컬러코드(FK) */
+		     , P.HEX_CODE
+		  FROM CATEGORY C         /* 카테고리 테이블 */
+		     , PALETTE P
+		 WHERE C.COLOR_CODE = P.COLOR_CODE
+		   AND MEMBER_NO = #{member_no}
 	</select>
 
 </mapper>

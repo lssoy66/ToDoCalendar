@@ -797,7 +797,7 @@
 
 	var categoryList = [];			// 사용자 카테고리 리스트(JSON)
 	<c:forEach var="item" items="${categoryList }" varStatus="status">
-		var data = { "category_no":${item.category_no}, "category_nm":"${item.category_nm}", "color_code":${item.color_code} };
+		var data = { "category_no":${item.category_no}, "category_nm":"${item.category_nm}", "color_code":${item.color_code}, "hex_code":"${item.hex_code}"  };
 		categoryList.push(data);
 	</c:forEach>
 	/*
@@ -836,6 +836,7 @@
 	// 이번달 스케줄 리스트 가져오기
 	function getScheduleByMonth() {
 
+		// 달을 변경할 때마다 해당하는 달의 데이터를 새로 가져온다
 		scheduleList = [];
 		var month = document.getElementById("month").innerHTML;
 		var member_no = document.getElementById("member_no").innerHTML;
@@ -893,7 +894,7 @@
 			// 1. 카테고리 이름(category_nm) 표시(폴더)
 			str += '<div class="panel panel-default">';
 			str += '<a data-toggle="collapse" data-parent="#modalTodoList" href="#collapseOne' + i + '" aria-expanded="true" class="">';		// 각 카테고리의 일정 그룹 아이디 : collapseOne + i
-			str += '<div class="panel-heading"><h4 class="panel-title">';
+			str += '<div class="panel-heading"><h4 class="panel-title" style="color: ' + categoryList[i].hex_code + ';">';
 			str += categoryList[i].category_nm;
 			str += '</h4>';
 			str += '</a>';
@@ -924,7 +925,7 @@
 						notEmptyCateList.push(i);
 					}
 
-					str += '<li style="border-bottom: none;">';
+					str += '<li style="border-bottom: none; ">';
 
 					// 일정 달성여부 표시(checkBox) + 일정 내용 표시
 					var schedule_no = dateSchedule.schedule_no;
@@ -933,11 +934,11 @@
 
 					if(complete == "Y") {
 						str += "<a style='display:inline;'><input type='checkbox' id='" + completeId + "' value='" + schedule_no + "' checked='checked' >";
-						str += "<a href='#' style='display:inline;' onclick='updateScheduleModalOpen(" + schedule_no + ");'>" + dateSchedule.content + "</a></a>";
+						str += "<a href='#' style='display:inline; color: " + categoryList[i].hex_code + ";' onclick='updateScheduleModalOpen(" + schedule_no + ");'>" + dateSchedule.content + "</a></a>";
 					}
 					else {
 						str += "<a style='display:inline;'><input type='checkbox' id='" + completeId + "' value='" + schedule_no + "' >";
-						str += "<a href='#' style='display:inline;' onclick='updateScheduleModalOpen(" + schedule_no + ");'>" + dateSchedule.content + "</a></a>";
+						str += "<a href='#' style='display:inline color: " + categoryList[i].hex_code + ";' onclick='updateScheduleModalOpen(" + schedule_no + ");'>" + dateSchedule.content + "</a></a>";
 					}
 
 					str += '</li>';
