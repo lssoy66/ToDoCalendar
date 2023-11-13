@@ -938,7 +938,7 @@
 					}
 					else {
 						str += "<a style='display:inline;'><input type='checkbox' id='" + completeId + "' value='" + schedule_no + "' >";
-						str += "<a href='#' style='display:inline color: " + categoryList[i].hex_code + ";' onclick='updateScheduleModalOpen(" + schedule_no + ");'>" + dateSchedule.content + "</a></a>";
+						str += "<a href='#' style='display:inline; color: " + categoryList[i].hex_code + ";' onclick='updateScheduleModalOpen(" + schedule_no + ");'>" + dateSchedule.content + "</a></a>";
 					}
 
 					str += '</li>';
