@@ -73,6 +73,9 @@ public class HomeController {
 		
 		model.addAttribute("ddayList", ddayList);
 		
+		String holiday = memberService.readById(member.getId()).getHoliday();
+		model.addAttribute("holiday", holiday);
+		
 		CountVO scheduleCount = scheduleService.selectScheduleListByCount(member.getMember_no());
 		log.info("count : " + scheduleCount);
 		
@@ -85,7 +88,6 @@ public class HomeController {
 			List<PaletteVO> paletteList = paletteService.selectPaletteListAll();
 			model.addAttribute("paletteList", paletteList);
 		}
-		
 	}
 
 	//Complete Ajax

@@ -194,6 +194,20 @@ public class MemberController {
 		return new ResponseEntity<>(memberService.readById(id), HttpStatus.OK);
 	}
 	
+	//공휴일 Ajax
+	@PostMapping("/ChangeHoliday")
+	@ResponseBody
+	public ResponseEntity<MemberVO> changeHoliday(String holiday, HttpSession session) {
+		log.info("holiday : " + holiday);
+
+		MemberVO member = (MemberVO)session.getAttribute("member");
+		String id = member.getId();
+		log.info("member id : " + id);
+		memberService.changeHoliday(id, holiday);
+
+		return new ResponseEntity<>(memberService.readById(id), HttpStatus.OK);
+	}
+	
 	//ID찾기 페이지 진입
 	@GetMapping("/ForgetId")
 	public String forgetId() {

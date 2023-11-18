@@ -19,4 +19,6 @@ public class MemberVO {
 	private Timestamp join_date;  /* 가입일시 */
 	private int membership;       /* 멤버십 */
 	private String delay_auto;    /* 자동미루기 Y/N */
+	private String holiday;		  /* 공휴일 Y/N */
+	
 }

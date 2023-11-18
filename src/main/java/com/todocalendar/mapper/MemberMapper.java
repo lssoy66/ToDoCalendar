@@ -12,11 +12,12 @@ public interface MemberMapper {
 	public MemberVO readById(String id); 			//id로 회원정보 가져오기
 	public MemberVO loginCheck(MemberVO member); 	//로그인
 	
-	public void updatePassword(MemberVO member); 		//비밀번호 수정
+	public void updatePassword(MemberVO member); 	//비밀번호 수정
 	public void withdrawMember(String id); 			//회원 탈퇴
 	public MemberVO memberCheck(MemberVO member);	//회원정보 확인
 	
 	public void changeDelayAuto(@Param("id") String id, @Param("delay_auto") String delay_auto); 	//자동미루기 on/off
+	public void changeHoliday(@Param("id") String id, @Param("holiday") String holiday); 			//공휴일 on/off
 	
 	public List<MemberVO> selectMemberList(MemberVO member);
 	

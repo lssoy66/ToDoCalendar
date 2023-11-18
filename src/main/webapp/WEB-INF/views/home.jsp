@@ -112,7 +112,14 @@
 										<li>
 											<div>
 												<span>공휴일 자동 표시</span>
-												<input data-toggle="toggle" id="publicAutoN" type="checkbox">
+												<c:choose>
+													<c:when test="${holiday eq 'Y' }">
+														<input data-toggle="toggle" id="publicAutoY" type="checkbox" checked="checked">
+													</c:when>
+													<c:otherwise>
+														<input data-toggle="toggle" id="publicAutoN" type="checkbox">
+													</c:otherwise>
+												</c:choose>
 											</div>
 										</li>
 										<li>
@@ -632,16 +639,57 @@
 			}
 		});
 	}
-
+	
 	/* 설정 관련 */
 	$(document).ready(function() {
-
-		//공휴일 자동 표시
+		var yn = '<c:out value="${holiday}"/>';
+		var year = $("#year").text();
+		var month = $("#month").text();
+		
+		if(yn=="Y") {
+			$.ajax({
+				url : './GetHoliday',
+				data : {
+					year : year,
+					month : month
+				},
+				type : 'POST',
+				dataType : 'json',
+				success : function(result) {
+					if(result != "") {
+						//div id가 dateiDay인 것들을 전부 조회하여 dateiDay의 .text()값과 조회해온 공휴일 날짜를 비교하여 일치하면 dateContent에 .append()한다.
+						for(var i = 1; i <= 31; i++) {
+							for(var j = 0; j < result.length; j++) {
+								var dateName = result[j].dateName;
+								var dateId;
+								
+								//ex)공휴일이 20231003이면 끝의 한 자리만 잘라내고 20231225면 끝의 두 자리면 잘라낸다.
+								if(((result[j].locdate).toString()).slice(-2).match("0")) {
+									dateId = ((result[j].locdate).toString()).slice(-1);
+								}
+								else {
+									dateId = ((result[j].locdate).toString()).slice(-2);
+								}
+								var dateContentId = "date" + dateId + "Content";
+								
+								var date = ((result[j].locdate).toString()).slice(-1);
+								
+								if ($("#date" + i).text() == dateId) {
+									$("#" + "date" + dateId).css("color", "#ff0000");
+									$("#" + dateContentId).append("<br>");
+									$("#" + dateContentId).append("<a></a>&nbsp");
+									$("#" + dateContentId).append(dateName).css("color", "#ff0000");
+								}
+							}
+						}
+						
+					}
+				}
+			}); //End Ajax
+		}
+		
+		
 		$(document).on("change", "#publicAutoY", function(){
-			console.log("Y->N");
-			$("#publicAutoY").removeAttr("checked");
-			$("#publicAutoY").attr("id", "publicAutoN");
-			
 			var year = $("#year").text();
 			var month = $("#month").text();
 			
@@ -661,20 +709,35 @@
 							for(var j = 0; j < result.length; j++) {
 								var dateName = result[j].dateName;
 								var dateId;
+								
 								//ex)공휴일이 20231003이면 끝의 한 자리만 잘라내고 20231225면 끝의 두 자리면 잘라낸다.
 								if(((result[j].locdate).toString()).slice(-2).match("0")) {
-									dateId = "date" + ((result[j].locdate).toString()).slice(-1);
+									dateId = ((result[j].locdate).toString()).slice(-1);
 								}
 								else {
-									dateId = "date" + ((result[j].locdate).toString()).slice(-2);
+									dateId = ((result[j].locdate).toString()).slice(-2);
 								}
-								var dateContentId = dateId + "Content";
+								var dateContentId = "date" + dateId + "Content";
 								
 								var date = ((result[j].locdate).toString()).slice(-1);
 								
-								if ($("#date" + i + "Day").text() == ((result[j].locdate).toString()).slice(-1) || $("#date" + i + "Day").text() == ((result[j].locdate).toString()).slice(-2)) {
+								if ($("#date" + i).text() == dateId) {
 									$("#" + dateContentId).empty();
 								}
+								
+								$.ajax({
+									url : './pages/ChangeHoliday',
+									data : {
+										holiday : 'N'
+									},
+									type : 'POST',
+									dataType : 'json',
+									success : function(result) {
+										console.log("Y->N");
+										$("#publicAutoY").removeAttr("checked");
+										$("#publicAutoY").attr("id", "publicAutoN");
+									}
+								}); //End Ajax
 							}
 						}
 					}
@@ -683,10 +746,6 @@
 		});
 
     	$(document).on("change", "#publicAutoN", function(){
-    		console.log("N->Y");
-			$("#publicAutoN").attr("checked", "checked");
-			$("#publicAutoN").attr("id", "publicAutoY");
-			
 			var year = $("#year").text();
 			var month = $("#month").text();
 			
@@ -706,23 +765,38 @@
 							for(var j = 0; j < result.length; j++) {
 								var dateName = result[j].dateName;
 								var dateId;
+								
 								//ex)공휴일이 20231003이면 끝의 한 자리만 잘라내고 20231225면 끝의 두 자리면 잘라낸다.
 								if(((result[j].locdate).toString()).slice(-2).match("0")) {
-									dateId = "date" + ((result[j].locdate).toString()).slice(-1);
+									dateId = ((result[j].locdate).toString()).slice(-1);
 								}
 								else {
-									dateId = "date" + ((result[j].locdate).toString()).slice(-2);
+									dateId = ((result[j].locdate).toString()).slice(-2);
 								}
-								var dateContentId = dateId + "Content";
+								var dateContentId = "date" + dateId + "Content";
 								
 								var date = ((result[j].locdate).toString()).slice(-1);
 								
-								if ($("#date" + i + "Day").text() == ((result[j].locdate).toString()).slice(-1) || $("#date" + i + "Day").text() == ((result[j].locdate).toString()).slice(-2)) {
-									$("#" + dateId).css("color", "#ff0000");
+								if ($("#date" + i).text() == dateId) {
+									$("#" + "date" + dateId).css("color", "#ff0000");
 									$("#" + dateContentId).append("<br>");
 									$("#" + dateContentId).append("<a></a>&nbsp");
 									$("#" + dateContentId).append(dateName).css("color", "#ff0000");
 								}
+								
+								$.ajax({
+									url : './pages/ChangeHoliday',
+									data : {
+										holiday : 'Y'
+									},
+									type : 'POST',
+									dataType : 'json',
+									success : function(result) {
+										console.log("N->Y");
+										$("#publicAutoN").attr("checked", "checked");
+										$("#publicAutoN").attr("id", "publicAutoY");
+									}
+								}); //End Ajax
 							}
 						}
 					}
@@ -806,7 +880,6 @@
 
 	/* 일정 저장 후 alert 표시 + 이전 모달 다시 road */
 	$(document).ready(function() {
-
 		var result = '<c:out value="${msg }"/>';
 		var resultStatus = '<c:out value="${status }"/>';
 		if(result != '' && result == "success") {
